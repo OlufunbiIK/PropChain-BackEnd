@@ -17,6 +17,8 @@ out/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.example
+src/backup-recovery/.env.example
 
 # IDE and editor files
 .vscode/
