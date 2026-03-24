@@ -17,6 +17,10 @@ export interface JwtPayload {
   sub: string;
   email: string;
   jti?: string;
+  /** Refresh rotation id; present only on refresh JWTs. */
+  rid?: string;
+  /** Distinguishes access vs refresh tokens when both are JWTs. */
+  tokenUse?: 'access' | 'refresh';
   iat?: number;
   exp?: number;
 }

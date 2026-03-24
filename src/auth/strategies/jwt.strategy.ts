@@ -3,6 +3,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../../users/user.service';
+import { JWT_TOKEN_USE } from '../constants';
+import { JwtPayload } from '../auth.types';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -17,13 +19,23 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: JwtPayload) {
+    if (payload.tokenUse === JWT_TOKEN_USE.REFRESH) {
+      throw new UnauthorizedException();
+    }
+
     const user = await this.userService.findById(payload.sub);
 
     if (!user) {
       throw new UnauthorizedException();
     }
 
-    return user;
+    const { password: _, ...safe } = user as Record<string, unknown> & { password?: string };
+
+    return {
+      ...safe,
+      jti: payload.jti,
+      tokenUse: payload.tokenUse ?? JWT_TOKEN_USE.ACCESS,
+    };
   }
 }

@@ -14,9 +14,8 @@ import * as bcrypt from 'bcrypt';
 import { RedisService } from '../common/services/redis.service';
 import { v4 as uuidv4 } from 'uuid';
 import { StructuredLoggerService } from '../common/logging/logger.service';
-import { AuthUser, JwtPayload, AuthTokens } from './auth.types';
-import { PrismaUser } from '../types/prisma.types';
-import { isObject, isString } from '../types/guards';
+import { JwtPayload } from './auth.types';
+import { JWT_TOKEN_USE, tokenRevocationRedisKeys } from './constants';
 
 @Injectable()
 export class AuthService {
@@ -139,9 +138,14 @@ export class AuthService {
 
   async refreshToken(refreshToken: string) {
     try {
-      const payload = await this.jwtService.verifyAsync(refreshToken, {
+      const payload = (await this.jwtService.verifyAsync(refreshToken, {
         secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-      });
+      })) as JwtPayload;
+
+      if (payload.tokenUse !== JWT_TOKEN_USE.REFRESH || !payload.rid) {
+        this.logger.warn('Refresh token validation failed: wrong token type', { userId: payload.sub });
+        throw new TokenExpiredException('Invalid refresh token');
+      }
 
       const user = await this.userService.findById(payload.sub);
       if (!user) {
@@ -151,18 +155,19 @@ export class AuthService {
         throw new UserNotFoundException(payload.sub);
       }
 
-      const storedToken = await this.redisService.get(`refresh_token:${payload.sub}`);
-      if (storedToken !== refreshToken) {
-        this.logger.warn('Refresh token validation failed: Invalid token', {
-          userId: payload.sub,
-        });
+      const boundUserId = await this.redisService.get(tokenRevocationRedisKeys.refreshSession(payload.rid));
+      const currentRid = await this.redisService.get(tokenRevocationRedisKeys.userRefreshSession(payload.sub));
+
+      if (boundUserId !== payload.sub || currentRid !== payload.rid) {
+        this.logger.warn('Refresh token validation failed: revoked or rotated', { userId: payload.sub });
         throw new TokenExpiredException('Invalid refresh token');
       }
 
       this.logger.logAuth('Token refreshed successfully', { userId: user.id });
       return this.generateTokens(user);
     } catch (error) {
-      this.logger.error('Token refresh failed', error.stack);
+      const stack = error instanceof Error ? error.stack : undefined;
+      this.logger.error('Token refresh failed', stack);
       throw new TokenExpiredException('Invalid refresh token');
     }
   }
@@ -177,7 +182,7 @@ export class AuthService {
         if (jti && expiry) {
           const ttl = expiry - Math.floor(Date.now() / 1000);
           if (ttl > 0) {
-            await this.redisService.setex(`blacklisted_token:${jti}`, ttl, userId);
+            await this.redisService.setex(tokenRevocationRedisKeys.accessRevoked(jti), ttl, userId);
             this.logger.logAuth('Access token blacklisted', { userId, jti });
           }
         }
@@ -187,7 +192,7 @@ export class AuthService {
     // === REFRESH TOKEN REVOCATION ===
     // Prevents token refresh even if JWT signature is still valid
 
-    await this.redisService.del(`refresh_token:${userId}`);
+    await this.clearRefreshSessionForUser(userId);
     this.logger.logAuth('User logged out successfully', { userId });
     return { message: 'Logged out successfully' };
   }
@@ -231,6 +236,7 @@ export class AuthService {
 
     await this.userService.updatePassword(userId, newPassword);
     await this.redisService.del(`password_reset:${resetToken}`);
+    await this.invalidateAllSessions(userId);
 
     this.logger.log('Password reset successfully', { userId });
     return { message: 'Password reset successfully' };
@@ -252,8 +258,11 @@ export class AuthService {
     return { message: 'Email verified successfully' };
   }
 
+  /**
+   * Access-token revocation list (Redis). Entries use TTL so the key expires with the JWT.
+   */
   async isTokenBlacklisted(jti: string): Promise<boolean> {
-    const blacklisted = await this.redisService.get(`blacklisted_token:${jti}`);
+    const blacklisted = await this.redisService.get(tokenRevocationRedisKeys.accessRevoked(jti));
     return blacklisted !== null;
   }
 
@@ -290,6 +299,7 @@ export class AuthService {
     for (const key of sessionKeys) {
       await this.redisService.del(key);
     }
+    await this.clearRefreshSessionForUser(userId);
     this.logger.logAuth('All sessions invalidated', { userId });
   }
 
@@ -310,42 +320,80 @@ export class AuthService {
     this.logger.logAuth('Session invalidated', { userId, sessionId });
   }
 
-  private generateTokens(user: any) {
-    // === UNIQUE JWT ID (JTI) ===
-    // Enables per-token blacklisting even if JWT signature is still valid
+  private async clearRefreshSessionForUser(userId: string): Promise<void> {
+    const rid = await this.redisService.get(tokenRevocationRedisKeys.userRefreshSession(userId));
+    if (rid) {
+      await this.redisService.del(tokenRevocationRedisKeys.refreshSession(rid));
+    }
+    await this.redisService.del(tokenRevocationRedisKeys.userRefreshSession(userId));
+  }
+
+  private refreshSessionTtlSeconds(refreshToken: string): number {
+    const decoded = this.jwtService.decode(refreshToken) as { exp?: number } | null;
+    if (!decoded?.exp) {
+      return 0;
+    }
+    return Math.max(0, decoded.exp - Math.floor(Date.now() / 1000));
+  }
+
+  private async generateTokens(user: any) {
+    await this.clearRefreshSessionForUser(user.id);
+
     const jti = uuidv4();
-    const payload = {
-      sub: user.id, // Subject (user ID)
+    const refreshSessionId = uuidv4();
+
+    const accessPayload: JwtPayload = {
+      sub: user.id,
       email: user.email,
-      jti, // JWT ID for blacklisting
+      jti,
+      tokenUse: JWT_TOKEN_USE.ACCESS,
     };
 
-    const accessToken = this.jwtService.sign(payload, {
+    const refreshPayload: JwtPayload = {
+      sub: user.id,
+      email: user.email,
+      rid: refreshSessionId,
+      tokenUse: JWT_TOKEN_USE.REFRESH,
+    };
+
+    const accessToken = this.jwtService.sign(accessPayload, {
       secret: this.configService.get<string>('JWT_SECRET'),
       expiresIn: this.configService.get<string>('JWT_EXPIRES_IN', '15m') as any,
     });
 
-    const refreshToken = this.jwtService.sign(payload, {
+    const refreshToken = this.jwtService.sign(refreshPayload, {
       secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
       expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRES_IN', '7d') as any,
     });
 
-    this.redisService.set(`refresh_token:${user.id}`, refreshToken);
+    let refreshTtl = this.refreshSessionTtlSeconds(refreshToken);
+    if (refreshTtl <= 0) {
+      refreshTtl = 7 * 24 * 60 * 60;
+    }
+    await this.redisService.setex(
+      tokenRevocationRedisKeys.refreshSession(refreshSessionId),
+      refreshTtl,
+      user.id,
+    );
+    await this.redisService.setex(
+      tokenRevocationRedisKeys.userRefreshSession(user.id),
+      refreshTtl,
+      refreshSessionId,
+    );
 
-    // Store active session
     const sessionExpiry = this.configService.get<number>('SESSION_TIMEOUT', 3600);
-    this.redisService.setex(
+    await this.redisService.setex(
       `active_session:${user.id}:${jti}`,
       sessionExpiry,
       JSON.stringify({
         userId: user.id,
         createdAt: new Date().toISOString(),
-        userAgent: 'unknown', // Would be captured from request in real implementation
+        userAgent: 'unknown',
         ip: 'unknown',
       }),
     );
 
-    this.logger.debug('Generated new tokens for user', { userId: user.id, jti });
+    this.logger.debug('Generated new tokens for user', { userId: user.id, jti, refreshSessionId });
 
     return {
       access_token: accessToken,
