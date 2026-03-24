@@ -7,6 +7,7 @@ import * as compression from 'compression';
 import { AppModule } from './app.module';
 import { StructuredLoggerService } from './common/logging/logger.service';
 import { ErrorResponseDto } from './common/errors/error.dto';
+import { SecurityHeadersService } from './security/services/security-headers.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -21,15 +22,33 @@ async function bootstrap() {
   app.use(helmet());
   app.use(compression());
 
-  // Enhanced security headers
-  // const securityHeadersService = app.get(SecurityHeadersService);
-  // const securityHeaders = securityHeadersService.getSecurityHeaders();
-  // Object.entries(securityHeaders).forEach(([key, value]) => {
-  //   app.use((req, res, next) => {
-  //     res.setHeader(key, value);
-  //     next();
-  //   });
-  // });
+  // Enhanced security headers - CSP, HSTS, and other security headers
+  const securityHeadersService = app.get(SecurityHeadersService);
+  const isProduction = configService.get('NODE_ENV') === 'production';
+
+  // Get environment-specific security headers configuration
+  const securityConfig = isProduction
+    ? undefined // Use default production config
+    : securityHeadersService.getDevelopmentConfig();
+
+  // Validate configuration in production
+  if (isProduction) {
+    const configErrors = securityHeadersService.validateConfig(securityHeadersService['defaultConfig']);
+    if (configErrors.length > 0) {
+      logger.warn(`Security configuration warnings: ${configErrors.join(', ')}`);
+    }
+  }
+
+  // Apply security headers middleware
+  const securityHeaders = securityHeadersService.getSecurityHeaders(securityConfig);
+  app.use((req: any, res: any, next: () => void) => {
+    Object.entries(securityHeaders).forEach(([key, value]) => {
+      res.setHeader(key, value);
+    });
+    next();
+  });
+
+  logger.log(`Security headers configured: ${Object.keys(securityHeaders).length} headers applied`);
 
   // CORS configuration
   app.enableCors({

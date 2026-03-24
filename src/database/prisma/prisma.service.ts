@@ -34,7 +34,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
         const separator = databaseUrl.includes('?') ? '&' : '?';
         databaseUrl += `${separator}connection_limit=5`;
       }
-      
+
       if (!databaseUrl.includes('pool_timeout=')) {
         const separator = databaseUrl.includes('?') ? '&' : '?';
         databaseUrl += `${separator}pool_timeout=10`;

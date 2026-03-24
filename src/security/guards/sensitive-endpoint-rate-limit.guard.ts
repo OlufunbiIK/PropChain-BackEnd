@@ -27,10 +27,9 @@ export class SensitiveEndpointRateLimitGuard implements CanActivate {
       const request = context.switchToHttp().getRequest();
       const response = context.switchToHttp().getResponse();
 
-      const options = this.reflector.get<SensitiveRateLimitOptions>(
-        'sensitiveRateLimitOptions',
-        context.getHandler(),
-      ) || this.getDefaultOptions();
+      const options =
+        this.reflector.get<SensitiveRateLimitOptions>('sensitiveRateLimitOptions', context.getHandler()) ||
+        this.getDefaultOptions();
 
       const ip = this.getClientIp(request);
 
@@ -104,7 +103,7 @@ export class SensitiveEndpointRateLimitGuard implements CanActivate {
     if (attempts > 0) {
       const delayMs = Math.min(attempts * 1000, 10000);
       this.logger.debug(`Applying progressive delay of ${delayMs}ms for key: ${key}`);
-      await new Promise((resolve) => setTimeout(resolve, delayMs));
+      await new Promise(resolve => setTimeout(resolve, delayMs));
     }
   }
 

@@ -163,7 +163,8 @@ export class AuthController {
   })
   @ApiOperation({
     summary: 'Refresh access token',
-    description: 'Exchanges refresh token for new access token. Implements token rotation. Rate limit: 10 requests per minute.',
+    description:
+      'Exchanges refresh token for new access token. Implements token rotation. Rate limit: 10 requests per minute.',
   })
   @ApiResponse({
     status: 200,
@@ -237,7 +238,8 @@ export class AuthController {
   })
   @ApiOperation({
     summary: 'Request password reset email',
-    description: 'Sends password reset link to user email. Returns generic message for security. Rate limit: 3 requests per 15 minutes.',
+    description:
+      'Sends password reset link to user email. Returns generic message for security. Rate limit: 3 requests per 15 minutes.',
   })
   @ApiResponse({
     status: 200,
@@ -274,7 +276,8 @@ export class AuthController {
   })
   @ApiOperation({
     summary: 'Reset password using reset token',
-    description: 'Sets new password using token from password reset email. Token valid for 1 hour. Rate limit: 5 requests per 15 minutes.',
+    description:
+      'Sets new password using token from password reset email. Token valid for 1 hour. Rate limit: 5 requests per 15 minutes.',
   })
   @ApiResponse({
     status: 200,

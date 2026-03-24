@@ -75,4 +75,16 @@ export class RedisService {
   async flushdb(): Promise<string> {
     return await this.redis.flushdb();
   }
+
+  async sadd(key: string, ...members: string[]): Promise<number> {
+    return await this.redis.sadd(key, ...members);
+  }
+
+  async smembers(key: string): Promise<string[]> {
+    return await this.redis.smembers(key);
+  }
+
+  async srem(key: string, ...members: string[]): Promise<number> {
+    return await this.redis.srem(key, ...members);
+  }
 }

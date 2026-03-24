@@ -66,10 +66,7 @@ const redactFormat = () => {
 
     // Mask database credentials in string messages
     if (typeof redactedInfo.message === 'string') {
-      redactedInfo.message = redactedInfo.message.replace(
-        /(postgres(?:ql)?|mysql):\/\/[^:]+:[^@]+@/g,
-        '$1://***:***@'
-      );
+      redactedInfo.message = redactedInfo.message.replace(/(postgres(?:ql)?|mysql):\/\/[^:]+:[^@]+@/g, '$1://***:***@');
     }
 
     // Redact nested data in 'meta' or 'data' fields

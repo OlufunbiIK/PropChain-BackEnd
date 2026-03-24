@@ -1,605 +1,901 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="277" failures="0" errors="0" time="69.422">
-  <testsuite name="PropertiesService" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:16:19" time="21.203" tests="31">
-    <testcase classname="PropertiesService create should create a property successfully" name="PropertiesService create should create a property successfully" time="0.044">
+<testsuites name="jest tests" tests="427" failures="0" errors="0" time="19.311">
+  <testsuite name="CacheWarmingService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:16" time="4.202" tests="25">
+    <testcase classname="CacheWarmingService onModuleInit should initialize with default strategies" name="CacheWarmingService onModuleInit should initialize with default strategies" time="0.014">
     </testcase>
-    <testcase classname="PropertiesService create should throw NotFoundException if user does not exist" name="PropertiesService create should throw NotFoundException if user does not exist" time="0.082">
+    <testcase classname="CacheWarmingService registerStrategy should register a new strategy" name="CacheWarmingService registerStrategy should register a new strategy" time="0.003">
     </testcase>
-    <testcase classname="PropertiesService create should handle database errors" name="PropertiesService create should handle database errors" time="0.017">
+    <testcase classname="CacheWarmingService unregisterStrategy should unregister a strategy" name="CacheWarmingService unregisterStrategy should unregister a strategy" time="0.004">
     </testcase>
-    <testcase classname="PropertiesService findAll should return paginated properties with filters" name="PropertiesService findAll should return paginated properties with filters" time="0.012">
+    <testcase classname="CacheWarmingService unregisterStrategy should return false for non-existent strategy" name="CacheWarmingService unregisterStrategy should return false for non-existent strategy" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply search filter correctly" name="PropertiesService findAll should apply search filter correctly" time="0.012">
+    <testcase classname="CacheWarmingService setStrategyEnabled should enable/disable a strategy" name="CacheWarmingService setStrategyEnabled should enable/disable a strategy" time="0.003">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply price range filter correctly" name="PropertiesService findAll should apply price range filter correctly" time="0.009">
+    <testcase classname="CacheWarmingService setStrategyEnabled should return false for non-existent strategy" name="CacheWarmingService setStrategyEnabled should return false for non-existent strategy" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply property type filter correctly" name="PropertiesService findAll should apply property type filter correctly" time="0.01">
+    <testcase classname="CacheWarmingService executeStrategy should execute a strategy and cache results" name="CacheWarmingService executeStrategy should execute a strategy and cache results" time="0.003">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply status filter correctly" name="PropertiesService findAll should apply status filter correctly" time="0.012">
+    <testcase classname="CacheWarmingService executeStrategy should skip already cached entries" name="CacheWarmingService executeStrategy should skip already cached entries" time="0.005">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply city and country location filter correctly" name="PropertiesService findAll should apply city and country location filter correctly" time="0.023">
+    <testcase classname="CacheWarmingService executeStrategy should skip disabled strategies" name="CacheWarmingService executeStrategy should skip disabled strategies" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply bedroom range filter correctly" name="PropertiesService findAll should apply bedroom range filter correctly" time="0.039">
+    <testcase classname="CacheWarmingService executeStrategy should handle factory errors gracefully" name="CacheWarmingService executeStrategy should handle factory errors gracefully" time="0.003">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply bathroom range filter correctly" name="PropertiesService findAll should apply bathroom range filter correctly" time="0.015">
+    <testcase classname="CacheWarmingService executeStrategy should check condition before executing task" name="CacheWarmingService executeStrategy should check condition before executing task" time="0.003">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply area range filter correctly" name="PropertiesService findAll should apply area range filter correctly" time="0.016">
+    <testcase classname="CacheWarmingService executeStrategy should handle async conditions" name="CacheWarmingService executeStrategy should handle async conditions" time="0.003">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply owner filter correctly" name="PropertiesService findAll should apply owner filter correctly" time="0.014">
+    <testcase classname="CacheWarmingService executeAllStrategies should execute all enabled strategies" name="CacheWarmingService executeAllStrategies should execute all enabled strategies" time="0.004">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply pagination correctly" name="PropertiesService findAll should apply pagination correctly" time="0.011">
+    <testcase classname="CacheWarmingService executeTask should execute a single task" name="CacheWarmingService executeTask should execute a single task" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService findAll should apply sorting correctly" name="PropertiesService findAll should apply sorting correctly" time="0.019">
+    <testcase classname="CacheWarmingService executeTask should return false if condition not met" name="CacheWarmingService executeTask should return false if condition not met" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService findAll should handle empty query with defaults" name="PropertiesService findAll should handle empty query with defaults" time="0.015">
+    <testcase classname="CacheWarmingService executeTask should return false if already cached" name="CacheWarmingService executeTask should return false if already cached" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService findAll should handle multiple filters combined" name="PropertiesService findAll should handle multiple filters combined" time="0.016">
+    <testcase classname="CacheWarmingService executeTask should return false on factory error" name="CacheWarmingService executeTask should return false on factory error" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService findOne should return a property by ID" name="PropertiesService findOne should return a property by ID" time="0.015">
+    <testcase classname="CacheWarmingService warmCache should warm cache with multiple tasks" name="CacheWarmingService warmCache should warm cache with multiple tasks" time="0.003">
     </testcase>
-    <testcase classname="PropertiesService findOne should throw NotFoundException if property does not exist" name="PropertiesService findOne should throw NotFoundException if property does not exist" time="0.013">
+    <testcase classname="CacheWarmingService warmCache should sort tasks by priority" name="CacheWarmingService warmCache should sort tasks by priority" time="0.003">
     </testcase>
-    <testcase classname="PropertiesService update should update a property successfully" name="PropertiesService update should update a property successfully" time="0.014">
+    <testcase classname="CacheWarmingService getStats should return warming statistics" name="CacheWarmingService getStats should return warming statistics" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService update should throw NotFoundException if property does not exist" name="PropertiesService update should throw NotFoundException if property does not exist" time="0.015">
+    <testcase classname="CacheWarmingService resetStats should reset all statistics" name="CacheWarmingService resetStats should reset all statistics" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService remove should delete a property successfully" name="PropertiesService remove should delete a property successfully" time="0.016">
+    <testcase classname="CacheWarmingService getStrategies should return all registered strategies" name="CacheWarmingService getStrategies should return all registered strategies" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService remove should throw NotFoundException if property does not exist" name="PropertiesService remove should throw NotFoundException if property does not exist" time="0.03">
+    <testcase classname="CacheWarmingService getStrategy should return a specific strategy" name="CacheWarmingService getStrategy should return a specific strategy" time="0.002">
     </testcase>
-    <testcase classname="PropertiesService searchNearby should search properties near a location" name="PropertiesService searchNearby should search properties near a location" time="0.014">
+    <testcase classname="CacheWarmingService getStrategy should return undefined for non-existent strategy" name="CacheWarmingService getStrategy should return undefined for non-existent strategy" time="0.004">
     </testcase>
-    <testcase classname="PropertiesService updateStatus should update property status with valid transition" name="PropertiesService updateStatus should update property status with valid transition" time="0.016">
+    <testcase classname="CacheWarmingService prewarmOnStartup should prewarm critical strategies" name="CacheWarmingService prewarmOnStartup should prewarm critical strategies" time="0.004">
     </testcase>
-    <testcase classname="PropertiesService updateStatus should throw BadRequestException for invalid status transition" name="PropertiesService updateStatus should throw BadRequestException for invalid status transition" time="0.015">
+  </testsuite>
+  <testsuite name="SensitiveEndpointRateLimitGuard" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:20" time="5.291" tests="12">
+    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should allow request when rate limit is not exceeded" name="SensitiveEndpointRateLimitGuard canActivate should allow request when rate limit is not exceeded" time="0.008">
     </testcase>
-    <testcase classname="PropertiesService findByOwner should return properties by owner" name="PropertiesService findByOwner should return properties by owner" time="0.015">
+    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should block request when IP is blocked" name="SensitiveEndpointRateLimitGuard canActivate should block request when IP is blocked" time="0.016">
     </testcase>
-    <testcase classname="PropertiesService getStatistics should return property statistics" name="PropertiesService getStatistics should return property statistics" time="0.022">
+    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should allow request when IP is whitelisted" name="SensitiveEndpointRateLimitGuard canActivate should allow request when IP is whitelisted" time="0.003">
     </testcase>
-    <testcase classname="PropertiesService helper methods should format address correctly" name="PropertiesService helper methods should format address correctly" time="0.02">
+    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should throw HttpException when rate limit is exceeded" name="SensitiveEndpointRateLimitGuard canActivate should throw HttpException when rate limit is exceeded" time="0.004">
     </testcase>
-    <testcase classname="PropertiesService helper methods should map property status correctly" name="PropertiesService helper methods should map property status correctly" time="0.019">
+    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should block IP when blockOnExceed is enabled and rate limit exceeded" name="SensitiveEndpointRateLimitGuard canActivate should block IP when blockOnExceed is enabled and rate limit exceeded" time="0.003">
+    </testcase>
+    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should apply progressive delay when enabled" name="SensitiveEndpointRateLimitGuard canActivate should apply progressive delay when enabled" time="5.022">
+    </testcase>
+    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should use email from request body for rate limit key" name="SensitiveEndpointRateLimitGuard canActivate should use email from request body for rate limit key" time="0.006">
+    </testcase>
+    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should use user ID from request for rate limit key when authenticated" name="SensitiveEndpointRateLimitGuard canActivate should use user ID from request for rate limit key when authenticated" time="0.004">
+    </testcase>
+    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should set rate limit headers in response" name="SensitiveEndpointRateLimitGuard canActivate should set rate limit headers in response" time="0.005">
+    </testcase>
+    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should fail open when rate limiting service throws error" name="SensitiveEndpointRateLimitGuard canActivate should fail open when rate limiting service throws error" time="0.004">
     </testcase>
     <testcase classname="PropertiesService helper methods should validate status transitions correctly" name="PropertiesService helper methods should validate status transitions correctly" time="0.003">
     </testcase>
   </testsuite>
-  <testsuite name="SensitiveEndpointRateLimitGuard" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:16:40" time="6.996" tests="12">
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should allow request when rate limit is not exceeded" name="SensitiveEndpointRateLimitGuard canActivate should allow request when rate limit is not exceeded" time="0.036">
+  <testsuite name="MfaService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:26" time="0.603" tests="8">
+    <testcase classname="MfaService generateMfaSecret should generate MFA secret and QR code" name="MfaService generateMfaSecret should generate MFA secret and QR code" time="0.25">
     </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should block request when IP is blocked" name="SensitiveEndpointRateLimitGuard canActivate should block request when IP is blocked" time="0.043">
+    <testcase classname="MfaService verifyMfaSetup should verify MFA setup with valid token" name="MfaService verifyMfaSetup should verify MFA setup with valid token" time="0.005">
     </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should allow request when IP is whitelisted" name="SensitiveEndpointRateLimitGuard canActivate should allow request when IP is whitelisted" time="0.012">
+    <testcase classname="MfaService verifyMfaSetup should throw error for expired setup session" name="MfaService verifyMfaSetup should throw error for expired setup session" time="0.012">
     </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should throw HttpException when rate limit is exceeded" name="SensitiveEndpointRateLimitGuard canActivate should throw HttpException when rate limit is exceeded" time="0.024">
+    <testcase classname="MfaService isMfaEnabled should return true when MFA is enabled" name="MfaService isMfaEnabled should return true when MFA is enabled" time="0.004">
     </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should block IP when blockOnExceed is enabled and rate limit exceeded" name="SensitiveEndpointRateLimitGuard canActivate should block IP when blockOnExceed is enabled and rate limit exceeded" time="0.017">
+    <testcase classname="MfaService isMfaEnabled should return false when MFA is not enabled" name="MfaService isMfaEnabled should return false when MFA is not enabled" time="0.002">
     </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should apply progressive delay when enabled" name="SensitiveEndpointRateLimitGuard canActivate should apply progressive delay when enabled" time="5.013">
+    <testcase classname="MfaService generateBackupCodes should generate 10 backup codes" name="MfaService generateBackupCodes should generate 10 backup codes" time="0.004">
     </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should use email from request body for rate limit key" name="SensitiveEndpointRateLimitGuard canActivate should use email from request body for rate limit key" time="0.012">
+    <testcase classname="MfaService getMfaStatus should return correct MFA status when enabled" name="MfaService getMfaStatus should return correct MFA status when enabled" time="0.005">
     </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should use user ID from request for rate limit key when authenticated" name="SensitiveEndpointRateLimitGuard canActivate should use user ID from request for rate limit key when authenticated" time="0.012">
-    </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should set rate limit headers in response" name="SensitiveEndpointRateLimitGuard canActivate should set rate limit headers in response" time="0.015">
-    </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should fail open when rate limiting service throws error" name="SensitiveEndpointRateLimitGuard canActivate should fail open when rate limiting service throws error" time="0.011">
-    </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should extract IP from x-forwarded-for header" name="SensitiveEndpointRateLimitGuard canActivate should extract IP from x-forwarded-for header" time="0.01">
-    </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should use custom rate limit options from decorator" name="SensitiveEndpointRateLimitGuard canActivate should use custom rate limit options from decorator" time="0.008">
+    <testcase classname="MfaService getMfaStatus should return correct MFA status when disabled" name="MfaService getMfaStatus should return correct MFA status when disabled" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="ApiKeyService" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:16:47" time="3.802" tests="13">
-    <testcase classname="ApiKeyService should be defined" name="ApiKeyService should be defined" time="0.027">
+  <testsuite name="PropertiesController" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:27" time="0.632" tests="10">
+    <testcase classname="PropertiesController create should create a property" name="PropertiesController create should create a property" time="0.012">
     </testcase>
-    <testcase classname="ApiKeyService create should create a new API key with valid scopes" name="ApiKeyService create should create a new API key with valid scopes" time="0.022">
+    <testcase classname="PropertiesController findAll should return paginated properties" name="PropertiesController findAll should return paginated properties" time="0.005">
     </testcase>
-    <testcase classname="ApiKeyService create should throw BadRequestException for invalid scopes" name="ApiKeyService create should throw BadRequestException for invalid scopes" time="0.044">
+    <testcase classname="PropertiesController findAll should handle filters correctly" name="PropertiesController findAll should handle filters correctly" time="0.003">
     </testcase>
-    <testcase classname="ApiKeyService findAll should return all API keys" name="ApiKeyService findAll should return all API keys" time="0.007">
+    <testcase classname="PropertiesController getStatistics should return property statistics" name="PropertiesController getStatistics should return property statistics" time="0.003">
     </testcase>
-    <testcase classname="ApiKeyService findOne should return a single API key" name="ApiKeyService findOne should return a single API key" time="0.012">
+    <testcase classname="PropertiesController findByOwner should return properties by owner" name="PropertiesController findByOwner should return properties by owner" time="0.003">
     </testcase>
-    <testcase classname="ApiKeyService findOne should throw NotFoundException if API key not found" name="ApiKeyService findOne should throw NotFoundException if API key not found" time="0.006">
+    <testcase classname="PropertiesController findByOwner should pass query parameters to service" name="PropertiesController findByOwner should pass query parameters to service" time="0.003">
     </testcase>
-    <testcase classname="ApiKeyService update should update an API key" name="ApiKeyService update should update an API key" time="0.008">
+    <testcase classname="PropertiesController findOne should return a property by ID" name="PropertiesController findOne should return a property by ID" time="0.004">
     </testcase>
-    <testcase classname="ApiKeyService update should throw NotFoundException if API key not found" name="ApiKeyService update should throw NotFoundException if API key not found" time="0.006">
+    <testcase classname="PropertiesController update should update a property" name="PropertiesController update should update a property" time="0.002">
     </testcase>
-    <testcase classname="ApiKeyService revoke should revoke an API key" name="ApiKeyService revoke should revoke an API key" time="0.012">
+    <testcase classname="PropertiesController updateStatus should update property status" name="PropertiesController updateStatus should update property status" time="0.003">
     </testcase>
-    <testcase classname="ApiKeyService revoke should throw NotFoundException if API key not found" name="ApiKeyService revoke should throw NotFoundException if API key not found" time="0.011">
-    </testcase>
-    <testcase classname="ApiKeyService validateApiKey should throw UnauthorizedException for invalid key format" name="ApiKeyService validateApiKey should throw UnauthorizedException for invalid key format" time="0.011">
-    </testcase>
-    <testcase classname="ApiKeyService validateApiKey should throw UnauthorizedException for non-existent key" name="ApiKeyService validateApiKey should throw UnauthorizedException for non-existent key" time="0.009">
-    </testcase>
-    <testcase classname="ApiKeyService validateApiKey should throw UnauthorizedException when rate limit exceeded" name="ApiKeyService validateApiKey should throw UnauthorizedException when rate limit exceeded" time="0.012">
+    <testcase classname="PropertiesController remove should delete a property" name="PropertiesController remove should delete a property" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="PropertiesController" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:16:51" time="5.377" tests="10">
-    <testcase classname="PropertiesController create should create a property" name="PropertiesController create should create a property" time="0.034">
+  <testsuite name="ApiKeyService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:28" time="0.478" tests="23">
+    <testcase classname="ApiKeyService should be defined" name="ApiKeyService should be defined" time="0.005">
     </testcase>
-    <testcase classname="PropertiesController findAll should return paginated properties" name="PropertiesController findAll should return paginated properties" time="0.01">
+    <testcase classname="ApiKeyService create should create a new API key with valid scopes" name="ApiKeyService create should create a new API key with valid scopes" time="0.008">
     </testcase>
-    <testcase classname="PropertiesController findAll should handle filters correctly" name="PropertiesController findAll should handle filters correctly" time="0.008">
+    <testcase classname="ApiKeyService create should throw BadRequestException for invalid scopes" name="ApiKeyService create should throw BadRequestException for invalid scopes" time="0.019">
     </testcase>
-    <testcase classname="PropertiesController getStatistics should return property statistics" name="PropertiesController getStatistics should return property statistics" time="0.013">
+    <testcase classname="ApiKeyService findAll should return all API keys" name="ApiKeyService findAll should return all API keys" time="0.002">
     </testcase>
-    <testcase classname="PropertiesController findByOwner should return properties by owner" name="PropertiesController findByOwner should return properties by owner" time="0.015">
+    <testcase classname="ApiKeyService findOne should return a single API key" name="ApiKeyService findOne should return a single API key" time="0.002">
     </testcase>
-    <testcase classname="PropertiesController findByOwner should pass query parameters to service" name="PropertiesController findByOwner should pass query parameters to service" time="0.012">
+    <testcase classname="ApiKeyService findOne should throw NotFoundException if API key not found" name="ApiKeyService findOne should throw NotFoundException if API key not found" time="0.003">
     </testcase>
-    <testcase classname="PropertiesController findOne should return a property by ID" name="PropertiesController findOne should return a property by ID" time="0.012">
+    <testcase classname="ApiKeyService update should update an API key" name="ApiKeyService update should update an API key" time="0.004">
     </testcase>
-    <testcase classname="PropertiesController update should update a property" name="PropertiesController update should update a property" time="0.013">
+    <testcase classname="ApiKeyService update should throw NotFoundException if API key not found" name="ApiKeyService update should throw NotFoundException if API key not found" time="0.002">
     </testcase>
-    <testcase classname="PropertiesController updateStatus should update property status" name="PropertiesController updateStatus should update property status" time="0.01">
+    <testcase classname="ApiKeyService revoke should revoke an API key" name="ApiKeyService revoke should revoke an API key" time="0.002">
     </testcase>
-    <testcase classname="PropertiesController remove should delete a property" name="PropertiesController remove should delete a property" time="0.014">
+    <testcase classname="ApiKeyService revoke should throw NotFoundException if API key not found" name="ApiKeyService revoke should throw NotFoundException if API key not found" time="0.002">
     </testcase>
-  </testsuite>
-  <testsuite name="PaginationService" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:16:56" time="1.079" tests="28">
-    <testcase classname="PaginationService calculatePagination should calculate correct offset and limit for first page" name="PaginationService calculatePagination should calculate correct offset and limit for first page" time="0.028">
+    <testcase classname="ApiKeyService validateApiKey should throw UnauthorizedException for invalid key format" name="ApiKeyService validateApiKey should throw UnauthorizedException for invalid key format" time="0.003">
     </testcase>
-    <testcase classname="PaginationService calculatePagination should calculate correct offset for page 2" name="PaginationService calculatePagination should calculate correct offset for page 2" time="0.007">
+    <testcase classname="ApiKeyService validateApiKey should throw UnauthorizedException for non-existent key" name="ApiKeyService validateApiKey should throw UnauthorizedException for non-existent key" time="0.005">
     </testcase>
-    <testcase classname="PaginationService calculatePagination should calculate correct offset for page 5" name="PaginationService calculatePagination should calculate correct offset for page 5" time="0.017">
+    <testcase classname="ApiKeyService validateApiKey should throw UnauthorizedException when rate limit exceeded" name="ApiKeyService validateApiKey should throw UnauthorizedException when rate limit exceeded" time="0.004">
     </testcase>
-    <testcase classname="PaginationService calculatePagination should enforce maximum limit" name="PaginationService calculatePagination should enforce maximum limit" time="0.018">
+    <testcase classname="ApiKeyService rotateKey should rotate an API key successfully" name="ApiKeyService rotateKey should rotate an API key successfully" time="0.003">
     </testcase>
-    <testcase classname="PaginationService calculatePagination should enforce minimum limit" name="PaginationService calculatePagination should enforce minimum limit" time="0.01">
+    <testcase classname="ApiKeyService rotateKey should throw NotFoundException if API key not found" name="ApiKeyService rotateKey should throw NotFoundException if API key not found" time="0.002">
     </testcase>
-    <testcase classname="PaginationService calculatePagination should handle negative page numbers" name="PaginationService calculatePagination should handle negative page numbers" time="0.012">
+    <testcase classname="ApiKeyService rotateKey should throw BadRequestException if API key is revoked" name="ApiKeyService rotateKey should throw BadRequestException if API key is revoked" time="0.004">
     </testcase>
-    <testcase classname="PaginationService calculatePagination should use defaults when no parameters provided" name="PaginationService calculatePagination should use defaults when no parameters provided" time="0.006">
+    <testcase classname="ApiKeyService getRotationStatus should return rotation status for an API key" name="ApiKeyService getRotationStatus should return rotation status for an API key" time="0.005">
     </testcase>
-    <testcase classname="PaginationService createMetadata should calculate correct pagination metadata for first page" name="PaginationService createMetadata should calculate correct pagination metadata for first page" time="0.012">
+    <testcase classname="ApiKeyService getRotationStatus should return requiresRotation true for expired key" name="ApiKeyService getRotationStatus should return requiresRotation true for expired key" time="0.003">
     </testcase>
-    <testcase classname="PaginationService createMetadata should calculate correct metadata for middle page" name="PaginationService createMetadata should calculate correct metadata for middle page" time="0.019">
+    <testcase classname="ApiKeyService getRotationStatus should throw NotFoundException if API key not found" name="ApiKeyService getRotationStatus should throw NotFoundException if API key not found" time="0.003">
     </testcase>
-    <testcase classname="PaginationService createMetadata should calculate correct metadata for last page" name="PaginationService createMetadata should calculate correct metadata for last page" time="0.02">
+    <testcase classname="ApiKeyService getKeysRequiringRotation should return keys that have passed rotation due date" name="ApiKeyService getKeysRequiringRotation should return keys that have passed rotation due date" time="0.003">
     </testcase>
-    <testcase classname="PaginationService createMetadata should handle single page result" name="PaginationService createMetadata should handle single page result" time="0.013">
+    <testcase classname="ApiKeyService getKeysApproachingRotation should return keys within warning period" name="ApiKeyService getKeysApproachingRotation should return keys within warning period" time="0.003">
     </testcase>
-    <testcase classname="PaginationService createMetadata should handle exact page boundary" name="PaginationService createMetadata should handle exact page boundary" time="0.01">
+    <testcase classname="ApiKeyService getUsageAnalytics should return usage analytics for an API key" name="ApiKeyService getUsageAnalytics should return usage analytics for an API key" time="0.003">
     </testcase>
-    <testcase classname="PaginationService createMetadata should include sort information" name="PaginationService createMetadata should include sort information" time="0.009">
-    </testcase>
-    <testcase classname="PaginationService createMetadata should use default sort values" name="PaginationService createMetadata should use default sort values" time="0.011">
-    </testcase>
-    <testcase classname="PaginationService formatResponse should format response with data and metadata" name="PaginationService formatResponse should format response with data and metadata" time="0.013">
-    </testcase>
-    <testcase classname="PaginationService formatResponse should handle empty data array" name="PaginationService formatResponse should handle empty data array" time="0.011">
-    </testcase>
-    <testcase classname="PaginationService formatResponse should preserve sort parameters in response" name="PaginationService formatResponse should preserve sort parameters in response" time="0.015">
-    </testcase>
-    <testcase classname="PaginationService parsePaginationQuery should parse valid pagination query" name="PaginationService parsePaginationQuery should parse valid pagination query" time="0.011">
-    </testcase>
-    <testcase classname="PaginationService parsePaginationQuery should apply defaults for missing values" name="PaginationService parsePaginationQuery should apply defaults for missing values" time="0.014">
-    </testcase>
-    <testcase classname="PaginationService parsePaginationQuery should enforce limits on values" name="PaginationService parsePaginationQuery should enforce limits on values" time="0.049">
-    </testcase>
-    <testcase classname="PaginationService getPrismaOptions should generate correct Prisma query options" name="PaginationService getPrismaOptions should generate correct Prisma query options" time="0.015">
-    </testcase>
-    <testcase classname="PaginationService getPrismaOptions should use default orderByField when not specified in query" name="PaginationService getPrismaOptions should use default orderByField when not specified in query" time="0.007">
-    </testcase>
-    <testcase classname="PaginationService getPrismaOptions should handle custom sort field" name="PaginationService getPrismaOptions should handle custom sort field" time="0.005">
-    </testcase>
-    <testcase classname="PaginationService getPrismaOptions should calculate correct skip and take for page 3" name="PaginationService getPrismaOptions should calculate correct skip and take for page 3" time="0.009">
-    </testcase>
-    <testcase classname="PaginationService validation should handle very large page numbers" name="PaginationService validation should handle very large page numbers" time="0.008">
-    </testcase>
-    <testcase classname="PaginationService validation should handle zero limit gracefully" name="PaginationService validation should handle zero limit gracefully" time="0.013">
-    </testcase>
-    <testcase classname="PaginationService validation should handle negative limit gracefully" name="PaginationService validation should handle negative limit gracefully" time="0.011">
-    </testcase>
-    <testcase classname="PaginationService validation should calculate correct page count for non-divisible totals" name="PaginationService validation should calculate correct page count for non-divisible totals" time="0.007">
+    <testcase classname="ApiKeyService getUsageAnalytics should throw NotFoundException if API key not found" name="ApiKeyService getUsageAnalytics should throw NotFoundException if API key not found" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="Property DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:16:58" time="1.128" tests="22">
-    <testcase classname="Property DTOs AddressDto should pass with valid address" name="Property DTOs AddressDto should pass with valid address" time="0.012">
+  <testsuite name="MultiLevelCacheService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:28" time="0.363" tests="24">
+    <testcase classname="MultiLevelCacheService get should return value from L1 cache if present and not expired" name="MultiLevelCacheService get should return value from L1 cache if present and not expired" time="0.027">
     </testcase>
-    <testcase classname="Property DTOs AddressDto should pass with optional fields" name="Property DTOs AddressDto should pass with optional fields" time="0.019">
+    <testcase classname="MultiLevelCacheService get should fetch from L2 cache if not in L1" name="MultiLevelCacheService get should fetch from L2 cache if not in L1" time="0.006">
     </testcase>
-    <testcase classname="Property DTOs AddressDto should fail with empty street" name="Property DTOs AddressDto should fail with empty street" time="0.005">
+    <testcase classname="MultiLevelCacheService get should return undefined if not in any cache level" name="MultiLevelCacheService get should return undefined if not in any cache level" time="0.004">
     </testcase>
-    <testcase classname="Property DTOs AddressDto should fail with street too long" name="Property DTOs AddressDto should fail with street too long" time="0.01">
+    <testcase classname="MultiLevelCacheService get should handle L2 cache errors gracefully" name="MultiLevelCacheService get should handle L2 cache errors gracefully" time="0.006">
     </testcase>
-    <testcase classname="Property DTOs AddressDto should fail with missing required fields" name="Property DTOs AddressDto should fail with missing required fields" time="0.002">
+    <testcase classname="MultiLevelCacheService set should set value in both L1 and L2 cache" name="MultiLevelCacheService set should set value in both L1 and L2 cache" time="0.004">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should pass with valid property data" name="Property DTOs CreatePropertyDto should pass with valid property data" time="0.005">
+    <testcase classname="MultiLevelCacheService set should use default TTLs when not specified" name="MultiLevelCacheService set should use default TTLs when not specified" time="0.005">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should pass with all optional fields" name="Property DTOs CreatePropertyDto should pass with all optional fields" time="0.005">
+    <testcase classname="MultiLevelCacheService set should store tags for invalidation" name="MultiLevelCacheService set should store tags for invalidation" time="0.004">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should fail with empty title" name="Property DTOs CreatePropertyDto should fail with empty title" time="0.006">
+    <testcase classname="MultiLevelCacheService del should delete from both L1 and L2 cache" name="MultiLevelCacheService del should delete from both L1 and L2 cache" time="0.005">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should fail with title too long" name="Property DTOs CreatePropertyDto should fail with title too long" time="0.005">
+    <testcase classname="MultiLevelCacheService wrap should return cached value if present" name="MultiLevelCacheService wrap should return cached value if present" time="0.002">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should fail with negative price" name="Property DTOs CreatePropertyDto should fail with negative price" time="0.004">
+    <testcase classname="MultiLevelCacheService wrap should call factory and cache result if not present" name="MultiLevelCacheService wrap should call factory and cache result if not present" time="0.004">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should fail with zero price" name="Property DTOs CreatePropertyDto should fail with zero price" time="0.007">
+    <testcase classname="MultiLevelCacheService invalidateByTag should invalidate all entries with a given tag" name="MultiLevelCacheService invalidateByTag should invalidate all entries with a given tag" time="0.004">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should fail with price too high" name="Property DTOs CreatePropertyDto should fail with price too high" time="0.004">
+    <testcase classname="MultiLevelCacheService invalidateByTag should return 0 if no keys found for tag" name="MultiLevelCacheService invalidateByTag should return 0 if no keys found for tag" time="0.003">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should fail with invalid nested address" name="Property DTOs CreatePropertyDto should fail with invalid nested address" time="0.002">
+    <testcase classname="MultiLevelCacheService invalidateByPattern should invalidate entries matching pattern" name="MultiLevelCacheService invalidateByPattern should invalidate entries matching pattern" time="0.003">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should fail with too many features" name="Property DTOs CreatePropertyDto should fail with too many features" time="0.007">
+    <testcase classname="MultiLevelCacheService invalidateByPattern should handle L1 cache entries matching pattern" name="MultiLevelCacheService invalidateByPattern should handle L1 cache entries matching pattern" time="0.003">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should fail with invalid property type" name="Property DTOs CreatePropertyDto should fail with invalid property type" time="0.003">
+    <testcase classname="MultiLevelCacheService invalidateWithCascade should invalidate with cascade for property namespace" name="MultiLevelCacheService invalidateWithCascade should invalidate with cascade for property namespace" time="0.005">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should fail with negative bedrooms" name="Property DTOs CreatePropertyDto should fail with negative bedrooms" time="0.002">
+    <testcase classname="MultiLevelCacheService getStats should return cache statistics" name="MultiLevelCacheService getStats should return cache statistics" time="0.003">
     </testcase>
-    <testcase classname="Property DTOs CreatePropertyDto should fail with bedrooms too high" name="Property DTOs CreatePropertyDto should fail with bedrooms too high" time="0.003">
+    <testcase classname="MultiLevelCacheService getStats should track hits and misses correctly" name="MultiLevelCacheService getStats should track hits and misses correctly" time="0.003">
     </testcase>
-    <testcase classname="Property DTOs PropertyQueryDto should pass with valid query parameters" name="Property DTOs PropertyQueryDto should pass with valid query parameters" time="0.008">
+    <testcase classname="MultiLevelCacheService resetStats should reset all statistics" name="MultiLevelCacheService resetStats should reset all statistics" time="0.02">
     </testcase>
-    <testcase classname="Property DTOs PropertyQueryDto should pass with empty query" name="Property DTOs PropertyQueryDto should pass with empty query" time="0.003">
+    <testcase classname="MultiLevelCacheService clear should clear both L1 and L2 cache" name="MultiLevelCacheService clear should clear both L1 and L2 cache" time="0.003">
     </testcase>
-    <testcase classname="Property DTOs PropertyQueryDto should fail with negative minPrice" name="Property DTOs PropertyQueryDto should fail with negative minPrice" time="0.003">
+    <testcase classname="MultiLevelCacheService registerInvalidationPolicy should register custom invalidation policy" name="MultiLevelCacheService registerInvalidationPolicy should register custom invalidation policy" time="0.003">
     </testcase>
-    <testcase classname="Property DTOs PropertyQueryDto should fail with invalid property type" name="Property DTOs PropertyQueryDto should fail with invalid property type" time="0.016">
+    <testcase classname="MultiLevelCacheService incrementVersion should increment version for existing entry" name="MultiLevelCacheService incrementVersion should increment version for existing entry" time="0.002">
     </testcase>
-    <testcase classname="Property DTOs PropertyQueryDto should fail with invalid status" name="Property DTOs PropertyQueryDto should fail with invalid status" time="0.002">
+    <testcase classname="MultiLevelCacheService incrementVersion should return 1 for non-existing entry" name="MultiLevelCacheService incrementVersion should return 1 for non-existing entry" time="0.003">
+    </testcase>
+    <testcase classname="MultiLevelCacheService L1 cache eviction should evict entries when L1 cache is full" name="MultiLevelCacheService L1 cache eviction should evict entries when L1 cache is full" time="0.003">
+    </testcase>
+    <testcase classname="MultiLevelCacheService cleanup should clean up expired L1 entries" name="MultiLevelCacheService cleanup should clean up expired L1 entries" time="0.02">
     </testcase>
   </testsuite>
-  <testsuite name="Auth DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:16:59" time="2.285" tests="22">
-    <testcase classname="Auth DTOs LoginEmailDto should pass with valid email and password" name="Auth DTOs LoginEmailDto should pass with valid email and password" time="0.014">
+  <testsuite name="CacheInvalidationService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:28" time="0.393" tests="31">
+    <testcase classname="CacheInvalidationService initialization should initialize with default rules" name="CacheInvalidationService initialization should initialize with default rules" time="0.011">
     </testcase>
-    <testcase classname="Auth DTOs LoginEmailDto should fail with invalid email" name="Auth DTOs LoginEmailDto should fail with invalid email" time="0.004">
+    <testcase classname="CacheInvalidationService registerRule should register a new invalidation rule" name="CacheInvalidationService registerRule should register a new invalidation rule" time="0.005">
     </testcase>
-    <testcase classname="Auth DTOs LoginEmailDto should fail with empty email" name="Auth DTOs LoginEmailDto should fail with empty email" time="0.002">
+    <testcase classname="CacheInvalidationService registerRule should update stats when registering a rule" name="CacheInvalidationService registerRule should update stats when registering a rule" time="0.004">
     </testcase>
-    <testcase classname="Auth DTOs LoginEmailDto should fail with empty password" name="Auth DTOs LoginEmailDto should fail with empty password" time="0.003">
+    <testcase classname="CacheInvalidationService unregisterRule should unregister a rule" name="CacheInvalidationService unregisterRule should unregister a rule" time="0.004">
     </testcase>
-    <testcase classname="Auth DTOs LoginEmailDto should fail with missing fields" name="Auth DTOs LoginEmailDto should fail with missing fields" time="0.003">
+    <testcase classname="CacheInvalidationService unregisterRule should return false for non-existent rule" name="CacheInvalidationService unregisterRule should return false for non-existent rule" time="0.022">
     </testcase>
-    <testcase classname="Auth DTOs LoginWeb3Dto should pass with valid wallet address and signature" name="Auth DTOs LoginWeb3Dto should pass with valid wallet address and signature" time="0.004">
+    <testcase classname="CacheInvalidationService setRuleEnabled should enable/disable a rule" name="CacheInvalidationService setRuleEnabled should enable/disable a rule" time="0.005">
     </testcase>
-    <testcase classname="Auth DTOs LoginWeb3Dto should fail with invalid wallet address" name="Auth DTOs LoginWeb3Dto should fail with invalid wallet address" time="0.004">
+    <testcase classname="CacheInvalidationService setRuleEnabled should return false for non-existent rule" name="CacheInvalidationService setRuleEnabled should return false for non-existent rule" time="0.004">
+    </testcase>
+    <testcase classname="CacheInvalidationService executeRule should execute a pattern rule" name="CacheInvalidationService executeRule should execute a pattern rule" time="0.005">
+    </testcase>
+    <testcase classname="CacheInvalidationService executeRule should execute a tag rule" name="CacheInvalidationService executeRule should execute a tag rule" time="0.004">
+    </testcase>
+    <testcase classname="CacheInvalidationService executeRule should skip disabled rules" name="CacheInvalidationService executeRule should skip disabled rules" time="0.004">
+    </testcase>
+    <testcase classname="CacheInvalidationService executeRule should return 0 for non-existent rule" name="CacheInvalidationService executeRule should return 0 for non-existent rule" time="0.004">
+    </testcase>
+    <testcase classname="CacheInvalidationService executeRule should execute conditional rule" name="CacheInvalidationService executeRule should execute conditional rule" time="0.005">
+    </testcase>
+    <testcase classname="CacheInvalidationService executeRule should execute dependency rule with cascade" name="CacheInvalidationService executeRule should execute dependency rule with cascade" time="0.005">
+    </testcase>
+    <testcase classname="CacheInvalidationService executeRule should handle rule execution errors" name="CacheInvalidationService executeRule should handle rule execution errors" time="0.004">
+    </testcase>
+    <testcase classname="CacheInvalidationService executeAllRules should execute all enabled rules" name="CacheInvalidationService executeAllRules should execute all enabled rules" time="0.006">
+    </testcase>
+    <testcase classname="CacheInvalidationService smartInvalidate should invalidate based on entity type and change type" name="CacheInvalidationService smartInvalidate should invalidate based on entity type and change type" time="0.003">
+    </testcase>
+    <testcase classname="CacheInvalidationService smartInvalidate should handle create change type" name="CacheInvalidationService smartInvalidate should handle create change type" time="0.002">
+    </testcase>
+    <testcase classname="CacheInvalidationService smartInvalidate should handle delete change type" name="CacheInvalidationService smartInvalidate should handle delete change type" time="0.003">
+    </testcase>
+    <testcase classname="CacheInvalidationService invalidateByTagsWithPolicy should invalidate by tags with cascade" name="CacheInvalidationService invalidateByTagsWithPolicy should invalidate by tags with cascade" time="0.004">
+    </testcase>
+    <testcase classname="CacheInvalidationService invalidateByTagsWithPolicy should invalidate by tags without cascade" name="CacheInvalidationService invalidateByTagsWithPolicy should invalidate by tags without cascade" time="0.003">
+    </testcase>
+    <testcase classname="CacheInvalidationService batchInvalidate should batch invalidate multiple keys" name="CacheInvalidationService batchInvalidate should batch invalidate multiple keys" time="0.003">
+    </testcase>
+    <testcase classname="CacheInvalidationService batchInvalidate should handle partial failures" name="CacheInvalidationService batchInvalidate should handle partial failures" time="0.002">
+    </testcase>
+    <testcase classname="CacheInvalidationService invalidateWithCallback should invalidate and refresh with callback" name="CacheInvalidationService invalidateWithCallback should invalidate and refresh with callback" time="0.004">
+    </testcase>
+    <testcase classname="CacheInvalidationService invalidateWithCallback should invalidate without callback" name="CacheInvalidationService invalidateWithCallback should invalidate without callback" time="0.003">
+    </testcase>
+    <testcase classname="CacheInvalidationService invalidateWithCallback should handle refresh callback errors" name="CacheInvalidationService invalidateWithCallback should handle refresh callback errors" time="0.004">
+    </testcase>
+    <testcase classname="CacheInvalidationService getStats should return invalidation statistics" name="CacheInvalidationService getStats should return invalidation statistics" time="0.004">
+    </testcase>
+    <testcase classname="CacheInvalidationService getRules should return all rules" name="CacheInvalidationService getRules should return all rules" time="0.006">
+    </testcase>
+    <testcase classname="CacheInvalidationService getRule should return a specific rule" name="CacheInvalidationService getRule should return a specific rule" time="0.015">
+    </testcase>
+    <testcase classname="CacheInvalidationService getRule should return undefined for non-existent rule" name="CacheInvalidationService getRule should return undefined for non-existent rule" time="0.006">
+    </testcase>
+    <testcase classname="CacheInvalidationService scheduledCleanup should execute time-based rules" name="CacheInvalidationService scheduledCleanup should execute time-based rules" time="0.004">
+    </testcase>
+    <testcase classname="CacheInvalidationService scheduledRefresh should execute conditional refresh rules" name="CacheInvalidationService scheduledRefresh should execute conditional refresh rules" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="Property DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:29" time="0.312" tests="22">
+    <testcase classname="Property DTOs AddressDto should pass with valid address" name="Property DTOs AddressDto should pass with valid address" time="0.006">
+    </testcase>
+    <testcase classname="Property DTOs AddressDto should pass with optional fields" name="Property DTOs AddressDto should pass with optional fields" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs AddressDto should fail with empty street" name="Property DTOs AddressDto should fail with empty street" time="0.002">
+    </testcase>
+    <testcase classname="Property DTOs AddressDto should fail with street too long" name="Property DTOs AddressDto should fail with street too long" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs AddressDto should fail with missing required fields" name="Property DTOs AddressDto should fail with missing required fields" time="0">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should pass with valid property data" name="Property DTOs CreatePropertyDto should pass with valid property data" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should pass with all optional fields" name="Property DTOs CreatePropertyDto should pass with all optional fields" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should fail with empty title" name="Property DTOs CreatePropertyDto should fail with empty title" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should fail with title too long" name="Property DTOs CreatePropertyDto should fail with title too long" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should fail with negative price" name="Property DTOs CreatePropertyDto should fail with negative price" time="0">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should fail with zero price" name="Property DTOs CreatePropertyDto should fail with zero price" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should fail with price too high" name="Property DTOs CreatePropertyDto should fail with price too high" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should fail with invalid nested address" name="Property DTOs CreatePropertyDto should fail with invalid nested address" time="0">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should fail with too many features" name="Property DTOs CreatePropertyDto should fail with too many features" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should fail with invalid property type" name="Property DTOs CreatePropertyDto should fail with invalid property type" time="0.002">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should fail with negative bedrooms" name="Property DTOs CreatePropertyDto should fail with negative bedrooms" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs CreatePropertyDto should fail with bedrooms too high" name="Property DTOs CreatePropertyDto should fail with bedrooms too high" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs PropertyQueryDto should pass with valid query parameters" name="Property DTOs PropertyQueryDto should pass with valid query parameters" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs PropertyQueryDto should pass with empty query" name="Property DTOs PropertyQueryDto should pass with empty query" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs PropertyQueryDto should fail with negative minPrice" name="Property DTOs PropertyQueryDto should fail with negative minPrice" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs PropertyQueryDto should fail with invalid property type" name="Property DTOs PropertyQueryDto should fail with invalid property type" time="0.001">
+    </testcase>
+    <testcase classname="Property DTOs PropertyQueryDto should fail with invalid status" name="Property DTOs PropertyQueryDto should fail with invalid status" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="PropertiesService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:29" time="0.478" tests="31">
+    <testcase classname="PropertiesService create should create a property successfully" name="PropertiesService create should create a property successfully" time="0.01">
+    </testcase>
+    <testcase classname="PropertiesService create should throw NotFoundException if user does not exist" name="PropertiesService create should throw NotFoundException if user does not exist" time="0.029">
+    </testcase>
+    <testcase classname="PropertiesService create should handle database errors" name="PropertiesService create should handle database errors" time="0.004">
+    </testcase>
+    <testcase classname="PropertiesService findAll should return paginated properties with filters" name="PropertiesService findAll should return paginated properties with filters" time="0.007">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply search filter correctly" name="PropertiesService findAll should apply search filter correctly" time="0.004">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply price range filter correctly" name="PropertiesService findAll should apply price range filter correctly" time="0.004">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply property type filter correctly" name="PropertiesService findAll should apply property type filter correctly" time="0.004">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply status filter correctly" name="PropertiesService findAll should apply status filter correctly" time="0.005">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply city and country location filter correctly" name="PropertiesService findAll should apply city and country location filter correctly" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply bedroom range filter correctly" name="PropertiesService findAll should apply bedroom range filter correctly" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply bathroom range filter correctly" name="PropertiesService findAll should apply bathroom range filter correctly" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply area range filter correctly" name="PropertiesService findAll should apply area range filter correctly" time="0.006">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply owner filter correctly" name="PropertiesService findAll should apply owner filter correctly" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply pagination correctly" name="PropertiesService findAll should apply pagination correctly" time="0.002">
+    </testcase>
+    <testcase classname="PropertiesService findAll should apply sorting correctly" name="PropertiesService findAll should apply sorting correctly" time="0.002">
+    </testcase>
+    <testcase classname="PropertiesService findAll should handle empty query with defaults" name="PropertiesService findAll should handle empty query with defaults" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService findAll should handle multiple filters combined" name="PropertiesService findAll should handle multiple filters combined" time="0.004">
+    </testcase>
+    <testcase classname="PropertiesService findOne should return a property by ID" name="PropertiesService findOne should return a property by ID" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService findOne should throw NotFoundException if property does not exist" name="PropertiesService findOne should throw NotFoundException if property does not exist" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService update should update a property successfully" name="PropertiesService update should update a property successfully" time="0.004">
+    </testcase>
+    <testcase classname="PropertiesService update should throw NotFoundException if property does not exist" name="PropertiesService update should throw NotFoundException if property does not exist" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService remove should delete a property successfully" name="PropertiesService remove should delete a property successfully" time="0.006">
+    </testcase>
+    <testcase classname="PropertiesService remove should throw NotFoundException if property does not exist" name="PropertiesService remove should throw NotFoundException if property does not exist" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService searchNearby should search properties near a location" name="PropertiesService searchNearby should search properties near a location" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService updateStatus should update property status with valid transition" name="PropertiesService updateStatus should update property status with valid transition" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService updateStatus should throw BadRequestException for invalid status transition" name="PropertiesService updateStatus should throw BadRequestException for invalid status transition" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService findByOwner should return properties by owner" name="PropertiesService findByOwner should return properties by owner" time="0.028">
+    </testcase>
+    <testcase classname="PropertiesService getStatistics should return property statistics" name="PropertiesService getStatistics should return property statistics" time="0.008">
+    </testcase>
+    <testcase classname="PropertiesService helper methods should format address correctly" name="PropertiesService helper methods should format address correctly" time="0.003">
+    </testcase>
+    <testcase classname="PropertiesService helper methods should map property status correctly" name="PropertiesService helper methods should map property status correctly" time="0.002">
+    </testcase>
+    <testcase classname="PropertiesService helper methods should validate status transitions correctly" name="PropertiesService helper methods should validate status transitions correctly" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="Auth DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:30" time="0.338" tests="22">
+    <testcase classname="Auth DTOs LoginEmailDto should pass with valid email and password" name="Auth DTOs LoginEmailDto should pass with valid email and password" time="0.004">
+    </testcase>
+    <testcase classname="Auth DTOs LoginEmailDto should fail with invalid email" name="Auth DTOs LoginEmailDto should fail with invalid email" time="0.001">
+    </testcase>
+    <testcase classname="Auth DTOs LoginEmailDto should fail with empty email" name="Auth DTOs LoginEmailDto should fail with empty email" time="0.001">
+    </testcase>
+    <testcase classname="Auth DTOs LoginEmailDto should fail with empty password" name="Auth DTOs LoginEmailDto should fail with empty password" time="0.001">
+    </testcase>
+    <testcase classname="Auth DTOs LoginEmailDto should fail with missing fields" name="Auth DTOs LoginEmailDto should fail with missing fields" time="0.016">
+    </testcase>
+    <testcase classname="Auth DTOs LoginWeb3Dto should pass with valid wallet address and signature" name="Auth DTOs LoginWeb3Dto should pass with valid wallet address and signature" time="0.001">
+    </testcase>
+    <testcase classname="Auth DTOs LoginWeb3Dto should fail with invalid wallet address" name="Auth DTOs LoginWeb3Dto should fail with invalid wallet address" time="0.001">
     </testcase>
     <testcase classname="Auth DTOs LoginWeb3Dto should fail with empty signature" name="Auth DTOs LoginWeb3Dto should fail with empty signature" time="0.002">
     </testcase>
-    <testcase classname="Auth DTOs LoginDto (Combined) should pass with email and password" name="Auth DTOs LoginDto (Combined) should pass with email and password" time="0.006">
+    <testcase classname="Auth DTOs LoginDto (Combined) should pass with email and password" name="Auth DTOs LoginDto (Combined) should pass with email and password" time="0.001">
     </testcase>
-    <testcase classname="Auth DTOs LoginDto (Combined) should pass with wallet address and signature" name="Auth DTOs LoginDto (Combined) should pass with wallet address and signature" time="0.002">
+    <testcase classname="Auth DTOs LoginDto (Combined) should pass with wallet address and signature" name="Auth DTOs LoginDto (Combined) should pass with wallet address and signature" time="0.001">
     </testcase>
     <testcase classname="Auth DTOs LoginDto (Combined) should fail with neither email nor wallet" name="Auth DTOs LoginDto (Combined) should fail with neither email nor wallet" time="0">
     </testcase>
-    <testcase classname="Auth DTOs RefreshTokenDto should pass with valid JWT" name="Auth DTOs RefreshTokenDto should pass with valid JWT" time="0.004">
+    <testcase classname="Auth DTOs RefreshTokenDto should pass with valid JWT" name="Auth DTOs RefreshTokenDto should pass with valid JWT" time="0.001">
     </testcase>
-    <testcase classname="Auth DTOs RefreshTokenDto should fail with invalid JWT format" name="Auth DTOs RefreshTokenDto should fail with invalid JWT format" time="0.002">
+    <testcase classname="Auth DTOs RefreshTokenDto should fail with invalid JWT format" name="Auth DTOs RefreshTokenDto should fail with invalid JWT format" time="0.001">
     </testcase>
-    <testcase classname="Auth DTOs RefreshTokenDto should fail with empty token" name="Auth DTOs RefreshTokenDto should fail with empty token" time="0.006">
+    <testcase classname="Auth DTOs RefreshTokenDto should fail with empty token" name="Auth DTOs RefreshTokenDto should fail with empty token" time="0.001">
     </testcase>
-    <testcase classname="Auth DTOs ForgotPasswordDto should pass with valid email" name="Auth DTOs ForgotPasswordDto should pass with valid email" time="0.003">
+    <testcase classname="Auth DTOs ForgotPasswordDto should pass with valid email" name="Auth DTOs ForgotPasswordDto should pass with valid email" time="0">
     </testcase>
-    <testcase classname="Auth DTOs ForgotPasswordDto should fail with invalid email" name="Auth DTOs ForgotPasswordDto should fail with invalid email" time="0.003">
+    <testcase classname="Auth DTOs ForgotPasswordDto should fail with invalid email" name="Auth DTOs ForgotPasswordDto should fail with invalid email" time="0.001">
     </testcase>
-    <testcase classname="Auth DTOs ForgotPasswordDto should fail with empty email" name="Auth DTOs ForgotPasswordDto should fail with empty email" time="0.002">
+    <testcase classname="Auth DTOs ForgotPasswordDto should fail with empty email" name="Auth DTOs ForgotPasswordDto should fail with empty email" time="0.001">
     </testcase>
-    <testcase classname="Auth DTOs ResetPasswordDto should pass with valid token and strong password" name="Auth DTOs ResetPasswordDto should pass with valid token and strong password" time="0.004">
+    <testcase classname="Auth DTOs ResetPasswordDto should pass with valid token and strong password" name="Auth DTOs ResetPasswordDto should pass with valid token and strong password" time="0.001">
     </testcase>
-    <testcase classname="Auth DTOs ResetPasswordDto should fail with weak password" name="Auth DTOs ResetPasswordDto should fail with weak password" time="0.003">
+    <testcase classname="Auth DTOs ResetPasswordDto should fail with weak password" name="Auth DTOs ResetPasswordDto should fail with weak password" time="0.001">
     </testcase>
-    <testcase classname="Auth DTOs ResetPasswordDto should fail with password missing special character" name="Auth DTOs ResetPasswordDto should fail with password missing special character" time="0.003">
+    <testcase classname="Auth DTOs ResetPasswordDto should fail with password missing special character" name="Auth DTOs ResetPasswordDto should fail with password missing special character" time="0.001">
     </testcase>
     <testcase classname="Auth DTOs ResetPasswordDto should fail with empty token" name="Auth DTOs ResetPasswordDto should fail with empty token" time="0.001">
     </testcase>
-    <testcase classname="Auth DTOs ResetPasswordDto should fail with password too long" name="Auth DTOs ResetPasswordDto should fail with password too long" time="0.002">
+    <testcase classname="Auth DTOs ResetPasswordDto should fail with password too long" name="Auth DTOs ResetPasswordDto should fail with password too long" time="0.003">
     </testcase>
   </testsuite>
-  <testsuite name="Document DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:01" time="1.876" tests="21">
-    <testcase classname="Document DTOs UploadDocumentDto should pass with all optional fields empty" name="Document DTOs UploadDocumentDto should pass with all optional fields empty" time="0.009">
+  <testsuite name="ValuationController" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:30" time="0.51" tests="4">
+    <testcase classname="ValuationController should be defined" name="ValuationController should be defined" time="0.083">
     </testcase>
-    <testcase classname="Document DTOs UploadDocumentDto should pass with valid document data" name="Document DTOs UploadDocumentDto should pass with valid document data" time="0.003">
+    <testcase classname="ValuationController getValuation should call valuation service to get property valuation" name="ValuationController getValuation should call valuation service to get property valuation" time="0.004">
     </testcase>
-    <testcase classname="Document DTOs UploadDocumentDto should fail with invalid document type" name="Document DTOs UploadDocumentDto should fail with invalid document type" time="0.002">
+    <testcase classname="ValuationController getPropertyHistory should call valuation service to get property history" name="ValuationController getPropertyHistory should call valuation service to get property history" time="0.003">
     </testcase>
-    <testcase classname="Document DTOs UploadDocumentDto should fail with invalid access level" name="Document DTOs UploadDocumentDto should fail with invalid access level" time="0.001">
-    </testcase>
-    <testcase classname="Document DTOs UploadDocumentDto should fail with title too long" name="Document DTOs UploadDocumentDto should fail with title too long" time="0.002">
-    </testcase>
-    <testcase classname="Document DTOs UploadDocumentDto should fail with description too long" name="Document DTOs UploadDocumentDto should fail with description too long" time="0.01">
-    </testcase>
-    <testcase classname="Document DTOs UploadDocumentDto should pass with all valid document types" name="Document DTOs UploadDocumentDto should pass with all valid document types" time="0.003">
-    </testcase>
-    <testcase classname="Document DTOs UploadDocumentDto should pass with all valid access levels" name="Document DTOs UploadDocumentDto should pass with all valid access levels" time="0.005">
-    </testcase>
-    <testcase classname="Document DTOs UpdateMetadataDto should pass with all optional fields empty" name="Document DTOs UpdateMetadataDto should pass with all optional fields empty" time="0.002">
-    </testcase>
-    <testcase classname="Document DTOs UpdateMetadataDto should pass with valid metadata update" name="Document DTOs UpdateMetadataDto should pass with valid metadata update" time="0.004">
-    </testcase>
-    <testcase classname="Document DTOs UpdateMetadataDto should fail with invalid access level" name="Document DTOs UpdateMetadataDto should fail with invalid access level" time="0.003">
-    </testcase>
-    <testcase classname="Document DTOs DocumentQueryDto should pass with valid query parameters" name="Document DTOs DocumentQueryDto should pass with valid query parameters" time="0.007">
-    </testcase>
-    <testcase classname="Document DTOs DocumentQueryDto should pass with empty query" name="Document DTOs DocumentQueryDto should pass with empty query" time="0.002">
-    </testcase>
-    <testcase classname="Document DTOs DocumentQueryDto should fail with invalid createdAfter date" name="Document DTOs DocumentQueryDto should fail with invalid createdAfter date" time="0.002">
-    </testcase>
-    <testcase classname="Document DTOs DocumentQueryDto should fail with invalid createdBefore date" name="Document DTOs DocumentQueryDto should fail with invalid createdBefore date" time="0.002">
-    </testcase>
-    <testcase classname="Document DTOs DocumentQueryDto should fail with invalid document type" name="Document DTOs DocumentQueryDto should fail with invalid document type" time="0.003">
-    </testcase>
-    <testcase classname="Document DTOs DownloadQueryDto should pass with valid version" name="Document DTOs DownloadQueryDto should pass with valid version" time="0.002">
-    </testcase>
-    <testcase classname="Document DTOs DownloadQueryDto should pass with no version (optional)" name="Document DTOs DownloadQueryDto should pass with no version (optional)" time="0.001">
-    </testcase>
-    <testcase classname="Document DTOs DownloadQueryDto should fail with version less than 1" name="Document DTOs DownloadQueryDto should fail with version less than 1" time="0.002">
-    </testcase>
-    <testcase classname="Document DTOs DownloadQueryDto should fail with negative version" name="Document DTOs DownloadQueryDto should fail with negative version" time="0.003">
-    </testcase>
-    <testcase classname="Document DTOs DownloadQueryDto should fail with non-integer version" name="Document DTOs DownloadQueryDto should fail with non-integer version" time="0.002">
+    <testcase classname="ValuationController getMarketTrendAnalysis should call valuation service to get market trend analysis" name="ValuationController getMarketTrendAnalysis should call valuation service to get market trend analysis" time="0.006">
     </testcase>
   </testsuite>
-  <testsuite name="Pagination Service - Performance Tests" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:03" time="0.775" tests="10">
-    <testcase classname="Pagination Service - Performance Tests Performance with Large Datasets should efficiently calculate pagination for 1 million items" name="Pagination Service - Performance Tests Performance with Large Datasets should efficiently calculate pagination for 1 million items" time="0.004">
+  <testsuite name="HeaderValidationMiddleware" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:31" time="0.284" tests="31">
+    <testcase classname="HeaderValidationMiddleware should be defined" name="HeaderValidationMiddleware should be defined" time="0.004">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware use should pass valid headers" name="HeaderValidationMiddleware use should pass valid headers" time="0.005">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware use should throw BadRequestException for blocked headers" name="HeaderValidationMiddleware use should throw BadRequestException for blocked headers" time="0.013">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware use should throw BadRequestException for XSS patterns" name="HeaderValidationMiddleware use should throw BadRequestException for XSS patterns" time="0.004">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware use should throw BadRequestException for SQL injection patterns" name="HeaderValidationMiddleware use should throw BadRequestException for SQL injection patterns" time="0.013">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware use should throw BadRequestException for null bytes" name="HeaderValidationMiddleware use should throw BadRequestException for null bytes" time="0.004">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware use should pass headers with authorization" name="HeaderValidationMiddleware use should pass headers with authorization" time="0.002">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware use should pass headers with API key" name="HeaderValidationMiddleware use should pass headers with API key" time="0.002">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware validateHeaders should return valid for empty headers" name="HeaderValidationMiddleware validateHeaders should return valid for empty headers" time="0.002">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware validateHeaders should return invalid for oversized header" name="HeaderValidationMiddleware validateHeaders should return invalid for oversized header" time="0.002">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware validateHeaders should return invalid for too many headers" name="HeaderValidationMiddleware validateHeaders should return invalid for too many headers" time="0.002">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware validateHeaders should return warning for control characters" name="HeaderValidationMiddleware validateHeaders should return warning for control characters" time="0.003">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware validateHeaders should return warning for missing Content-Type on POST" name="HeaderValidationMiddleware validateHeaders should return warning for missing Content-Type on POST" time="0.003">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware validateHeaders should return invalid for invalid Content-Type" name="HeaderValidationMiddleware validateHeaders should return invalid for invalid Content-Type" time="0.001">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware validateHeaders should sanitize headers" name="HeaderValidationMiddleware validateHeaders should sanitize headers" time="0.001">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware validateHeader should return valid for normal header" name="HeaderValidationMiddleware validateHeader should return valid for normal header" time="0.002">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware validateHeader should return invalid for blocked header" name="HeaderValidationMiddleware validateHeader should return invalid for blocked header" time="0.002">
+    </testcase>
+    <testcase classname="HeaderValidationMiddleware validateHeader should return invalid for oversized header" name="HeaderValidationMiddleware validateHeader should return invalid for oversized header" time="0.001">
     </testcase>
     <testcase classname="PaginationService calculatePagination should calculate correct offset for page 2" name="PaginationService calculatePagination should calculate correct offset for page 2" time="0.003">
     </testcase>
-    <testcase classname="Pagination Service - Performance Tests Performance with Large Datasets should handle rapid consecutive pagination queries" name="Pagination Service - Performance Tests Performance with Large Datasets should handle rapid consecutive pagination queries" time="0.003">
+    <testcase classname="HeaderValidationMiddleware getSecurityReport should return high score for complete security headers" name="HeaderValidationMiddleware getSecurityReport should return high score for complete security headers" time="0.004">
     </testcase>
-    <testcase classname="Pagination Service - Performance Tests Performance with Large Datasets should efficiently generate Prisma options for many queries" name="Pagination Service - Performance Tests Performance with Large Datasets should efficiently generate Prisma options for many queries" time="0.008">
+    <testcase classname="HeaderValidationMiddleware getSecurityReport should return low score for missing security headers" name="HeaderValidationMiddleware getSecurityReport should return low score for missing security headers" time="0.002">
     </testcase>
     <testcase classname="PaginationService calculatePagination should enforce minimum limit" name="PaginationService calculatePagination should enforce minimum limit" time="0.014">
     </testcase>
-    <testcase classname="Pagination Service - Performance Tests Performance with Large Datasets should memory-efficiently handle large format operations" name="Pagination Service - Performance Tests Performance with Large Datasets should memory-efficiently handle large format operations" time="0.003">
+    <testcase classname="HeaderValidationMiddleware detectSuspiciousPatterns should skip validation for authorization header" name="HeaderValidationMiddleware detectSuspiciousPatterns should skip validation for authorization header" time="0.002">
     </testcase>
-    <testcase classname="Pagination Service - Performance Tests Edge Case Performance should handle pagination for single item efficiently" name="Pagination Service - Performance Tests Edge Case Performance should handle pagination for single item efficiently" time="0.002">
+    <testcase classname="HeaderValidationMiddleware detectSuspiciousPatterns should skip validation for cookie header" name="HeaderValidationMiddleware detectSuspiciousPatterns should skip validation for cookie header" time="0.003">
     </testcase>
-    <testcase classname="Pagination Service - Performance Tests Edge Case Performance should handle pagination for exactly one page of items" name="Pagination Service - Performance Tests Edge Case Performance should handle pagination for exactly one page of items" time="0.002">
+    <testcase classname="HeaderValidationMiddleware isValidContentType should return true for application/json" name="HeaderValidationMiddleware isValidContentType should return true for application/json" time="0.002">
     </testcase>
-    <testcase classname="Pagination Service - Performance Tests Edge Case Performance should handle very high page numbers efficiently" name="Pagination Service - Performance Tests Edge Case Performance should handle very high page numbers efficiently" time="0.004">
+    <testcase classname="HeaderValidationMiddleware isValidContentType should return true for multipart/form-data" name="HeaderValidationMiddleware isValidContentType should return true for multipart/form-data" time="0.001">
     </testcase>
-    <testcase classname="Pagination Service - Performance Tests Benchmark Results should provide performance summary" name="Pagination Service - Performance Tests Benchmark Results should provide performance summary" time="0.123">
-    </testcase>
-  </testsuite>
-  <testsuite name="ValuationService" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:04" time="2.177" tests="7">
-    <testcase classname="ValuationService should be defined" name="ValuationService should be defined" time="0.03">
-    </testcase>
-    <testcase classname="ValuationService normalizeFeatures should normalize property features correctly" name="ValuationService normalizeFeatures should normalize property features correctly" time="0.01">
-    </testcase>
-    <testcase classname="ValuationService normalizeFeatures should set default values for missing numeric fields" name="ValuationService normalizeFeatures should set default values for missing numeric fields" time="0.011">
-    </testcase>
-    <testcase classname="ValuationService combineValuations should return single valuation if only one is provided" name="ValuationService combineValuations should return single valuation if only one is provided" time="0.01">
-    </testcase>
-    <testcase classname="ValuationService combineValuations should combine multiple valuations using weighted average" name="ValuationService combineValuations should combine multiple valuations using weighted average" time="0.017">
-    </testcase>
-    <testcase classname="ValuationService getMarketTrendFromValuations should return neutral if no trends provided" name="ValuationService getMarketTrendFromValuations should return neutral if no trends provided" time="0.008">
-    </testcase>
-    <testcase classname="ValuationService getMarketTrendFromValuations should return majority trend" name="ValuationService getMarketTrendFromValuations should return majority trend" time="0.009">
+    <testcase classname="HeaderValidationMiddleware isValidContentType should return false for invalid content type" name="HeaderValidationMiddleware isValidContentType should return false for invalid content type" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="IpBlockingService" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:06" time="1.023" tests="11">
-    <testcase classname="IpBlockingService should be defined" name="IpBlockingService should be defined" time="0.037">
+  <testsuite name="SecurityMiddleware" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:31" time="0.168" tests="5">
+    <testcase classname="SecurityMiddleware getClientIp should extract IP from x-forwarded-for header" name="SecurityMiddleware getClientIp should extract IP from x-forwarded-for header" time="0.002">
     </testcase>
-    <testcase classname="IpBlockingService isIpBlocked should return false when IP is not blocked" name="IpBlockingService isIpBlocked should return false when IP is not blocked" time="0.008">
+    <testcase classname="SecurityMiddleware getClientIp should extract IP from x-real-ip header" name="SecurityMiddleware getClientIp should extract IP from x-real-ip header" time="0.001">
     </testcase>
-    <testcase classname="IpBlockingService isIpBlocked should return true when IP is blocked" name="IpBlockingService isIpBlocked should return true when IP is blocked" time="0.008">
+    <testcase classname="SecurityMiddleware getClientIp should use connection.remoteAddress when headers are not present" name="SecurityMiddleware getClientIp should use connection.remoteAddress when headers are not present" time="0.002">
     </testcase>
-    <testcase classname="IpBlockingService isIpBlocked should unblock IP when block has expired" name="IpBlockingService isIpBlocked should unblock IP when block has expired" time="0.01">
+    <testcase classname="SecurityMiddleware getClientIp should use socket.remoteAddress as fallback" name="SecurityMiddleware getClientIp should use socket.remoteAddress as fallback" time="0.001">
     </testcase>
-    <testcase classname="IpBlockingService isIpWhitelisted should return true when IP is whitelisted" name="IpBlockingService isIpWhitelisted should return true when IP is whitelisted" time="0.014">
-    </testcase>
-    <testcase classname="IpBlockingService isIpWhitelisted should return false when IP is not whitelisted" name="IpBlockingService isIpWhitelisted should return false when IP is not whitelisted" time="0.007">
-    </testcase>
-    <testcase classname="IpBlockingService blockIp should block IP with duration" name="IpBlockingService blockIp should block IP with duration" time="0.008">
-    </testcase>
-    <testcase classname="IpBlockingService blockIp should not block whitelisted IP" name="IpBlockingService blockIp should not block whitelisted IP" time="0.008">
-    </testcase>
-    <testcase classname="IpBlockingService addToWhitelist should add IP to whitelist" name="IpBlockingService addToWhitelist should add IP to whitelist" time="0.009">
-    </testcase>
-    <testcase classname="IpBlockingService addToWhitelist should not duplicate IPs in whitelist" name="IpBlockingService addToWhitelist should not duplicate IPs in whitelist" time="0.024">
-    </testcase>
-    <testcase classname="IpBlockingService recordFailedAttempt should record failed attempt and auto-block when threshold exceeded" name="IpBlockingService recordFailedAttempt should record failed attempt and auto-block when threshold exceeded" time="0.009">
+    <testcase classname="SecurityMiddleware getClientIp should return unknown when no IP can be determined" name="SecurityMiddleware getClientIp should return unknown when no IP can be determined" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="Custom Validators" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:07" time="0.984" tests="16">
-    <testcase classname="Custom Validators IsEthereumAddress should pass with valid Ethereum address" name="Custom Validators IsEthereumAddress should pass with valid Ethereum address" time="0.006">
+  <testsuite name="RateLimitingService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:31" time="0.206" tests="6">
+    <testcase classname="RateLimitingService should be defined" name="RateLimitingService should be defined" time="0.011">
     </testcase>
-    <testcase classname="Custom Validators IsEthereumAddress should pass with lowercase Ethereum address" name="Custom Validators IsEthereumAddress should pass with lowercase Ethereum address" time="0.001">
+    <testcase classname="RateLimitingService checkRateLimit should allow request when under limit" name="RateLimitingService checkRateLimit should allow request when under limit" time="0.008">
+    </testcase>
+    <testcase classname="RateLimitingService checkRateLimit should block request when over limit" name="RateLimitingService checkRateLimit should block request when over limit" time="0.003">
+    </testcase>
+    <testcase classname="RateLimitingService checkRateLimit should handle Redis errors gracefully" name="RateLimitingService checkRateLimit should handle Redis errors gracefully" time="0.004">
+    </testcase>
+    <testcase classname="RateLimitingService getRateLimitInfo should return correct rate limit info" name="RateLimitingService getRateLimitInfo should return correct rate limit info" time="0.004">
+    </testcase>
+    <testcase classname="RateLimitingService getDefaultConfigurations should return default configurations" name="RateLimitingService getDefaultConfigurations should return default configurations" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="User DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:31" time="0.324" tests="13">
+    <testcase classname="User DTOs CreateUserDto should pass with valid user data" name="User DTOs CreateUserDto should pass with valid user data" time="0.003">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should pass with optional wallet address" name="User DTOs CreateUserDto should pass with optional wallet address" time="0.001">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should fail with invalid email" name="User DTOs CreateUserDto should fail with invalid email" time="0.002">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should fail with email too long" name="User DTOs CreateUserDto should fail with email too long" time="0.001">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should fail with empty first name" name="User DTOs CreateUserDto should fail with empty first name" time="0.001">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should fail with first name containing numbers" name="User DTOs CreateUserDto should fail with first name containing numbers" time="0.001">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should pass with hyphenated names" name="User DTOs CreateUserDto should pass with hyphenated names" time="0.001">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should fail with first name too long" name="User DTOs CreateUserDto should fail with first name too long" time="0.001">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should fail with weak password" name="User DTOs CreateUserDto should fail with weak password" time="0.001">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should fail with password missing uppercase" name="User DTOs CreateUserDto should fail with password missing uppercase" time="0.001">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should fail with password too short" name="User DTOs CreateUserDto should fail with password too short" time="0.001">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should fail with invalid wallet address" name="User DTOs CreateUserDto should fail with invalid wallet address" time="0.001">
+    </testcase>
+    <testcase classname="User DTOs CreateUserDto should fail with all fields missing" name="User DTOs CreateUserDto should fail with all fields missing" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Custom Validators" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:32" time="0.233" tests="16">
+    <testcase classname="Custom Validators IsEthereumAddress should pass with valid Ethereum address" name="Custom Validators IsEthereumAddress should pass with valid Ethereum address" time="0.001">
+    </testcase>
+    <testcase classname="Custom Validators IsEthereumAddress should pass with lowercase Ethereum address" name="Custom Validators IsEthereumAddress should pass with lowercase Ethereum address" time="0">
     </testcase>
     <testcase classname="Custom Validators IsEthereumAddress should pass with uppercase Ethereum address" name="Custom Validators IsEthereumAddress should pass with uppercase Ethereum address" time="0.002">
     </testcase>
-    <testcase classname="Custom Validators IsEthereumAddress should fail without 0x prefix" name="Custom Validators IsEthereumAddress should fail without 0x prefix" time="0.004">
+    <testcase classname="Custom Validators IsEthereumAddress should fail without 0x prefix" name="Custom Validators IsEthereumAddress should fail without 0x prefix" time="0.001">
     </testcase>
-    <testcase classname="Custom Validators IsEthereumAddress should fail with too short address" name="Custom Validators IsEthereumAddress should fail with too short address" time="0.002">
+    <testcase classname="Custom Validators IsEthereumAddress should fail with too short address" name="Custom Validators IsEthereumAddress should fail with too short address" time="0.001">
     </testcase>
-    <testcase classname="Custom Validators IsEthereumAddress should fail with too long address" name="Custom Validators IsEthereumAddress should fail with too long address" time="0.002">
+    <testcase classname="Custom Validators IsEthereumAddress should fail with too long address" name="Custom Validators IsEthereumAddress should fail with too long address" time="0.001">
     </testcase>
     <testcase classname="Custom Validators IsEthereumAddress should fail with invalid characters" name="Custom Validators IsEthereumAddress should fail with invalid characters" time="0.001">
     </testcase>
     <testcase classname="Custom Validators IsEthereumAddress should fail with empty string" name="Custom Validators IsEthereumAddress should fail with empty string" time="0">
     </testcase>
-    <testcase classname="Custom Validators IsStrongPassword should pass with strong password" name="Custom Validators IsStrongPassword should pass with strong password" time="0.004">
+    <testcase classname="Custom Validators IsStrongPassword should pass with strong password" name="Custom Validators IsStrongPassword should pass with strong password" time="0.001">
     </testcase>
-    <testcase classname="Custom Validators IsStrongPassword should pass with various special characters" name="Custom Validators IsStrongPassword should pass with various special characters" time="0.016">
+    <testcase classname="Custom Validators IsStrongPassword should pass with various special characters" name="Custom Validators IsStrongPassword should pass with various special characters" time="0.001">
     </testcase>
-    <testcase classname="Custom Validators IsStrongPassword should fail with password too short" name="Custom Validators IsStrongPassword should fail with password too short" time="0.004">
+    <testcase classname="Custom Validators IsStrongPassword should fail with password too short" name="Custom Validators IsStrongPassword should fail with password too short" time="0.001">
     </testcase>
-    <testcase classname="Custom Validators IsStrongPassword should fail without uppercase letter" name="Custom Validators IsStrongPassword should fail without uppercase letter" time="0.003">
+    <testcase classname="Custom Validators IsStrongPassword should fail without uppercase letter" name="Custom Validators IsStrongPassword should fail without uppercase letter" time="0">
     </testcase>
     <testcase classname="Custom Validators IsStrongPassword should fail without lowercase letter" name="Custom Validators IsStrongPassword should fail without lowercase letter" time="0.001">
     </testcase>
-    <testcase classname="Custom Validators IsStrongPassword should fail without number" name="Custom Validators IsStrongPassword should fail without number" time="0.002">
+    <testcase classname="Custom Validators IsStrongPassword should fail without number" name="Custom Validators IsStrongPassword should fail without number" time="0.001">
     </testcase>
-    <testcase classname="Custom Validators IsStrongPassword should fail without special character" name="Custom Validators IsStrongPassword should fail without special character" time="0.002">
+    <testcase classname="Custom Validators IsStrongPassword should fail without special character" name="Custom Validators IsStrongPassword should fail without special character" time="0">
     </testcase>
-    <testcase classname="Custom Validators IsStrongPassword should fail with empty string" name="Custom Validators IsStrongPassword should fail with empty string" time="0.003">
-    </testcase>
-  </testsuite>
-  <testsuite name="DocumentService" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:08" time="1.788" tests="5">
-    <testcase classname="DocumentService uploads documents and generates thumbnails for images" name="DocumentService uploads documents and generates thumbnails for images" time="0.049">
-    </testcase>
-    <testcase classname="DocumentService stores new versions and updates current version" name="DocumentService stores new versions and updates current version" time="0.027">
-    </testcase>
-    <testcase classname="DocumentService enforces access permissions" name="DocumentService enforces access permissions" time="0.018">
-    </testcase>
-    <testcase classname="DocumentService blocks infected files during virus scan" name="DocumentService blocks infected files during virus scan" time="0.131">
-    </testcase>
-    <testcase classname="DocumentService returns signed download URLs" name="DocumentService returns signed download URLs" time="0.023">
+    <testcase classname="Custom Validators IsStrongPassword should fail with empty string" name="Custom Validators IsStrongPassword should fail with empty string" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="MfaService" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:10" time="2.187" tests="8">
-    <testcase classname="MfaService generateMfaSecret should generate MFA secret and QR code" name="MfaService generateMfaSecret should generate MFA secret and QR code" time="0.651">
+  <testsuite name="ValuationService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:32" time="0.241" tests="7">
+    <testcase classname="ValuationService should be defined" name="ValuationService should be defined" time="0.007">
     </testcase>
-    <testcase classname="MfaService verifyMfaSetup should verify MFA setup with valid token" name="MfaService verifyMfaSetup should verify MFA setup with valid token" time="0.014">
+    <testcase classname="ValuationService normalizeFeatures should normalize property features correctly" name="ValuationService normalizeFeatures should normalize property features correctly" time="0.006">
     </testcase>
-    <testcase classname="MfaService verifyMfaSetup should throw error for expired setup session" name="MfaService verifyMfaSetup should throw error for expired setup session" time="0.045">
+    <testcase classname="ValuationService normalizeFeatures should set default values for missing numeric fields" name="ValuationService normalizeFeatures should set default values for missing numeric fields" time="0.003">
     </testcase>
-    <testcase classname="MfaService isMfaEnabled should return true when MFA is enabled" name="MfaService isMfaEnabled should return true when MFA is enabled" time="0.013">
+    <testcase classname="ValuationService combineValuations should return single valuation if only one is provided" name="ValuationService combineValuations should return single valuation if only one is provided" time="0.003">
     </testcase>
-    <testcase classname="MfaService isMfaEnabled should return false when MFA is not enabled" name="MfaService isMfaEnabled should return false when MFA is not enabled" time="0.048">
+    <testcase classname="ValuationService combineValuations should combine multiple valuations using weighted average" name="ValuationService combineValuations should combine multiple valuations using weighted average" time="0.004">
     </testcase>
-    <testcase classname="MfaService generateBackupCodes should generate 10 backup codes" name="MfaService generateBackupCodes should generate 10 backup codes" time="0.026">
+    <testcase classname="ValuationService getMarketTrendFromValuations should return neutral if no trends provided" name="ValuationService getMarketTrendFromValuations should return neutral if no trends provided" time="0.003">
     </testcase>
-    <testcase classname="MfaService getMfaStatus should return correct MFA status when enabled" name="MfaService getMfaStatus should return correct MFA status when enabled" time="0.018">
-    </testcase>
-    <testcase classname="MfaService getMfaStatus should return correct MFA status when disabled" name="MfaService getMfaStatus should return correct MFA status when disabled" time="0.015">
+    <testcase classname="ValuationService getMarketTrendFromValuations should return majority trend" name="ValuationService getMarketTrendFromValuations should return majority trend" time="0.003">
     </testcase>
   </testsuite>
-  <testsuite name="User DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:12" time="1.834" tests="13">
-    <testcase classname="User DTOs CreateUserDto should pass with valid user data" name="User DTOs CreateUserDto should pass with valid user data" time="0.014">
+  <testsuite name="IpBlockingService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:32" time="0.199" tests="11">
+    <testcase classname="IpBlockingService should be defined" name="IpBlockingService should be defined" time="0.005">
     </testcase>
-    <testcase classname="User DTOs CreateUserDto should pass with optional wallet address" name="User DTOs CreateUserDto should pass with optional wallet address" time="0.003">
+    <testcase classname="IpBlockingService isIpBlocked should return false when IP is not blocked" name="IpBlockingService isIpBlocked should return false when IP is not blocked" time="0.003">
     </testcase>
-    <testcase classname="User DTOs CreateUserDto should fail with invalid email" name="User DTOs CreateUserDto should fail with invalid email" time="0.005">
+    <testcase classname="IpBlockingService isIpBlocked should return true when IP is blocked" name="IpBlockingService isIpBlocked should return true when IP is blocked" time="0.002">
     </testcase>
-    <testcase classname="User DTOs CreateUserDto should fail with email too long" name="User DTOs CreateUserDto should fail with email too long" time="0.005">
+    <testcase classname="IpBlockingService isIpBlocked should unblock IP when block has expired" name="IpBlockingService isIpBlocked should unblock IP when block has expired" time="0.002">
     </testcase>
-    <testcase classname="User DTOs CreateUserDto should fail with empty first name" name="User DTOs CreateUserDto should fail with empty first name" time="0.003">
+    <testcase classname="IpBlockingService isIpWhitelisted should return true when IP is whitelisted" name="IpBlockingService isIpWhitelisted should return true when IP is whitelisted" time="0.002">
     </testcase>
-    <testcase classname="User DTOs CreateUserDto should fail with first name containing numbers" name="User DTOs CreateUserDto should fail with first name containing numbers" time="0.004">
+    <testcase classname="IpBlockingService isIpWhitelisted should return false when IP is not whitelisted" name="IpBlockingService isIpWhitelisted should return false when IP is not whitelisted" time="0.002">
     </testcase>
-    <testcase classname="User DTOs CreateUserDto should pass with hyphenated names" name="User DTOs CreateUserDto should pass with hyphenated names" time="0.004">
+    <testcase classname="IpBlockingService blockIp should block IP with duration" name="IpBlockingService blockIp should block IP with duration" time="0.003">
     </testcase>
-    <testcase classname="User DTOs CreateUserDto should fail with first name too long" name="User DTOs CreateUserDto should fail with first name too long" time="0.005">
+    <testcase classname="IpBlockingService blockIp should not block whitelisted IP" name="IpBlockingService blockIp should not block whitelisted IP" time="0.002">
     </testcase>
-    <testcase classname="User DTOs CreateUserDto should fail with weak password" name="User DTOs CreateUserDto should fail with weak password" time="0.004">
+    <testcase classname="IpBlockingService addToWhitelist should add IP to whitelist" name="IpBlockingService addToWhitelist should add IP to whitelist" time="0.002">
     </testcase>
-    <testcase classname="User DTOs CreateUserDto should fail with password missing uppercase" name="User DTOs CreateUserDto should fail with password missing uppercase" time="0.003">
+    <testcase classname="IpBlockingService addToWhitelist should not duplicate IPs in whitelist" name="IpBlockingService addToWhitelist should not duplicate IPs in whitelist" time="0.003">
     </testcase>
-    <testcase classname="User DTOs CreateUserDto should fail with password too short" name="User DTOs CreateUserDto should fail with password too short" time="0.003">
-    </testcase>
-    <testcase classname="User DTOs CreateUserDto should fail with invalid wallet address" name="User DTOs CreateUserDto should fail with invalid wallet address" time="0.006">
-    </testcase>
-    <testcase classname="User DTOs CreateUserDto should fail with all fields missing" name="User DTOs CreateUserDto should fail with all fields missing" time="0.002">
+    <testcase classname="IpBlockingService recordFailedAttempt should record failed attempt and auto-block when threshold exceeded" name="IpBlockingService recordFailedAttempt should record failed attempt and auto-block when threshold exceeded" time="0.004">
     </testcase>
   </testsuite>
-  <testsuite name="API Key DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:14" time="1.375" tests="15">
-    <testcase classname="API Key DTOs CreateApiKeyDto should pass with valid API key data" name="API Key DTOs CreateApiKeyDto should pass with valid API key data" time="0.008">
+  <testsuite name="PasswordRotationService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:32" time="0.262" tests="29">
+    <testcase classname="PasswordRotationService should be defined" name="PasswordRotationService should be defined" time="0.005">
     </testcase>
-    <testcase classname="API Key DTOs CreateApiKeyDto should pass with optional rate limit" name="API Key DTOs CreateApiKeyDto should pass with optional rate limit" time="0.004">
+    <testcase classname="PasswordRotationService checkRotationStatus should return canRotate false when user not found" name="PasswordRotationService checkRotationStatus should return canRotate false when user not found" time="0.005">
     </testcase>
-    <testcase classname="API Key DTOs CreateApiKeyDto should fail with empty name" name="API Key DTOs CreateApiKeyDto should fail with empty name" time="0.003">
+    <testcase classname="PasswordRotationService checkRotationStatus should return canRotate false when user has no password" name="PasswordRotationService checkRotationStatus should return canRotate false when user has no password" time="0.003">
     </testcase>
-    <testcase classname="API Key DTOs CreateApiKeyDto should fail with name too long" name="API Key DTOs CreateApiKeyDto should fail with name too long" time="0.004">
+    <testcase classname="PasswordRotationService checkRotationStatus should return expired status when password has expired" name="PasswordRotationService checkRotationStatus should return expired status when password has expired" time="0.002">
     </testcase>
-    <testcase classname="API Key DTOs CreateApiKeyDto should fail with empty scopes array" name="API Key DTOs CreateApiKeyDto should fail with empty scopes array" time="0.002">
+    <testcase classname="PasswordRotationService checkRotationStatus should return valid status with days until expiry" name="PasswordRotationService checkRotationStatus should return valid status with days until expiry" time="0.002">
     </testcase>
-    <testcase classname="API Key DTOs CreateApiKeyDto should fail with missing scopes" name="API Key DTOs CreateApiKeyDto should fail with missing scopes" time="0.005">
+    <testcase classname="PasswordRotationService checkRotationStatus should use password history date when available" name="PasswordRotationService checkRotationStatus should use password history date when available" time="0.003">
     </testcase>
-    <testcase classname="API Key DTOs CreateApiKeyDto should fail with rate limit less than 1" name="API Key DTOs CreateApiKeyDto should fail with rate limit less than 1" time="0.015">
+    <testcase classname="PasswordRotationService validatePasswordNotInHistory should return valid true when history is empty" name="PasswordRotationService validatePasswordNotInHistory should return valid true when history is empty" time="0.002">
     </testcase>
-    <testcase classname="API Key DTOs CreateApiKeyDto should fail with negative rate limit" name="API Key DTOs CreateApiKeyDto should fail with negative rate limit" time="0.003">
+    <testcase classname="PasswordRotationService validatePasswordNotInHistory should return valid true when password not in history" name="PasswordRotationService validatePasswordNotInHistory should return valid true when password not in history" time="0.004">
     </testcase>
-    <testcase classname="API Key DTOs CreateApiKeyDto should fail with non-integer rate limit" name="API Key DTOs CreateApiKeyDto should fail with non-integer rate limit" time="0.002">
+    <testcase classname="PasswordRotationService validatePasswordNotInHistory should return valid false when password matches history" name="PasswordRotationService validatePasswordNotInHistory should return valid false when password matches history" time="0.002">
     </testcase>
-    <testcase classname="API Key DTOs CreateApiKeyDto should pass with single scope" name="API Key DTOs CreateApiKeyDto should pass with single scope" time="0.003">
+    <testcase classname="PasswordRotationService validatePasswordNotInHistory should respect custom password history count" name="PasswordRotationService validatePasswordNotInHistory should respect custom password history count" time="0.002">
     </testcase>
-    <testcase classname="API Key DTOs ApiKeyQueryDto should pass with valid query parameters" name="API Key DTOs ApiKeyQueryDto should pass with valid query parameters" time="0.007">
+    <testcase classname="PasswordRotationService addPasswordToHistory should add password to history and not delete when under limit" name="PasswordRotationService addPasswordToHistory should add password to history and not delete when under limit" time="0.003">
     </testcase>
-    <testcase classname="API Key DTOs ApiKeyQueryDto should pass with empty query" name="API Key DTOs ApiKeyQueryDto should pass with empty query" time="0.002">
+    <testcase classname="PasswordRotationService addPasswordToHistory should delete old entries when over limit" name="PasswordRotationService addPasswordToHistory should delete old entries when over limit" time="0.003">
     </testcase>
-    <testcase classname="API Key DTOs ApiKeyQueryDto should pass with isActive as string true" name="API Key DTOs ApiKeyQueryDto should pass with isActive as string true" time="0.002">
+    <testcase classname="PasswordRotationService validatePasswordRotation should return invalid when rotation status cannot rotate" name="PasswordRotationService validatePasswordRotation should return invalid when rotation status cannot rotate" time="0.005">
     </testcase>
-    <testcase classname="API Key DTOs ApiKeyQueryDto should pass with isActive as false" name="API Key DTOs ApiKeyQueryDto should pass with isActive as false" time="0.006">
+    <testcase classname="PasswordRotationService validatePasswordRotation should return invalid when password is in history" name="PasswordRotationService validatePasswordRotation should return invalid when password is in history" time="0.003">
     </testcase>
-    <testcase classname="API Key DTOs ApiKeyQueryDto should include pagination defaults" name="API Key DTOs ApiKeyQueryDto should include pagination defaults" time="0.004">
+    <testcase classname="PasswordRotationService validatePasswordRotation should return valid when all checks pass" name="PasswordRotationService validatePasswordRotation should return valid when all checks pass" time="0.003">
     </testcase>
-  </testsuite>
-  <testsuite name="RateLimitingService" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:15" time="0.776" tests="6">
-    <testcase classname="RateLimitingService should be defined" name="RateLimitingService should be defined" time="0.024">
+    <testcase classname="PasswordRotationService getPasswordHistory should return password history with default limit" name="PasswordRotationService getPasswordHistory should return password history with default limit" time="0.002">
     </testcase>
-    <testcase classname="RateLimitingService checkRateLimit should allow request when under limit" name="RateLimitingService checkRateLimit should allow request when under limit" time="0.011">
+    <testcase classname="PasswordRotationService getPasswordHistory should return password history with custom limit" name="PasswordRotationService getPasswordHistory should return password history with custom limit" time="0.003">
     </testcase>
-    <testcase classname="RateLimitingService checkRateLimit should block request when over limit" name="RateLimitingService checkRateLimit should block request when over limit" time="0.005">
+    <testcase classname="PasswordRotationService getPasswordHistory should select only required fields" name="PasswordRotationService getPasswordHistory should select only required fields" time="0.002">
     </testcase>
-    <testcase classname="RateLimitingService checkRateLimit should handle Redis errors gracefully" name="RateLimitingService checkRateLimit should handle Redis errors gracefully" time="0.013">
+    <testcase classname="PasswordRotationService clearPasswordHistory should delete all password history for user" name="PasswordRotationService clearPasswordHistory should delete all password history for user" time="0.003">
     </testcase>
-    <testcase classname="RateLimitingService getRateLimitInfo should return correct rate limit info" name="RateLimitingService getRateLimitInfo should return correct rate limit info" time="0.014">
+    <testcase classname="PasswordRotationService getUsersWithExpiredPasswords should return empty array when no users have expired passwords" name="PasswordRotationService getUsersWithExpiredPasswords should return empty array when no users have expired passwords" time="0.003">
     </testcase>
-    <testcase classname="RateLimitingService getDefaultConfigurations should return default configurations" name="RateLimitingService getDefaultConfigurations should return default configurations" time="0.027">
+    <testcase classname="PasswordRotationService getUsersWithExpiredPasswords should return users with expired passwords" name="PasswordRotationService getUsersWithExpiredPasswords should return users with expired passwords" time="0.002">
     </testcase>
-  </testsuite>
-  <testsuite name="Common DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:16" time="1.331" tests="12">
-    <testcase classname="Common DTOs PaginationDto should pass with valid page and limit" name="Common DTOs PaginationDto should pass with valid page and limit" time="0.029">
+    <testcase classname="PasswordRotationService getUsersWithExpiredPasswords should use password history date for expiry calculation" name="PasswordRotationService getUsersWithExpiredPasswords should use password history date for expiry calculation" time="0.003">
     </testcase>
-    <testcase classname="Common DTOs PaginationDto should pass with default values when empty" name="Common DTOs PaginationDto should pass with default values when empty" time="0.004">
+    <testcase classname="PasswordRotationService getUsersWithExpiredPasswords should only include users with passwords" name="PasswordRotationService getUsersWithExpiredPasswords should only include users with passwords" time="0.002">
     </testcase>
-    <testcase classname="Common DTOs PaginationDto should fail when page is less than 1" name="Common DTOs PaginationDto should fail when page is less than 1" time="0.013">
+    <testcase classname="PasswordRotationService requiresPasswordRotation should return false when user not found" name="PasswordRotationService requiresPasswordRotation should return false when user not found" time="0.004">
     </testcase>
-    <testcase classname="Common DTOs PaginationDto should fail when limit exceeds 100" name="Common DTOs PaginationDto should fail when limit exceeds 100" time="0.004">
+    <testcase classname="PasswordRotationService requiresPasswordRotation should return false when user has no password" name="PasswordRotationService requiresPasswordRotation should return false when user has no password" time="0.003">
     </testcase>
-    <testcase classname="Common DTOs PaginationDto should fail when page is not an integer" name="Common DTOs PaginationDto should fail when page is not an integer" time="0.005">
+    <testcase classname="PasswordRotationService requiresPasswordRotation should return true when password is expired" name="PasswordRotationService requiresPasswordRotation should return true when password is expired" time="0.003">
     </testcase>
-    <testcase classname="Common DTOs SortDto should pass with valid sortBy and sortOrder" name="Common DTOs SortDto should pass with valid sortBy and sortOrder" time="0.007">
+    <testcase classname="PasswordRotationService requiresPasswordRotation should return true when within warning period" name="PasswordRotationService requiresPasswordRotation should return true when within warning period" time="0.003">
     </testcase>
-    <testcase classname="Common DTOs SortDto should pass with default sortOrder when empty" name="Common DTOs SortDto should pass with default sortOrder when empty" time="0.005">
+    <testcase classname="PasswordRotationService requiresPasswordRotation should return false when not in warning period and not expired" name="PasswordRotationService requiresPasswordRotation should return false when not in warning period and not expired" time="0.003">
     </testcase>
-    <testcase classname="Common DTOs SortDto should fail with invalid sortOrder" name="Common DTOs SortDto should fail with invalid sortOrder" time="0.005">
-    </testcase>
-    <testcase classname="Common DTOs DateRangeDto should pass with valid ISO 8601 dates" name="Common DTOs DateRangeDto should pass with valid ISO 8601 dates" time="0.036">
-    </testcase>
-    <testcase classname="Common DTOs DateRangeDto should pass when both fields are empty" name="Common DTOs DateRangeDto should pass when both fields are empty" time="0.004">
-    </testcase>
-    <testcase classname="Common DTOs DateRangeDto should fail with invalid date format" name="Common DTOs DateRangeDto should fail with invalid date format" time="0.005">
-    </testcase>
-    <testcase classname="Common DTOs DateRangeDto should fail with non-ISO date format" name="Common DTOs DateRangeDto should fail with non-ISO date format" time="0.005">
+    <testcase classname="PasswordRotationService requiresPasswordRotation should use custom warning days from config" name="PasswordRotationService requiresPasswordRotation should use custom warning days from config" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="AuthService" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:17" time="1.359" tests="3">
-    <testcase classname="AuthService login brute force protection should increment login attempts on invalid credentials" name="AuthService login brute force protection should increment login attempts on invalid credentials" time="0.242">
+  <testsuite name="Pagination Service - Performance Tests" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:33" time="0.203" tests="10">
+    <testcase classname="Pagination Service - Performance Tests Performance with Large Datasets should efficiently calculate pagination for 1 million items" name="Pagination Service - Performance Tests Performance with Large Datasets should efficiently calculate pagination for 1 million items" time="0.001">
     </testcase>
-    <testcase classname="AuthService login brute force protection should block when max attempts reached" name="AuthService login brute force protection should block when max attempts reached" time="0.039">
+    <testcase classname="Pagination Service - Performance Tests Performance with Large Datasets should efficiently format response for large dataset" name="Pagination Service - Performance Tests Performance with Large Datasets should efficiently format response for large dataset" time="0.001">
     </testcase>
-    <testcase classname="AuthService login brute force protection should clear attempts after successful login" name="AuthService login brute force protection should clear attempts after successful login" time="0.054">
+    <testcase classname="Pagination Service - Performance Tests Performance with Large Datasets should handle rapid consecutive pagination queries" name="Pagination Service - Performance Tests Performance with Large Datasets should handle rapid consecutive pagination queries" time="0.002">
     </testcase>
-  </testsuite>
-  <testsuite name="ValuationController" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:19" time="1.955" tests="4">
-    <testcase classname="ValuationController should be defined" name="ValuationController should be defined" time="0.347">
+    <testcase classname="Pagination Service - Performance Tests Performance with Large Datasets should efficiently generate Prisma options for many queries" name="Pagination Service - Performance Tests Performance with Large Datasets should efficiently generate Prisma options for many queries" time="0.003">
     </testcase>
-    <testcase classname="ValuationController getValuation should call valuation service to get property valuation" name="ValuationController getValuation should call valuation service to get property valuation" time="0.015">
+    <testcase classname="Pagination Service - Performance Tests Performance with Large Datasets should calculate metadata efficiently for extreme pagination values" name="Pagination Service - Performance Tests Performance with Large Datasets should calculate metadata efficiently for extreme pagination values" time="0.001">
     </testcase>
-    <testcase classname="ValuationController getPropertyHistory should call valuation service to get property history" name="ValuationController getPropertyHistory should call valuation service to get property history" time="0.012">
+    <testcase classname="Pagination Service - Performance Tests Performance with Large Datasets should memory-efficiently handle large format operations" name="Pagination Service - Performance Tests Performance with Large Datasets should memory-efficiently handle large format operations" time="0.001">
     </testcase>
-    <testcase classname="ValuationController getMarketTrendAnalysis should call valuation service to get market trend analysis" name="ValuationController getMarketTrendAnalysis should call valuation service to get market trend analysis" time="0.011">
+    <testcase classname="Pagination Service - Performance Tests Edge Case Performance should handle pagination for single item efficiently" name="Pagination Service - Performance Tests Edge Case Performance should handle pagination for single item efficiently" time="0.001">
     </testcase>
-  </testsuite>
-  <testsuite name="SecurityMiddleware" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:21" time="1.656" tests="5">
-    <testcase classname="SecurityMiddleware getClientIp should extract IP from x-forwarded-for header" name="SecurityMiddleware getClientIp should extract IP from x-forwarded-for header" time="0.005">
+    <testcase classname="Pagination Service - Performance Tests Edge Case Performance should handle pagination for exactly one page of items" name="Pagination Service - Performance Tests Edge Case Performance should handle pagination for exactly one page of items" time="0.001">
     </testcase>
-    <testcase classname="SecurityMiddleware getClientIp should extract IP from x-real-ip header" name="SecurityMiddleware getClientIp should extract IP from x-real-ip header" time="0.003">
+    <testcase classname="Pagination Service - Performance Tests Edge Case Performance should handle very high page numbers efficiently" name="Pagination Service - Performance Tests Edge Case Performance should handle very high page numbers efficiently" time="0.001">
     </testcase>
-    <testcase classname="SecurityMiddleware getClientIp should use connection.remoteAddress when headers are not present" name="SecurityMiddleware getClientIp should use connection.remoteAddress when headers are not present" time="0.004">
-    </testcase>
-    <testcase classname="SecurityMiddleware getClientIp should use socket.remoteAddress as fallback" name="SecurityMiddleware getClientIp should use socket.remoteAddress as fallback" time="0.002">
-    </testcase>
-    <testcase classname="SecurityMiddleware getClientIp should return unknown when no IP can be determined" name="SecurityMiddleware getClientIp should return unknown when no IP can be determined" time="0.002">
+    <testcase classname="Pagination Service - Performance Tests Benchmark Results should provide performance summary" name="Pagination Service - Performance Tests Benchmark Results should provide performance summary" time="0.041">
     </testcase>
   </testsuite>
-  <testsuite name="DocumentController" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:23" time="2.952" tests="1">
-    <testcase classname="DocumentController parses metadata and forwards upload request" name="DocumentController parses metadata and forwards upload request" time="0.048">
+  <testsuite name="AuthService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:33" time="0.308" tests="3">
+    <testcase classname="AuthService login brute force protection should increment login attempts on invalid credentials" name="AuthService login brute force protection should increment login attempts on invalid credentials" time="0.062">
+    </testcase>
+    <testcase classname="AuthService login brute force protection should block when max attempts reached" name="AuthService login brute force protection should block when max attempts reached" time="0.009">
+    </testcase>
+    <testcase classname="AuthService login brute force protection should clear attempts after successful login" name="AuthService login brute force protection should clear attempts after successful login" time="0.01">
     </testcase>
   </testsuite>
-  <testsuite name="Error Filter" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:26" time="1.069" tests="1">
-    <testcase classname="Error Filter should be tested via src/common/errors/error.filter.spec.ts" name="Error Filter should be tested via src/common/errors/error.filter.spec.ts" time="0.01">
+  <testsuite name="API Key DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:33" time="0.285" tests="15">
+    <testcase classname="API Key DTOs CreateApiKeyDto should pass with valid API key data" name="API Key DTOs CreateApiKeyDto should pass with valid API key data" time="0.001">
+    </testcase>
+    <testcase classname="API Key DTOs CreateApiKeyDto should pass with optional rate limit" name="API Key DTOs CreateApiKeyDto should pass with optional rate limit" time="0.001">
+    </testcase>
+    <testcase classname="API Key DTOs CreateApiKeyDto should fail with empty name" name="API Key DTOs CreateApiKeyDto should fail with empty name" time="0.001">
+    </testcase>
+    <testcase classname="API Key DTOs CreateApiKeyDto should fail with name too long" name="API Key DTOs CreateApiKeyDto should fail with name too long" time="0.001">
+    </testcase>
+    <testcase classname="API Key DTOs CreateApiKeyDto should fail with empty scopes array" name="API Key DTOs CreateApiKeyDto should fail with empty scopes array" time="0.003">
+    </testcase>
+    <testcase classname="API Key DTOs CreateApiKeyDto should fail with missing scopes" name="API Key DTOs CreateApiKeyDto should fail with missing scopes" time="0.001">
+    </testcase>
+    <testcase classname="API Key DTOs CreateApiKeyDto should fail with rate limit less than 1" name="API Key DTOs CreateApiKeyDto should fail with rate limit less than 1" time="0.001">
+    </testcase>
+    <testcase classname="API Key DTOs CreateApiKeyDto should fail with negative rate limit" name="API Key DTOs CreateApiKeyDto should fail with negative rate limit" time="0">
+    </testcase>
+    <testcase classname="API Key DTOs CreateApiKeyDto should fail with non-integer rate limit" name="API Key DTOs CreateApiKeyDto should fail with non-integer rate limit" time="0.001">
+    </testcase>
+    <testcase classname="API Key DTOs CreateApiKeyDto should pass with single scope" name="API Key DTOs CreateApiKeyDto should pass with single scope" time="0.001">
+    </testcase>
+    <testcase classname="API Key DTOs ApiKeyQueryDto should pass with valid query parameters" name="API Key DTOs ApiKeyQueryDto should pass with valid query parameters" time="0.001">
+    </testcase>
+    <testcase classname="API Key DTOs ApiKeyQueryDto should pass with empty query" name="API Key DTOs ApiKeyQueryDto should pass with empty query" time="0.001">
+    </testcase>
+    <testcase classname="API Key DTOs ApiKeyQueryDto should pass with isActive as string true" name="API Key DTOs ApiKeyQueryDto should pass with isActive as string true" time="0">
+    </testcase>
+    <testcase classname="API Key DTOs ApiKeyQueryDto should pass with isActive as false" name="API Key DTOs ApiKeyQueryDto should pass with isActive as false" time="0">
+    </testcase>
+    <testcase classname="API Key DTOs ApiKeyQueryDto should include pagination defaults" name="API Key DTOs ApiKeyQueryDto should include pagination defaults" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Custom Exceptions" errors="0" failures="0" skipped="0" timestamp="2026-03-23T20:17:27" time="0.798" tests="1">
-    <testcase classname="Custom Exceptions should be tested via src/common/errors" name="Custom Exceptions should be tested via src/common/errors" time="0.003">
+  <testsuite name="Document DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:33" time="0.268" tests="21">
+    <testcase classname="Document DTOs UploadDocumentDto should pass with all optional fields empty" name="Document DTOs UploadDocumentDto should pass with all optional fields empty" time="0.002">
+    </testcase>
+    <testcase classname="Document DTOs UploadDocumentDto should pass with valid document data" name="Document DTOs UploadDocumentDto should pass with valid document data" time="0.002">
+    </testcase>
+    <testcase classname="Document DTOs UploadDocumentDto should fail with invalid document type" name="Document DTOs UploadDocumentDto should fail with invalid document type" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs UploadDocumentDto should fail with invalid access level" name="Document DTOs UploadDocumentDto should fail with invalid access level" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs UploadDocumentDto should fail with title too long" name="Document DTOs UploadDocumentDto should fail with title too long" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs UploadDocumentDto should fail with description too long" name="Document DTOs UploadDocumentDto should fail with description too long" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs UploadDocumentDto should pass with all valid document types" name="Document DTOs UploadDocumentDto should pass with all valid document types" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs UploadDocumentDto should pass with all valid access levels" name="Document DTOs UploadDocumentDto should pass with all valid access levels" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs UpdateMetadataDto should pass with all optional fields empty" name="Document DTOs UpdateMetadataDto should pass with all optional fields empty" time="0">
+    </testcase>
+    <testcase classname="Document DTOs UpdateMetadataDto should pass with valid metadata update" name="Document DTOs UpdateMetadataDto should pass with valid metadata update" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs UpdateMetadataDto should fail with invalid access level" name="Document DTOs UpdateMetadataDto should fail with invalid access level" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs DocumentQueryDto should pass with valid query parameters" name="Document DTOs DocumentQueryDto should pass with valid query parameters" time="0.002">
+    </testcase>
+    <testcase classname="Document DTOs DocumentQueryDto should pass with empty query" name="Document DTOs DocumentQueryDto should pass with empty query" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs DocumentQueryDto should fail with invalid createdAfter date" name="Document DTOs DocumentQueryDto should fail with invalid createdAfter date" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs DocumentQueryDto should fail with invalid createdBefore date" name="Document DTOs DocumentQueryDto should fail with invalid createdBefore date" time="0">
+    </testcase>
+    <testcase classname="Document DTOs DocumentQueryDto should fail with invalid document type" name="Document DTOs DocumentQueryDto should fail with invalid document type" time="0">
+    </testcase>
+    <testcase classname="Document DTOs DownloadQueryDto should pass with valid version" name="Document DTOs DownloadQueryDto should pass with valid version" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs DownloadQueryDto should pass with no version (optional)" name="Document DTOs DownloadQueryDto should pass with no version (optional)" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs DownloadQueryDto should fail with version less than 1" name="Document DTOs DownloadQueryDto should fail with version less than 1" time="0.002">
+    </testcase>
+    <testcase classname="Document DTOs DownloadQueryDto should fail with negative version" name="Document DTOs DownloadQueryDto should fail with negative version" time="0.001">
+    </testcase>
+    <testcase classname="Document DTOs DownloadQueryDto should fail with non-integer version" name="Document DTOs DownloadQueryDto should fail with non-integer version" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Custom Exceptions" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:34" time="0.149" tests="1">
+    <testcase classname="Custom Exceptions should be tested via src/common/errors" name="Custom Exceptions should be tested via src/common/errors" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="PaginationService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:34" time="0.215" tests="28">
+    <testcase classname="PaginationService calculatePagination should calculate correct offset and limit for first page" name="PaginationService calculatePagination should calculate correct offset and limit for first page" time="0.004">
+    </testcase>
+    <testcase classname="PaginationService calculatePagination should calculate correct offset for page 2" name="PaginationService calculatePagination should calculate correct offset for page 2" time="0.005">
+    </testcase>
+    <testcase classname="PaginationService calculatePagination should calculate correct offset for page 5" name="PaginationService calculatePagination should calculate correct offset for page 5" time="0.003">
+    </testcase>
+    <testcase classname="PaginationService calculatePagination should enforce maximum limit" name="PaginationService calculatePagination should enforce maximum limit" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService calculatePagination should enforce minimum limit" name="PaginationService calculatePagination should enforce minimum limit" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService calculatePagination should handle negative page numbers" name="PaginationService calculatePagination should handle negative page numbers" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService calculatePagination should use defaults when no parameters provided" name="PaginationService calculatePagination should use defaults when no parameters provided" time="0.001">
+    </testcase>
+    <testcase classname="PaginationService createMetadata should calculate correct pagination metadata for first page" name="PaginationService createMetadata should calculate correct pagination metadata for first page" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService createMetadata should calculate correct metadata for middle page" name="PaginationService createMetadata should calculate correct metadata for middle page" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService createMetadata should calculate correct metadata for last page" name="PaginationService createMetadata should calculate correct metadata for last page" time="0.003">
+    </testcase>
+    <testcase classname="PaginationService createMetadata should handle single page result" name="PaginationService createMetadata should handle single page result" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService createMetadata should handle exact page boundary" name="PaginationService createMetadata should handle exact page boundary" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService createMetadata should include sort information" name="PaginationService createMetadata should include sort information" time="0.001">
+    </testcase>
+    <testcase classname="PaginationService createMetadata should use default sort values" name="PaginationService createMetadata should use default sort values" time="0.001">
+    </testcase>
+    <testcase classname="PaginationService formatResponse should format response with data and metadata" name="PaginationService formatResponse should format response with data and metadata" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService formatResponse should handle empty data array" name="PaginationService formatResponse should handle empty data array" time="0.003">
+    </testcase>
+    <testcase classname="PaginationService formatResponse should preserve sort parameters in response" name="PaginationService formatResponse should preserve sort parameters in response" time="0.003">
+    </testcase>
+    <testcase classname="PaginationService parsePaginationQuery should parse valid pagination query" name="PaginationService parsePaginationQuery should parse valid pagination query" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService parsePaginationQuery should apply defaults for missing values" name="PaginationService parsePaginationQuery should apply defaults for missing values" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService parsePaginationQuery should enforce limits on values" name="PaginationService parsePaginationQuery should enforce limits on values" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService getPrismaOptions should generate correct Prisma query options" name="PaginationService getPrismaOptions should generate correct Prisma query options" time="0.001">
+    </testcase>
+    <testcase classname="PaginationService getPrismaOptions should use default orderByField when not specified in query" name="PaginationService getPrismaOptions should use default orderByField when not specified in query" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService getPrismaOptions should handle custom sort field" name="PaginationService getPrismaOptions should handle custom sort field" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService getPrismaOptions should calculate correct skip and take for page 3" name="PaginationService getPrismaOptions should calculate correct skip and take for page 3" time="0.003">
+    </testcase>
+    <testcase classname="PaginationService validation should handle very large page numbers" name="PaginationService validation should handle very large page numbers" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService validation should handle zero limit gracefully" name="PaginationService validation should handle zero limit gracefully" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService validation should handle negative limit gracefully" name="PaginationService validation should handle negative limit gracefully" time="0.002">
+    </testcase>
+    <testcase classname="PaginationService validation should calculate correct page count for non-divisible totals" name="PaginationService validation should calculate correct page count for non-divisible totals" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Common DTOs" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:34" time="0.262" tests="12">
+    <testcase classname="Common DTOs PaginationDto should pass with valid page and limit" name="Common DTOs PaginationDto should pass with valid page and limit" time="0.002">
+    </testcase>
+    <testcase classname="Common DTOs PaginationDto should pass with default values when empty" name="Common DTOs PaginationDto should pass with default values when empty" time="0.008">
+    </testcase>
+    <testcase classname="Common DTOs PaginationDto should fail when page is less than 1" name="Common DTOs PaginationDto should fail when page is less than 1" time="0.001">
+    </testcase>
+    <testcase classname="Common DTOs PaginationDto should fail when limit exceeds 100" name="Common DTOs PaginationDto should fail when limit exceeds 100" time="0.001">
+    </testcase>
+    <testcase classname="Common DTOs PaginationDto should fail when page is not an integer" name="Common DTOs PaginationDto should fail when page is not an integer" time="0.001">
+    </testcase>
+    <testcase classname="Common DTOs SortDto should pass with valid sortBy and sortOrder" name="Common DTOs SortDto should pass with valid sortBy and sortOrder" time="0.001">
+    </testcase>
+    <testcase classname="Common DTOs SortDto should pass with default sortOrder when empty" name="Common DTOs SortDto should pass with default sortOrder when empty" time="0">
+    </testcase>
+    <testcase classname="Common DTOs SortDto should fail with invalid sortOrder" name="Common DTOs SortDto should fail with invalid sortOrder" time="0.001">
+    </testcase>
+    <testcase classname="Common DTOs DateRangeDto should pass with valid ISO 8601 dates" name="Common DTOs DateRangeDto should pass with valid ISO 8601 dates" time="0.001">
+    </testcase>
+    <testcase classname="Common DTOs DateRangeDto should pass when both fields are empty" name="Common DTOs DateRangeDto should pass when both fields are empty" time="0.001">
+    </testcase>
+    <testcase classname="Common DTOs DateRangeDto should fail with invalid date format" name="Common DTOs DateRangeDto should fail with invalid date format" time="0.001">
+    </testcase>
+    <testcase classname="Common DTOs DateRangeDto should fail with non-ISO date format" name="Common DTOs DateRangeDto should fail with non-ISO date format" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="DocumentService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:34" time="0.224" tests="5">
+    <testcase classname="DocumentService uploads documents and generates thumbnails for images" name="DocumentService uploads documents and generates thumbnails for images" time="0.015">
+    </testcase>
+    <testcase classname="DocumentService stores new versions and updates current version" name="DocumentService stores new versions and updates current version" time="0.004">
+    </testcase>
+    <testcase classname="DocumentService enforces access permissions" name="DocumentService enforces access permissions" time="0.005">
+    </testcase>
+    <testcase classname="DocumentService blocks infected files during virus scan" name="DocumentService blocks infected files during virus scan" time="0.019">
+    </testcase>
+    <testcase classname="DocumentService returns signed download URLs" name="DocumentService returns signed download URLs" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="Error Filter" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:35" time="0.141" tests="1">
+    <testcase classname="Error Filter should be tested via src/common/errors/error.filter.spec.ts" name="Error Filter should be tested via src/common/errors/error.filter.spec.ts" time="0.002">
     </testcase>
   </testsuite>
 </testsuites>

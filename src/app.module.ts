@@ -49,6 +49,7 @@ import { AuditController } from './common/controllers/audit.controller';
 
 // Middleware
 import { AuthRateLimitMiddleware } from './auth/middleware/auth.middleware';
+import { HeaderValidationMiddleware } from './security/middleware/header-validation.middleware';
 import { ObservabilityModule } from './observability/observability.module';
 
 @Module({
@@ -146,11 +147,11 @@ import { ObservabilityModule } from './observability/observability.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
+      // Header validation for security
+      .apply(HeaderValidationMiddleware)
+      .forRoutes('*')
       // Auth rate limiting
       .apply(AuthRateLimitMiddleware)
       .forRoutes('/auth*');
-    // Global security middleware
-    // .apply(SecurityMiddleware) // Uncomment when SecurityModule is properly integrated
-    // .forRoutes('*');
   }
 }
