@@ -1,5 +1,7 @@
 import Bull from 'bull';
+import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { EmailQueueService } from '../../src/communication/email/email.queue';
 
 const createQueueMock = () => ({
@@ -21,11 +23,30 @@ const createQueueMock = () => ({
 const queueMocks = [createQueueMock(), createQueueMock(), createQueueMock()];
 
 jest.mock('bull', () => {
-  return jest.fn().mockImplementation(() => queueMocks.shift());
+  return {
+    __esModule: true,
+    default: jest.fn().mockImplementation(() => queueMocks.shift()),
+  };
 });
 
+
 describe('EmailQueueService', () => {
+  beforeAll(() => {
+    // Suppress ALL Logger messages for this test suite
+    jest.spyOn(Logger.prototype, 'log').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'warn').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'debug').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'verbose').mockImplementation(() => {});
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+
   beforeEach(() => {
+
     jest.useFakeTimers();
     jest.clearAllMocks();
     queueMocks.splice(0, queueMocks.length, createQueueMock(), createQueueMock(), createQueueMock());

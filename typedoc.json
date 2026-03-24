@@ -1,0 +1,15 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/main.ts", "src/**/*.module.ts", "src/**/*.service.ts", "src/**/*.controller.ts"],
+  "out": "docs/developer/auto-generated",
+  "plugin": ["typedoc-plugin-markdown"],
+  "hideGenerator": true,
+  "theme": "default",
+  "name": "PropChain Backend Developer Documentation",
+  "includeVersion": true,
+  "exclude": ["**/*.spec.ts", "node_modules", "dist"],
+  "cleanOutputDir": true,
+  "gitRevision": "main",
+  "readme": "README.md",
+  "githubPages": false
+}

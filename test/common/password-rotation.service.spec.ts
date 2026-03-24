@@ -38,7 +38,12 @@ describe('PasswordRotationService', () => {
     }),
   };
 
+  const MOCK_NOW = new Date('2024-01-01T12:00:00Z');
+
   beforeEach(async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(MOCK_NOW);
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PasswordRotationService,
@@ -57,6 +62,7 @@ describe('PasswordRotationService', () => {
     prismaService = module.get<PrismaService>(PrismaService);
     configService = module.get<ConfigService>(ConfigService);
   });
+
 
   afterEach(() => {
     jest.clearAllMocks();

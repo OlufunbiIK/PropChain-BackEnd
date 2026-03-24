@@ -135,4 +135,25 @@ export class PropertyFilterDto {
   maxArea?: number;
 }
 
-export class PropertyQueryDto extends IntersectionType(PropertyFilterDto, IntersectionType(PaginationDto, SortDto)) {}
+class PropertyPaginationSortDto extends IntersectionType(PaginationDto, SortDto) {}
+
+export class PropertyQueryDto extends IntersectionType(PropertyFilterDto, PropertyPaginationSortDto) {
+  declare search?: string;
+  declare type?: PropertyType;
+  declare status?: PropertyStatus;
+  declare city?: string;
+  declare country?: string;
+  declare minPrice?: number;
+  declare maxPrice?: number;
+  declare minBedrooms?: number;
+  declare maxBedrooms?: number;
+  declare ownerId?: string;
+  declare minBathrooms?: number;
+  declare maxBathrooms?: number;
+  declare minArea?: number;
+  declare maxArea?: number;
+  declare page?: number;
+  declare limit?: number;
+  declare sortBy?: string;
+  declare sortOrder?: 'asc' | 'desc';
+}

@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Logger } from '@nestjs/common';
+
 import { ConfigService } from '@nestjs/config';
 import { RateLimitingService } from '../../src/security/services/rate-limiting.service';
 import { RedisService } from '../../src/common/services/redis.service';
@@ -7,6 +9,20 @@ describe('RateLimitingService', () => {
   let service: RateLimitingService;
   let redisService: RedisService;
   let configService: ConfigService;
+  beforeAll(() => {
+    // Suppress ALL Logger messages for this test suite
+    jest.spyOn(Logger.prototype, 'log').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'warn').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'debug').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'verbose').mockImplementation(() => {});
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+
 
   const mockRedisService = {
     zremrangebyscore: jest.fn(),
@@ -19,7 +35,7 @@ describe('RateLimitingService', () => {
 
   const mockConfigService = {
     get: jest.fn().mockImplementation((key: string, defaultValue?: any) => {
-      const config = {
+      const config: Record<string, number> = {
         RATE_LIMIT_API_PER_MINUTE: 100,
         RATE_LIMIT_AUTH_PER_MINUTE: 5,
         RATE_LIMIT_EXPENSIVE_PER_MINUTE: 10,
@@ -27,6 +43,7 @@ describe('RateLimitingService', () => {
       };
       return config[key] || defaultValue;
     }),
+
   };
 
   beforeEach(async () => {

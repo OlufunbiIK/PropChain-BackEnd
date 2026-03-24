@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Logger } from '@nestjs/common';
+
 import { ConfigService } from '@nestjs/config';
 import { CacheWarmingService, WarmupTask, WarmupStrategy } from '../../src/common/cache/cache-warming.service';
 import { MultiLevelCacheService } from '../../src/common/cache/multi-level-cache.service';
@@ -7,8 +9,22 @@ describe('CacheWarmingService', () => {
   let service: CacheWarmingService;
   let cacheService: jest.Mocked<MultiLevelCacheService>;
   let configService: jest.Mocked<ConfigService>;
+  beforeAll(() => {
+    // Suppress ALL Logger messages for this test suite
+    jest.spyOn(Logger.prototype, 'log').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'warn').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'debug').mockImplementation(() => {});
+    jest.spyOn(Logger.prototype, 'verbose').mockImplementation(() => {});
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
 
   beforeEach(async () => {
+
     const mockCacheService = {
       get: jest.fn(),
       set: jest.fn(),
@@ -28,14 +44,16 @@ describe('CacheWarmingService', () => {
 
     service = module.get<CacheWarmingService>(CacheWarmingService);
     cacheService = module.get(MultiLevelCacheService);
-    configService = module.get(ConfigService);
-
     await service.onModuleInit();
   });
+
+
 
   afterEach(() => {
     jest.clearAllMocks();
   });
+
+
 
   describe('onModuleInit', () => {
     it('should initialize with default strategies', async () => {

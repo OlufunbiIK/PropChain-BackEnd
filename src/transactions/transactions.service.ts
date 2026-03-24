@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database';
 import { BlockchainService } from '../blockchain/blockchain.service';
-import { TransactionStatus } from 'src/models/transaction.entity';
+import { TransactionStatus, TransactionType } from 'src/models/transaction.entity';
+
 import { CreateTransactionDto, DisputeDto, PaginationParams } from './dto/create-transaction.dto';
 
 @Injectable()
@@ -11,9 +12,9 @@ export class TransactionsService {
     private readonly blockchainService: BlockchainService,
   ) {}
 
-  private calculateFees(amount: number) {
+  private async calculateFees(amount: number) {
     const platformFee = amount * 0.02; // 2%
-    const estimatedGas = this.blockchainService.estimateGas();
+    const estimatedGas = await this.blockchainService.estimateGas();
 
     return {
       platformFee,
@@ -35,11 +36,12 @@ export class TransactionsService {
     }
   }
   async createTransaction(dto: CreateTransactionDto) {
-    const fees = this.calculateFees(dto.amount);
+    const fees = await this.calculateFees(dto.amount);
 
     return this.prisma.transaction.create({
       data: {
         ...dto,
+        type: dto.type as TransactionType,
         status: 'PENDING',
         platformFee: fees.platformFee,
         gasFee: fees.estimatedGas,

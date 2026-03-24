@@ -7,12 +7,13 @@ export class TracingService {
   private sdk: NodeSDK;
 
   init() {
-    // Initialize OpenTelemetry with default configuration
-    // Note: Resource class requires @opentelemetry/resources to be properly configured
+    // Initialize OpenTelemetry with service name and auto-instrumentation
     try {
       this.sdk = new NodeSDK({
+        serviceName: 'propchain-backend',
         instrumentations: [getNodeAutoInstrumentations()],
       });
+
       this.sdk.start();
     } catch (error) {
       console.warn('Failed to initialize OpenTelemetry:', error);

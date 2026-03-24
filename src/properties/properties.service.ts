@@ -12,6 +12,17 @@ import { PropertyQueryDto } from './dto/property-query.dto';
 import { ConfigService } from '@nestjs/config';
 import { MultiLevelCacheService } from '../common/cache/multi-level-cache.service';
 
+/**
+ * Properties Service
+ *
+ * Manages the lifecycle of real estate properties including:
+ * - Creation and address formatting
+ * - Search with complex filtering (price, area, bedrooms, etc.)
+ * - Caching and cache invalidation
+ * - Property statistics and analytics
+ *
+ * @class PropertiesService
+ */
 @Injectable()
 export class PropertiesService {
   private readonly logger = new Logger(PropertiesService.name);
@@ -22,6 +33,31 @@ export class PropertiesService {
     private readonly cacheService: MultiLevelCacheService,
   ) {}
 
+  /**
+   * Create a new property listing
+   *
+   * Validates the owner existence, formats the address, and persists the property.
+   * Automatically invalidates relevant search and list caches.
+   *
+   * @param {CreatePropertyDto} createPropertyDto - Property details
+   * @param {string} ownerId - ID of the user owning the property
+   * @returns {Promise<Property>} The created property with owner info
+   *
+   * @throws {UserNotFoundException} If the owner ID is invalid
+   * @throws {InvalidInputException} If creation fails
+   *
+   * @example
+   * ```typescript
+   * const property = await propertiesService.create({
+   *   title: 'Luxury Penthouse',
+   *   description: 'Spacious 3-bedroom penthouse with city views',
+   *   address: { street: '123 Main St', city: 'London', country: 'UK' },
+   *   price: 1500000,
+   *   areaSqFt: 2500,
+   *   type: 'PENTHOUSE'
+   * }, 'user_uuid_123');
+   * ```
+   */
   async create(createPropertyDto: CreatePropertyDto, ownerId: string) {
     try {
       const owner = await (this.prisma as any).user.findUnique({
@@ -67,6 +103,31 @@ export class PropertiesService {
     }
   }
 
+  /**
+   * Search and filter properties with pagination
+   *
+   * Supports advanced filtering by:
+   * - Text search (title, description, location)
+   * - Numeric ranges (price, bedrooms, bathrooms, area)
+   * - Property status and type
+   *
+   * Results are cached for 5 minutes by query fingerprint.
+   *
+   * @param {PropertyQueryDto} query - Search and pagination parameters
+   * @returns {Promise<PaginatedPropertyResponse>} Properties and metadata
+   *
+   * @example
+   * ```typescript
+   * const result = await propertiesService.findAll({
+   *   page: 1,
+   *   limit: 10,
+   *   minPrice: 500000,
+   *   maxPrice: 2000000,
+   *   type: 'PENTHOUSE',
+   *   search: 'London'
+   * });
+   * ```
+   */
   async findAll(query?: PropertyQueryDto) {
     const {
       page = 1,
