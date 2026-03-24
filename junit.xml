@@ -73,13 +73,7 @@
     </testcase>
     <testcase classname="SensitiveEndpointRateLimitGuard canActivate should fail open when rate limiting service throws error" name="SensitiveEndpointRateLimitGuard canActivate should fail open when rate limiting service throws error" time="0.004">
     </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should extract IP from x-forwarded-for header" name="SensitiveEndpointRateLimitGuard canActivate should extract IP from x-forwarded-for header" time="0.003">
-    </testcase>
-    <testcase classname="SensitiveEndpointRateLimitGuard canActivate should use custom rate limit options from decorator" name="SensitiveEndpointRateLimitGuard canActivate should use custom rate limit options from decorator" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="DocumentController" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:25" time="0.981" tests="1">
-    <testcase classname="DocumentController parses metadata and forwards upload request" name="DocumentController parses metadata and forwards upload request" time="0.002">
+    <testcase classname="PropertiesService helper methods should validate status transitions correctly" name="PropertiesService helper methods should validate status transitions correctly" time="0.003">
     </testcase>
   </testsuite>
   <testsuite name="MfaService" errors="0" failures="0" skipped="0" timestamp="2026-03-24T13:45:26" time="0.603" tests="8">
@@ -415,7 +409,7 @@
     </testcase>
     <testcase classname="Auth DTOs LoginDto (Combined) should pass with wallet address and signature" name="Auth DTOs LoginDto (Combined) should pass with wallet address and signature" time="0.001">
     </testcase>
-    <testcase classname="Auth DTOs LoginDto (Combined) should fail with neither email nor wallet" name="Auth DTOs LoginDto (Combined) should fail with neither email nor wallet" time="0.001">
+    <testcase classname="Auth DTOs LoginDto (Combined) should fail with neither email nor wallet" name="Auth DTOs LoginDto (Combined) should fail with neither email nor wallet" time="0">
     </testcase>
     <testcase classname="Auth DTOs RefreshTokenDto should pass with valid JWT" name="Auth DTOs RefreshTokenDto should pass with valid JWT" time="0.001">
     </testcase>
@@ -487,21 +481,13 @@
     </testcase>
     <testcase classname="HeaderValidationMiddleware validateHeader should return invalid for oversized header" name="HeaderValidationMiddleware validateHeader should return invalid for oversized header" time="0.001">
     </testcase>
-    <testcase classname="HeaderValidationMiddleware validateHeader should return invalid for path traversal" name="HeaderValidationMiddleware validateHeader should return invalid for path traversal" time="0.003">
+    <testcase classname="PaginationService calculatePagination should calculate correct offset for page 2" name="PaginationService calculatePagination should calculate correct offset for page 2" time="0.003">
     </testcase>
     <testcase classname="HeaderValidationMiddleware getSecurityReport should return high score for complete security headers" name="HeaderValidationMiddleware getSecurityReport should return high score for complete security headers" time="0.004">
     </testcase>
     <testcase classname="HeaderValidationMiddleware getSecurityReport should return low score for missing security headers" name="HeaderValidationMiddleware getSecurityReport should return low score for missing security headers" time="0.002">
     </testcase>
-    <testcase classname="HeaderValidationMiddleware getSecurityReport should detect information disclosure" name="HeaderValidationMiddleware getSecurityReport should detect information disclosure" time="0.002">
-    </testcase>
-    <testcase classname="HeaderValidationMiddleware getSecurityReport should recommend HSTS improvements" name="HeaderValidationMiddleware getSecurityReport should recommend HSTS improvements" time="0.002">
-    </testcase>
-    <testcase classname="HeaderValidationMiddleware detectSuspiciousPatterns should detect XSS patterns" name="HeaderValidationMiddleware detectSuspiciousPatterns should detect XSS patterns" time="0.002">
-    </testcase>
-    <testcase classname="HeaderValidationMiddleware detectSuspiciousPatterns should detect javascript: protocol" name="HeaderValidationMiddleware detectSuspiciousPatterns should detect javascript: protocol" time="0.002">
-    </testcase>
-    <testcase classname="HeaderValidationMiddleware detectSuspiciousPatterns should detect SQL injection patterns" name="HeaderValidationMiddleware detectSuspiciousPatterns should detect SQL injection patterns" time="0.002">
+    <testcase classname="PaginationService calculatePagination should enforce minimum limit" name="PaginationService calculatePagination should enforce minimum limit" time="0.014">
     </testcase>
     <testcase classname="HeaderValidationMiddleware detectSuspiciousPatterns should skip validation for authorization header" name="HeaderValidationMiddleware detectSuspiciousPatterns should skip validation for authorization header" time="0.002">
     </testcase>
@@ -573,7 +559,7 @@
     </testcase>
     <testcase classname="Custom Validators IsEthereumAddress should pass with lowercase Ethereum address" name="Custom Validators IsEthereumAddress should pass with lowercase Ethereum address" time="0">
     </testcase>
-    <testcase classname="Custom Validators IsEthereumAddress should pass with uppercase Ethereum address" name="Custom Validators IsEthereumAddress should pass with uppercase Ethereum address" time="0.001">
+    <testcase classname="Custom Validators IsEthereumAddress should pass with uppercase Ethereum address" name="Custom Validators IsEthereumAddress should pass with uppercase Ethereum address" time="0.002">
     </testcase>
     <testcase classname="Custom Validators IsEthereumAddress should fail without 0x prefix" name="Custom Validators IsEthereumAddress should fail without 0x prefix" time="0.001">
     </testcase>
@@ -583,7 +569,7 @@
     </testcase>
     <testcase classname="Custom Validators IsEthereumAddress should fail with invalid characters" name="Custom Validators IsEthereumAddress should fail with invalid characters" time="0.001">
     </testcase>
-    <testcase classname="Custom Validators IsEthereumAddress should fail with empty string" name="Custom Validators IsEthereumAddress should fail with empty string" time="0.002">
+    <testcase classname="Custom Validators IsEthereumAddress should fail with empty string" name="Custom Validators IsEthereumAddress should fail with empty string" time="0">
     </testcase>
     <testcase classname="Custom Validators IsStrongPassword should pass with strong password" name="Custom Validators IsStrongPassword should pass with strong password" time="0.001">
     </testcase>
