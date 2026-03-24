@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Bull from 'bull';
 import { getQueueToken } from '@nestjs/bull';
@@ -9,13 +9,26 @@ import { getQueueToken } from '@nestjs/bull';
  * Handles email queuing, scheduling, and batch processing
  */
 @Injectable()
-export class EmailQueueService {
+export class EmailQueueService implements OnModuleDestroy {
   private readonly logger = new Logger(EmailQueueService.name);
   private emailQueue: Bull.Queue;
   private batchQueue: Bull.Queue;
   private priorityQueue: Bull.Queue;
+  private readonly jobTimeoutMs: number;
+  private readonly memoryMonitorIntervalMs: number;
+  private readonly memoryWarningThresholdMb: number;
+  private readonly completedJobRetention: number;
+  private readonly failedJobRetention: number;
+  private memoryMonitor: NodeJS.Timeout | null = null;
+  private queueCleanupMonitor: NodeJS.Timeout | null = null;
+  private readonly listenerDisposers: Array<() => void> = [];
 
   constructor(private readonly configService: ConfigService) {
+    this.jobTimeoutMs = this.configService.get<number>('EMAIL_JOB_TIMEOUT_MS', 30000);
+    this.memoryMonitorIntervalMs = this.configService.get<number>('EMAIL_QUEUE_MEMORY_MONITOR_INTERVAL_MS', 60000);
+    this.memoryWarningThresholdMb = this.configService.get<number>('EMAIL_QUEUE_MEMORY_WARNING_MB', 512);
+    this.completedJobRetention = this.configService.get<number>('EMAIL_QUEUE_REMOVE_ON_COMPLETE', 100);
+    this.failedJobRetention = this.configService.get<number>('EMAIL_QUEUE_REMOVE_ON_FAIL', 50);
     this.initializeQueues();
   }
 
@@ -31,6 +44,7 @@ export class EmailQueueService {
         backoff: options?.backoff || 'exponential',
         delay: options?.delay || 0,
         priority: options?.priority || 0,
+        timeout: options?.timeout || this.jobTimeoutMs,
         removeOnComplete: options?.removeOnComplete !== false,
         removeOnFail: options?.removeOnFail !== false,
       });
@@ -90,6 +104,7 @@ export class EmailQueueService {
    */
   async processEmailJob(job: any): Promise<EmailJobResult> {
     const startTime = Date.now();
+    const startingMemory = this.getMemoryUsageSnapshot();
 
     try {
       this.logger.log(`Processing email job`, {
@@ -97,28 +112,27 @@ export class EmailQueueService {
         type: job.data.type,
       });
 
-      let result: EmailJobResult;
-
-      switch (job.data.type) {
-        case 'single':
-          result = await this.processSingleEmail(job.data);
-          break;
-        case 'batch':
-          result = await this.processBatchEmail(job.data);
-          break;
-        case 'scheduled':
-          result = await this.processScheduledEmail(job.data);
-          break;
-        default:
-          throw new Error(`Unknown job type: ${job.data.type}`);
-      }
+      const result = await this.withJobTimeout(job, async () => {
+        switch (job.data.type) {
+          case 'single':
+            return this.processSingleEmail(job.data);
+          case 'batch':
+            return this.processBatchEmail(job.data);
+          case 'scheduled':
+            return this.processScheduledEmail(job.data);
+          default:
+            throw new Error(`Unknown job type: ${job.data.type}`);
+        }
+      });
 
       const processingTime = Date.now() - startTime;
+      const endingMemory = this.getMemoryUsageSnapshot();
 
       this.logger.log(`Email job completed successfully`, {
         jobId: job.id,
         processingTime,
         result: result.success ? 'success' : 'failed',
+        memoryDeltaMb: endingMemory.heapUsedMb - startingMemory.heapUsedMb,
       });
 
       return {
@@ -141,6 +155,8 @@ export class EmailQueueService {
         processingTime,
         jobId: job.id,
       };
+    } finally {
+      await this.cleanupJobResources(job);
     }
   }
 
@@ -388,8 +404,9 @@ export class EmailQueueService {
     this.emailQueue = new Bull('email', {
       redis: redisConfig,
       defaultJobOptions: {
-        removeOnComplete: 100,
-        removeOnFail: 50,
+        timeout: this.jobTimeoutMs,
+        removeOnComplete: this.completedJobRetention,
+        removeOnFail: this.failedJobRetention,
       },
     });
 
@@ -397,8 +414,9 @@ export class EmailQueueService {
     this.priorityQueue = new Bull('email-priority', {
       redis: redisConfig,
       defaultJobOptions: {
-        removeOnComplete: 100,
-        removeOnFail: 50,
+        timeout: this.jobTimeoutMs,
+        removeOnComplete: this.completedJobRetention,
+        removeOnFail: this.failedJobRetention,
       },
     });
 
@@ -406,8 +424,9 @@ export class EmailQueueService {
     this.batchQueue = new Bull('email-batch', {
       redis: redisConfig,
       defaultJobOptions: {
-        removeOnComplete: 100,
-        removeOnFail: 50,
+        timeout: this.jobTimeoutMs,
+        removeOnComplete: this.completedJobRetention,
+        removeOnFail: this.failedJobRetention,
       },
     });
 
@@ -418,6 +437,8 @@ export class EmailQueueService {
 
     // Set up event listeners
     this.setupEventListeners();
+    this.startMemoryMonitoring();
+    this.startQueueCleanupMonitoring();
 
     this.logger.log('Email queues initialized successfully');
   }
@@ -426,22 +447,31 @@ export class EmailQueueService {
    * Set up queue event listeners
    */
   private setupEventListeners(): void {
+    const registerListener = (
+      queue: Bull.Queue,
+      event: string,
+      handler: (...args: any[]) => void,
+    ) => {
+      queue.on(event, handler);
+      this.listenerDisposers.push(() => queue.removeListener(event, handler));
+    };
+
     // Default queue events
-    this.emailQueue.on('completed', (job, result) => {
+    registerListener(this.emailQueue, 'completed', (job, result) => {
       this.logger.debug(`Email job completed`, {
         jobId: job.id,
         result,
       });
     });
 
-    this.emailQueue.on('failed', (job, error) => {
+    registerListener(this.emailQueue, 'failed', (job, error) => {
       this.logger.error(`Email job failed`, error, {
         jobId: job.id,
         data: job.data,
       });
     });
 
-    this.emailQueue.on('stalled', job => {
+    registerListener(this.emailQueue, 'stalled', job => {
       this.logger.warn(`Email job stalled`, {
         jobId: job.id,
         data: job.data,
@@ -449,14 +479,14 @@ export class EmailQueueService {
     });
 
     // Priority queue events
-    this.priorityQueue.on('completed', (job, result) => {
+    registerListener(this.priorityQueue, 'completed', (job, result) => {
       this.logger.debug(`Priority email job completed`, {
         jobId: job.id,
         result,
       });
     });
 
-    this.priorityQueue.on('failed', (job, error) => {
+    registerListener(this.priorityQueue, 'failed', (job, error) => {
       this.logger.error(`Priority email job failed`, error, {
         jobId: job.id,
         data: job.data,
@@ -464,19 +494,89 @@ export class EmailQueueService {
     });
 
     // Batch queue events
-    this.batchQueue.on('completed', (job, result) => {
+    registerListener(this.batchQueue, 'completed', (job, result) => {
       this.logger.debug(`Batch email job completed`, {
         jobId: job.id,
         result,
       });
     });
 
-    this.batchQueue.on('failed', (job, error) => {
+    registerListener(this.batchQueue, 'failed', (job, error) => {
       this.logger.error(`Batch email job failed`, error, {
         jobId: job.id,
         data: job.data,
       });
     });
+  }
+
+  private startMemoryMonitoring(): void {
+    this.memoryMonitor = setInterval(() => {
+      const snapshot = this.getMemoryUsageSnapshot();
+      this.logger.debug(`Email queue memory usage`, snapshot);
+
+      if (snapshot.heapUsedMb >= this.memoryWarningThresholdMb) {
+        this.logger.warn(
+          `Email queue memory usage high: heap=${snapshot.heapUsedMb}MB rss=${snapshot.rssMb}MB threshold=${this.memoryWarningThresholdMb}MB`,
+        );
+      }
+    }, this.memoryMonitorIntervalMs);
+  }
+
+  private startQueueCleanupMonitoring(): void {
+    this.queueCleanupMonitor = setInterval(async () => {
+      try {
+        await Promise.all([
+          this.emailQueue.clean(24 * 60 * 60 * 1000, 'completed'),
+          this.emailQueue.clean(7 * 24 * 60 * 60 * 1000, 'failed'),
+          this.priorityQueue.clean(24 * 60 * 60 * 1000, 'completed'),
+          this.priorityQueue.clean(7 * 24 * 60 * 60 * 1000, 'failed'),
+          this.batchQueue.clean(24 * 60 * 60 * 1000, 'completed'),
+          this.batchQueue.clean(7 * 24 * 60 * 60 * 1000, 'failed'),
+        ]);
+      } catch (error) {
+        this.logger.error('Failed to clean queue history', error);
+      }
+    }, this.configService.get<number>('EMAIL_QUEUE_CLEANUP_INTERVAL_MS', 300000));
+  }
+
+  private async withJobTimeout<T>(job: any, operation: () => Promise<T>): Promise<T> {
+    return await Promise.race([
+      operation(),
+      new Promise<T>((_, reject) => {
+        const timeoutHandle = setTimeout(() => {
+          reject(new Error(`Email job ${job.id} timed out after ${this.jobTimeoutMs}ms`));
+        }, this.jobTimeoutMs);
+
+        // Keep the timer from retaining the event loop during shutdown.
+        timeoutHandle.unref?.();
+      }),
+    ]);
+  }
+
+  private async cleanupJobResources(job: any): Promise<void> {
+    try {
+      if (Array.isArray(job?.data?.emails)) {
+        job.data.emails.length = 0;
+      }
+
+      if (job?.data && typeof job.data === 'object') {
+        delete job.data.attachments;
+        delete job.data.html;
+        delete job.data.text;
+      }
+    } catch (error) {
+      this.logger.warn(`Failed to cleanup job resources for ${job?.id}: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  private getMemoryUsageSnapshot() {
+    const usage = process.memoryUsage();
+    return {
+      rssMb: Math.round(usage.rss / 1024 / 1024),
+      heapUsedMb: Math.round(usage.heapUsed / 1024 / 1024),
+      heapTotalMb: Math.round(usage.heapTotal / 1024 / 1024),
+      externalMb: Math.round(usage.external / 1024 / 1024),
+    };
   }
 
   /**
@@ -505,6 +605,21 @@ export class EmailQueueService {
    */
   async onModuleDestroy(): Promise<void> {
     this.logger.log('Closing email queues...');
+
+    if (this.memoryMonitor) {
+      clearInterval(this.memoryMonitor);
+      this.memoryMonitor = null;
+    }
+
+    if (this.queueCleanupMonitor) {
+      clearInterval(this.queueCleanupMonitor);
+      this.queueCleanupMonitor = null;
+    }
+
+    while (this.listenerDisposers.length > 0) {
+      const dispose = this.listenerDisposers.pop();
+      dispose?.();
+    }
 
     await Promise.all([this.emailQueue.close(), this.priorityQueue.close(), this.batchQueue.close()]);
 
