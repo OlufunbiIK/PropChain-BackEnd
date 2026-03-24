@@ -60,10 +60,11 @@ import { ObservabilityModule } from './observability/observability.module';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration, valuationConfig],
-      envFilePath: ['.env.local', '.env.development', '.env'],
+      envFilePath: [`.env.${process.env.NODE_ENV || 'development'}.local`, `.env.${process.env.NODE_ENV || 'development'}`, '.env.local', '.env'],
       cache: true, // Enable configuration caching
       expandVariables: true, // Allow environment variable expansion
     }),
+
     ConfigurationModule,
 
     // I18n

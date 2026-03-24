@@ -27,17 +27,34 @@ async function bootstrap() {
   const isProduction = configService.get('NODE_ENV') === 'production';
 
   // Get environment-specific security headers configuration
+  // Get environment-specific security headers configuration
   const securityConfig = isProduction
     ? undefined // Use default production config
     : securityHeadersService.getDevelopmentConfig();
 
-  // Validate configuration in production
+  // Global environment validation
+  const { EnvValidator } = await import('./config/utils/env.validator');
+  EnvValidator.initialize(configService);
+  const validation = EnvValidator.validateOnStartup();
+
+  if (!validation.isValid) {
+    logger.error('❌ Configuration validation failed:', validation.errors.join('\n'), {});
+    if (isProduction) {
+      logger.error('Critical configuration missing. Shutting down.', '', {});
+      process.exit(1);
+    }
+  } else {
+    logger.log('✅ Configuration validation passed');
+  }
+
+  // Handle security config warnings
   if (isProduction) {
     const configErrors = securityHeadersService.validateConfig(securityHeadersService['defaultConfig']);
     if (configErrors.length > 0) {
       logger.warn(`Security configuration warnings: ${configErrors.join(', ')}`);
     }
   }
+
 
   // Apply security headers middleware
   const securityHeaders = securityHeadersService.getSecurityHeaders(securityConfig);
