@@ -5,15 +5,14 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 
-// Common SQL injection patterns
-const SQL_INJECTION_PATTERNS = [
-  /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION|SCRIPT)\b)/gi,
-  /(;|\-\-|\#|\/\*|\*\/)/g,
-  /(\b(OR|AND)\b\s*\d+\s*[=<>]\s*\d+)/gi,
-  /(=\s*'?\d+'\s*(OR|AND))/gi,
-  /(--|#|\/\*|\*\/)/g,
-  /\b(OR|AND)\b\s+1\s*=\s*1/gi,
-  /\b(OR|AND)\b\s+'1'\s*=\s*'1'/gi,
+export const SQL_INJECTION_PATTERNS = [
+  /\b(?:UNION)(?:\s+ALL)?\s+SELECT\b/i,
+  /(?:'|"|`)\s*(?:OR|AND)\s*(?:'[^']*'|"[^"]*"|`[^`]*`|\d+)\s*=\s*(?:'[^']*'|"[^"]*"|`[^`]*`|\d+)/i,
+  /\b(?:OR|AND)\b\s+\d+\s*=\s*\d+/i,
+  /;\s*(?:DROP|DELETE|INSERT|UPDATE|ALTER|CREATE|TRUNCATE|EXEC(?:UTE)?)\b/i,
+  /--\s*$/i,
+  /\/\*[\s\S]*\*\//i,
+  /\b(?:xp_cmdshell|information_schema|pg_sleep|sleep)\b/i,
 ];
 
 /**

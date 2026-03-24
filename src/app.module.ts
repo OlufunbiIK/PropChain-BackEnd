@@ -50,6 +50,7 @@ import { AuditController } from './common/controllers/audit.controller';
 // Middleware
 import { AuthRateLimitMiddleware } from './auth/middleware/auth.middleware';
 import { HeaderValidationMiddleware } from './security/middleware/header-validation.middleware';
+import { RequestValidationInterceptor } from './security/api/request.validation';
 import { ObservabilityModule } from './observability/observability.module';
 
 @Module({
@@ -130,6 +131,10 @@ import { ObservabilityModule } from './observability/observability.module';
     AuditController, // Add the audit controller
   ],
   providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: RequestValidationInterceptor,
+    },
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor,

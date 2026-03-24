@@ -6,6 +6,18 @@ import {
 } from 'class-validator';
 import * as xss from 'xss';
 
+export const XSS_PATTERNS = [
+  /<script[\s>]/i,
+  /<iframe[\s>]/i,
+  /<object[\s>]/i,
+  /<embed[\s>]/i,
+  /<form[\s>].*?javascript:/i,
+  /javascript:/i,
+  /vbscript:/i,
+  /data:text\/html/i,
+  /onload\s*=|onerror\s*=|onclick\s*=|onmouseover\s*=|onfocus\s*=|onblur\s*=/i,
+];
+
 /**
  * Custom validator constraint for XSS protection
  */
@@ -16,21 +28,7 @@ export class XssValidatorConstraint implements ValidatorConstraintInterface {
       return true; // Only validate strings
     }
 
-    // Check if value contains potential XSS patterns
-    // Instead of sanitizing, we'll check for dangerous patterns
-    const dangerousPatterns = [
-      /<script[\s>]/i, // Script tags
-      /<iframe[\s>]/i, // Iframe tags
-      /<object[\s>]/i, // Object tags
-      /<embed[\s>]/i, // Embed tags
-      /<form[\s>].*?javascript:/i, // Form with JS
-      /javascript:/i, // JavaScript protocol
-      /vbscript:/i, // VBScript protocol
-      /data:text\/html/i, // Data HTML URIs
-      /onload\s*=|onerror\s*=|onclick\s*=|onmouseover\s*=|onfocus\s*=|onblur\s*=/i, // Event handlers
-    ];
-
-    for (const pattern of dangerousPatterns) {
+    for (const pattern of XSS_PATTERNS) {
       if (pattern.test(value)) {
         return false;
       }

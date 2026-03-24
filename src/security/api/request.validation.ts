@@ -1,5 +1,6 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler, BadRequestException } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { InputSanitizationService } from '../services/input-sanitization.service';
 
 /**
  * Request Validation and Sanitization Interceptor
@@ -8,6 +9,8 @@ import { Observable } from 'rxjs';
  */
 @Injectable()
 export class RequestValidationInterceptor implements NestInterceptor {
+  constructor(private readonly inputSanitizationService: InputSanitizationService) {}
+
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
 
@@ -21,69 +24,23 @@ export class RequestValidationInterceptor implements NestInterceptor {
    * Validate and sanitize request data
    */
   private validateAndSanitizeRequest(request: any): void {
-    // Sanitize query parameters
-    if (request.query) {
-      request.query = this.sanitizeObject(request.query);
-    }
-
-    // Sanitize request body
-    if (request.body) {
-      request.body = this.sanitizeObject(request.body);
-    }
-
-    // Sanitize path parameters
-    if (request.params) {
-      request.params = this.sanitizeObject(request.params);
-    }
-
     // Validate request size
     this.validateRequestSize(request);
 
-    // Check for potential injection attacks
-    this.checkForInjectionAttacks(request);
-  }
-
-  /**
-   * Sanitize object values
-   */
-  private sanitizeObject(obj: any): any {
-    if (typeof obj !== 'object' || obj === null) {
-      return obj;
+    if (request.query) {
+      this.inputSanitizationService.assertSafeRequestPayload(request.query, 'request.query');
+      request.query = this.inputSanitizationService.sanitizeRequestPayload(request.query);
     }
 
-    const sanitized: any = Array.isArray(obj) ? [] : {};
-
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        const value = obj[key];
-
-        if (typeof value === 'string') {
-          // Remove potentially dangerous characters
-          sanitized[key] = this.sanitizeString(value);
-        } else if (typeof value === 'object' && value !== null) {
-          sanitized[key] = this.sanitizeObject(value);
-        } else {
-          sanitized[key] = value;
-        }
-      }
+    if (request.body) {
+      this.inputSanitizationService.assertSafeRequestPayload(request.body, 'request.body');
+      request.body = this.inputSanitizationService.sanitizeRequestPayload(request.body);
     }
 
-    return sanitized;
-  }
-
-  /**
-   * Sanitize string values
-   */
-  private sanitizeString(str: string): string {
-    return (
-      str
-        // Remove null bytes
-        .replace(/\x00/g, '')
-        // Remove control characters except newlines and tabs
-        .replace(/[\x01-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
-        // Trim whitespace
-        .trim()
-    );
+    if (request.params) {
+      this.inputSanitizationService.assertSafeRequestPayload(request.params, 'request.params');
+      request.params = this.inputSanitizationService.sanitizeRequestPayload(request.params);
+    }
   }
 
   /**
@@ -91,48 +48,15 @@ export class RequestValidationInterceptor implements NestInterceptor {
    */
   private validateRequestSize(request: any): void {
     const maxSize = 10 * 1024 * 1024; // 10MB
-    const size = JSON.stringify(request).length;
+    const payload = {
+      body: request.body,
+      params: request.params,
+      query: request.query,
+    };
+    const size = Buffer.byteLength(JSON.stringify(payload ?? {}), 'utf8');
 
     if (size > maxSize) {
       throw new BadRequestException('Request size exceeds maximum allowed size');
     }
-  }
-
-  /**
-   * Check for potential injection attacks
-   */
-  private checkForInjectionAttacks(request: any): void {
-    const suspiciousPatterns = [
-      /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-      /javascript:/gi,
-      /on\w+\s*=/gi,
-      /eval\s*\(/gi,
-      /expression\s*\(/gi,
-      /union\s+select/gi,
-      /drop\s+table/gi,
-      /delete\s+from/gi,
-      /insert\s+into/gi,
-      /update\s+set/gi,
-      /exec\s*\(/gi,
-      /system\s*\(/gi,
-    ];
-
-    const checkValue = (value: any, path: string): void => {
-      if (typeof value === 'string') {
-        for (const pattern of suspiciousPatterns) {
-          if (pattern.test(value)) {
-            throw new BadRequestException(`Potential injection attack detected in ${path}`);
-          }
-        }
-      } else if (typeof value === 'object' && value !== null) {
-        for (const key in value) {
-          if (value.hasOwnProperty(key)) {
-            checkValue(value[key], `${path}.${key}`);
-          }
-        }
-      }
-    };
-
-    checkValue(request, 'request');
   }
 }

@@ -48,6 +48,10 @@ export interface SecurityHeadersConfig {
   featurePolicy?: {
     [key: string]: string[];
   };
+
+  crossOriginOpenerPolicy?: string;
+  crossOriginResourcePolicy?: string;
+  originAgentCluster?: boolean;
 }
 
 @Injectable()
@@ -113,6 +117,12 @@ export class SecurityHeadersService {
       headers['X-Download-Options'] = 'noopen';
       headers['X-Permitted-Cross-Domain-Policies'] = 'none';
       headers['X-DNS-Prefetch-Control'] = 'off';
+      headers['Cross-Origin-Opener-Policy'] = config.crossOriginOpenerPolicy || 'same-origin';
+      headers['Cross-Origin-Resource-Policy'] = config.crossOriginResourcePolicy || 'same-origin';
+
+      if (config.originAgentCluster !== false) {
+        headers['Origin-Agent-Cluster'] = '?1';
+      }
 
       return headers;
     } catch (error) {
@@ -249,6 +259,9 @@ export class SecurityHeadersService {
         fullscreen: ["'self'"],
         payment: [],
       },
+      crossOriginOpenerPolicy: 'same-origin',
+      crossOriginResourcePolicy: 'same-origin',
+      originAgentCluster: true,
     };
   }
 
@@ -283,6 +296,9 @@ export class SecurityHeadersService {
       contentTypeOptions: true,
       xssProtection: true,
       referrerPolicy: 'strict-origin-when-cross-origin',
+      crossOriginOpenerPolicy: 'same-origin-allow-popups',
+      crossOriginResourcePolicy: 'cross-origin',
+      originAgentCluster: true,
     };
   }
 
