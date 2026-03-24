@@ -10,6 +10,7 @@ import { CreatePropertyDto, PropertyStatus as DTOPropertyStatus } from './dto/cr
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { PropertyQueryDto } from './dto/property-query.dto';
 import { ConfigService } from '@nestjs/config';
+import { MultiLevelCacheService } from '../common/cache/multi-level-cache.service';
 
 @Injectable()
 export class PropertiesService {
@@ -18,6 +19,7 @@ export class PropertiesService {
   constructor(
     private prisma: PrismaService,
     private configService: ConfigService,
+    private readonly cacheService: MultiLevelCacheService,
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto, ownerId: string) {
@@ -51,6 +53,8 @@ export class PropertiesService {
           },
         },
       });
+
+      await this.invalidatePropertyReadCaches(property.id);
 
       this.logger.log(`Property created: ${property.id} by user ${ownerId}`);
       return property;
@@ -159,27 +163,37 @@ export class PropertiesService {
       where.ownerId = ownerId;
     }
 
-    try {
-      const [properties, total] = await Promise.all([
-        (this.prisma as any).property.findMany({
-          where,
-          skip,
-          take: limit,
-          orderBy: { [sortBy]: sortOrder },
-          include: {
-            owner: { select: { id: true, email: true, role: true } },
-          },
-        }),
-        (this.prisma as any).property.count({ where }),
-      ]);
+    const cacheKey = this.buildPropertyListCacheKey(query);
 
-      return {
-        properties,
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-      };
+    try {
+      return await this.cacheService.wrap(
+        cacheKey,
+        async () =>
+          this.monitorQuery('properties.findAll', { cacheKey, page, limit }, async () => {
+            const [properties, total] = await Promise.all([
+              (this.prisma as any).property.findMany({
+                where,
+                skip,
+                take: limit,
+                orderBy: { [sortBy]: sortOrder },
+                relationLoadStrategy: 'join',
+                include: {
+                  owner: { select: { id: true, email: true, role: true } },
+                },
+              }),
+              (this.prisma as any).property.count({ where }),
+            ]);
+
+            return {
+              properties,
+              total,
+              page,
+              limit,
+              totalPages: Math.ceil(total / limit),
+            };
+          }),
+        { l1Ttl: 60, l2Ttl: 300, tags: ['property', 'property:list'] },
+      );
     } catch (error) {
       this.logger.error('Failed to fetch properties', error);
       throw new InvalidInputException(undefined, 'Failed to fetch properties');
@@ -187,15 +201,25 @@ export class PropertiesService {
   }
 
   async findOne(id: string) {
+    const cacheKey = `property:detail:${id}`;
+
     try {
-      const property = await (this.prisma as any).property.findUnique({
-        where: { id },
-        include: {
-          owner: { select: { id: true, email: true, role: true } },
-          documents: { select: { id: true, name: true, type: true, status: true, createdAt: true } },
-          valuations: { orderBy: { valuationDate: 'desc' }, take: 5 },
-        },
-      });
+      const property = await this.cacheService.wrap(
+        cacheKey,
+        async () =>
+          this.monitorQuery('properties.findOne', { propertyId: id }, async () =>
+            (this.prisma as any).property.findUnique({
+              where: { id },
+              relationLoadStrategy: 'join',
+              include: {
+                owner: { select: { id: true, email: true, role: true } },
+                documents: { select: { id: true, name: true, type: true, status: true, createdAt: true } },
+                valuations: { orderBy: { valuationDate: 'desc' }, take: 5 },
+              },
+            }),
+          ),
+        { l1Ttl: 60, l2Ttl: 300, tags: ['property', `property:${id}`] },
+      );
 
       if (!property) {
         throw new NotFoundException(`Property with ID ${id} not found`);
@@ -254,10 +278,13 @@ export class PropertiesService {
       const property = await (this.prisma as any).property.update({
         where: { id },
         data: updateData,
+        relationLoadStrategy: 'join',
         include: {
           owner: { select: { id: true, email: true, role: true } },
         },
       });
+
+      await this.invalidatePropertyReadCaches(id);
 
       this.logger.log(`Property updated: ${property.id}`);
       return property;
@@ -283,6 +310,8 @@ export class PropertiesService {
       await (this.prisma as any).property.delete({
         where: { id },
       });
+
+      await this.invalidatePropertyReadCaches(id);
 
       this.logger.log(`Property deleted: ${id}`);
     } catch (error) {
@@ -350,14 +379,24 @@ export class PropertiesService {
         }
       }
 
-      const properties = await (this.prisma as any).property.findMany({
-        where,
-        include: {
-          owner: { select: { id: true, email: true, role: true } },
-        },
-      });
+      const cacheKey = this.buildPropertyNearbyCacheKey(latitude, longitude, _radiusKm, query);
 
-      return { properties, total: properties.length };
+      return await this.cacheService.wrap(
+        cacheKey,
+        async () =>
+          this.monitorQuery('properties.searchNearby', { cacheKey }, async () => {
+            const properties = await (this.prisma as any).property.findMany({
+              where,
+              relationLoadStrategy: 'join',
+              include: {
+                owner: { select: { id: true, email: true, role: true } },
+              },
+            });
+
+            return { properties, total: properties.length };
+          }),
+        { l1Ttl: 60, l2Ttl: 180, tags: ['property', 'property:nearby'] },
+      );
     } catch (error) {
       this.logger.error('Failed to search nearby properties', error);
       throw new InvalidInputException(undefined, 'Failed to search nearby properties');
@@ -384,10 +423,13 @@ export class PropertiesService {
       const updatedProperty = await (this.prisma as any).property.update({
         where: { id },
         data: { status: targetStatus },
+        relationLoadStrategy: 'join',
         include: {
           owner: { select: { id: true, email: true, role: true } },
         },
       });
+
+      await this.invalidatePropertyReadCaches(id);
 
       this.logger.log(
         `Property status updated: ${id} from ${currentStatus} to ${targetStatus}${userId ? ` by user ${userId}` : ''}`,
@@ -420,40 +462,46 @@ export class PropertiesService {
     byType: Record<string, number>;
     averagePrice: number;
   }> {
+    const cacheKey = 'property:stats';
+
     try {
-      const [total, avgPrice] = await Promise.all([
-        (this.prisma as any).property.count(),
-        (this.prisma as any).property.aggregate({ _avg: { price: true } }),
-        (this.prisma as any).property.count({ where: { status: 'LISTED' } }),
-      ]);
+      return await this.cacheService.wrap(
+        cacheKey,
+        async () =>
+          this.monitorQuery('properties.getStatistics', { cacheKey }, async () => {
+            const [total, avgPrice, statusResult, typeResult] = await Promise.all([
+              (this.prisma as any).property.count(),
+              (this.prisma as any).property.aggregate({ _avg: { price: true } }),
+              (this.prisma as any).property.groupBy({
+                by: ['status'],
+                _count: { id: true },
+              }),
+              (this.prisma as any).property.groupBy({
+                by: ['propertyType'],
+                _count: { id: true },
+              }),
+            ]);
 
-      const statusResult = await (this.prisma as any).property.groupBy({
-        by: ['status'],
-        _count: { id: true },
-      });
+            const byStatus = (statusResult || []).reduce(
+              (acc: Record<string, number>, item: { status: string; _count: { id: number } | number }) => {
+                acc[item.status] = typeof item._count === 'number' ? item._count : item._count.id;
+                return acc;
+              },
+              {} as Record<string, number>,
+            );
 
-      const typeResult = await (this.prisma as any).property.groupBy({
-        by: ['propertyType'],
-        _count: { id: true },
-      });
+            const byType = (typeResult || []).reduce(
+              (acc: Record<string, number>, item: { propertyType: string; _count: { id: number } | number }) => {
+                acc[item.propertyType] = typeof item._count === 'number' ? item._count : item._count.id;
+                return acc;
+              },
+              {} as Record<string, number>,
+            );
 
-      const byStatus = (statusResult || []).reduce(
-        (acc: Record<string, number>, item: { status: string; _count: number }) => {
-          acc[item.status] = item._count;
-          return acc;
-        },
-        {} as Record<string, number>,
+            return { total, byStatus, byType, averagePrice: Number(avgPrice._avg.price || 0) };
+          }),
+        { l1Ttl: 120, l2Ttl: 600, tags: ['property', 'property:stats'] },
       );
-
-      const byType = (typeResult || []).reduce(
-        (acc: Record<string, number>, item: { propertyType: string; _count: number }) => {
-          acc[item.propertyType] = item._count;
-          return acc;
-        },
-        {} as Record<string, number>,
-      );
-
-      return { total, byStatus, byType, averagePrice: Number(avgPrice._avg.price || 0) };
     } catch (error) {
       this.logger.error('Failed to fetch property statistics', error);
       throw new InvalidInputException(undefined, 'Failed to fetch property statistics');
@@ -485,5 +533,66 @@ export class PropertiesService {
       REMOVED: ['REMOVED', 'DRAFT'],
     };
     return validTransitions[currentStatus]?.includes(targetStatus) || false;
+  }
+
+  private async monitorQuery<T>(
+    operation: string,
+    metadata: Record<string, unknown>,
+    query: () => Promise<T>,
+  ): Promise<T> {
+    const startedAt = Date.now();
+
+    try {
+      const result = await query();
+      const duration = Date.now() - startedAt;
+      const slowThreshold = this.configService.get<number>('SLOW_QUERY_THRESHOLD', 500);
+
+      if (duration >= slowThreshold) {
+        this.logger.warn(`Slow query detected for ${operation}: ${duration}ms ${JSON.stringify(metadata)}`);
+      } else {
+        this.logger.debug(`Query completed for ${operation}: ${duration}ms`);
+      }
+
+      return result;
+    } catch (error) {
+      const duration = Date.now() - startedAt;
+      this.logger.error(`Query failed for ${operation} after ${duration}ms`, error instanceof Error ? error.stack : '');
+      throw error;
+    }
+  }
+
+  private buildPropertyListCacheKey(query?: PropertyQueryDto): string {
+    return `property:list:${this.serializeCacheInput(query || {})}`;
+  }
+
+  private buildPropertyNearbyCacheKey(
+    latitude: number,
+    longitude: number,
+    radiusKm: number,
+    query?: PropertyQueryDto,
+  ): string {
+    return `property:nearby:${latitude}:${longitude}:${radiusKm}:${this.serializeCacheInput(query || {})}`;
+  }
+
+  private serializeCacheInput(input: Record<string, unknown>): string {
+    return Object.entries(input)
+      .filter(([, value]) => value !== undefined && value !== null)
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, value]) => `${key}=${Array.isArray(value) ? value.join(',') : String(value)}`)
+      .join('|');
+  }
+
+  private async invalidatePropertyReadCaches(propertyId?: string): Promise<void> {
+    const invalidations: Promise<unknown>[] = [
+      this.cacheService.invalidateByPattern('property:list:*'),
+      this.cacheService.invalidateByPattern('property:nearby:*'),
+      this.cacheService.del('property:stats'),
+    ];
+
+    if (propertyId) {
+      invalidations.push(this.cacheService.del(`property:detail:${propertyId}`));
+    }
+
+    await Promise.all(invalidations);
   }
 }
