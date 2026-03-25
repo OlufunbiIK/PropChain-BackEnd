@@ -52,7 +52,7 @@
     "db:backup": "bash scripts/backup.sh",
     "db:restore": "bash scripts/restore.sh",
     "db:benchmark": "ts-node test/database/performance.benchmark.ts",
-    "loadtest:ci": "mkdir -p artifacts && docker run --rm -i -e API_URL=${API_URL:-http://localhost:3000} -v \"$PWD:/work\" -w /work grafana/k6 run --out json=artifacts/k6-results.json loadtests/propchain-loadtest.js",
+    "loadtest:ci": "bash scripts/loadtest-ci.sh",
     "docs:generate": "typedoc --skipErrorChecking"
   },
   "dependencies": {
