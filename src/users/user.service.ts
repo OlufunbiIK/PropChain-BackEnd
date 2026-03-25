@@ -67,6 +67,30 @@ export class UserService {
    * });
    * ```
    */
+  /**
+   * Create a new user account
+   *
+   * Performs comprehensive validation:
+   * - Password strength (minimum 8 chars, mixed case, numbers, special chars)
+   * - Email and wallet address uniqueness
+   *
+   * Passwords are hashed using bcrypt with saltRounds from config (default: 12).
+   * Default role is 'USER' - can be elevated by administrators.
+   *
+   * @param {CreateUserDto} createUserDto - User data (email, password, walletAddress)
+   * @returns {Promise<User>} Created user object (password removed from response)
+   * @throws {BadRequestException} If password doesn't meet strength requirements
+   * @throws {ConflictException} If email or wallet already registered
+   *
+   * @example
+   * ```typescript
+   * const user = await userService.create({
+   *   email: 'newuser@example.com',
+   *   password: 'SecurePass123!',
+   *   walletAddress: '0x742d3...6cA6'
+   * });
+   * ```
+   */
   async create(createUserDto: CreateUserDto) {
     const { email, password, walletAddress } = createUserDto;
 
@@ -162,6 +186,22 @@ export class UserService {
    * @example
    * ```typescript
    * const user = await userService.findById('clx123abc');
+   * ```
+   */
+  /**
+   * Find user by unique identifier
+   *
+   * Uses multi-level cache (L1 memory, L2 Redis) to optimize performance.
+   * Automatically handles cache population and revalidation.
+   *
+   * @param {string} id - The user UUID
+   * @returns {Promise<User>} The user entity
+   * @throws {NotFoundException} If user does not exist
+   *
+   * @example
+   * ```typescript
+   * const user = await userService.findById('clx123abc');
+   * console.log(user.email);
    * ```
    */
   async findById(id: string) {

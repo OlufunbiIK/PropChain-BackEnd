@@ -1,0 +1,119 @@
+﻿npx : FAIL 
+test/communication/email.queue.spec.ts (11.515 
+s)
+At line:1 char:1
++ npx jest 
+test/communication/email.queue.spec.ts --config 
+./jest.confi ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (FA 
+   IL test/commu...c.ts (11.515 s):String) [],  
+   RemoteException
+    + FullyQualifiedErrorId : NativeCommandErro 
+   r
+ 
+  EmailQueueService
+    ├ù applies timeout defaults when adding 
+jobs (12 ms)
+    ├ù fails jobs that exceed the configured 
+timeout (5 ms)
+    ├ù removes listeners and clears monitors 
+during shutdown (5 ms)
+
+  ΓùÅ EmailQueueService ΓÇ║ applies timeout 
+defaults when adding jobs
+
+    TypeError: bull_1.default is not a 
+constructor
+
+    [0m [90m 401 |[39m
+     [90m 402 |[39m     [90m// Default email 
+queue[39m
+    [31m[1m>[22m[39m[90m 403 |[39m     
+[36mthis[39m[33m.[39memailQueue [33m=[39m 
+[36mnew[39m 
+[33mBull[39m([32m'email'[39m[33m,[39m {
+     [90m     |[39m                       
+[31m[1m^[22m[39m
+     [90m 404 |[39m       redis[33m:[39m 
+redisConfig[33m,[39m
+     [90m 405 |[39m       
+defaultJobOptions[33m:[39m {
+     [90m 406 |[39m         
+timeout[33m:[39m [36mthis[39m[33m.[39mjobT
+imeoutMs[33m,[39m[0m
+
+      at EmailQueueService.initializeQueues 
+(src/communication/email/email.queue.ts:403:23)
+      at new EmailQueueService 
+(src/communication/email/email.queue.ts:31:10)
+      at Object.<anonymous> 
+(test/communication/email.queue.spec.ts:58:21)
+
+  ΓùÅ EmailQueueService ΓÇ║ fails jobs that 
+exceed the configured timeout
+
+    TypeError: bull_1.default is not a 
+constructor
+
+    [0m [90m 401 |[39m
+     [90m 402 |[39m     [90m// Default email 
+queue[39m
+    [31m[1m>[22m[39m[90m 403 |[39m     
+[36mthis[39m[33m.[39memailQueue [33m=[39m 
+[36mnew[39m 
+[33mBull[39m([32m'email'[39m[33m,[39m {
+     [90m     |[39m                       
+[31m[1m^[22m[39m
+     [90m 404 |[39m       redis[33m:[39m 
+redisConfig[33m,[39m
+     [90m 405 |[39m       
+defaultJobOptions[33m:[39m {
+     [90m 406 |[39m         
+timeout[33m:[39m [36mthis[39m[33m.[39mjobT
+imeoutMs[33m,[39m[0m
+
+      at EmailQueueService.initializeQueues 
+(src/communication/email/email.queue.ts:403:23)
+      at new EmailQueueService 
+(src/communication/email/email.queue.ts:31:10)
+      at Object.<anonymous> 
+(test/communication/email.queue.spec.ts:71:21)
+
+  ΓùÅ EmailQueueService ΓÇ║ removes listeners 
+and clears monitors during shutdown
+
+    TypeError: bull_1.default is not a 
+constructor
+
+    [0m [90m 401 |[39m
+     [90m 402 |[39m     [90m// Default email 
+queue[39m
+    [31m[1m>[22m[39m[90m 403 |[39m     
+[36mthis[39m[33m.[39memailQueue [33m=[39m 
+[36mnew[39m 
+[33mBull[39m([32m'email'[39m[33m,[39m {
+     [90m     |[39m                       
+[31m[1m^[22m[39m
+     [90m 404 |[39m       redis[33m:[39m 
+redisConfig[33m,[39m
+     [90m 405 |[39m       
+defaultJobOptions[33m:[39m {
+     [90m 406 |[39m         
+timeout[33m:[39m [36mthis[39m[33m.[39mjobT
+imeoutMs[33m,[39m[0m
+
+      at EmailQueueService.initializeQueues 
+(src/communication/email/email.queue.ts:403:23)
+      at new EmailQueueService 
+(src/communication/email/email.queue.ts:31:10)
+      at Object.<anonymous> 
+(test/communication/email.queue.spec.ts:89:21)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 3 total
+Snapshots:   0 total
+Time:        12.124 s, estimated 17 s
+Ran all test suites matching 
+/test\\communication\\email.queue.spec.ts/i.

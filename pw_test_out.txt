@@ -1,0 +1,205 @@
+﻿npx : FAIL 
+test/common/password-rotation.service.spec.ts 
+(10.545 s)
+At line:1 char:1
++ npx jest 
+test/common/password-rotation.service.spec.ts 
+--config ./jes ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (FA 
+   IL test/commo...c.ts (10.545 s):String) [],  
+   RemoteException
+    + FullyQualifiedErrorId : NativeCommandErro 
+   r
+ 
+  PasswordRotationService
+    ΓêÜ should be defined (24 ms)
+    checkRotationStatus
+      ΓêÜ should return canRotate false when 
+user not found (12 ms)
+      ΓêÜ should return canRotate false when 
+user has no password (9 ms)
+      ΓêÜ should return expired status when 
+password has expired (8 ms)
+      ├ù should return valid status with days 
+until expiry (12 ms)
+      ├ù should use password history date when 
+available (16 ms)
+    validatePasswordNotInHistory
+      ΓêÜ should return valid true when history 
+is empty (7 ms)
+      ΓêÜ should return valid true when 
+password not in history (7 ms)
+      ΓêÜ should return valid false when 
+password matches history (6 ms)
+      ΓêÜ should respect custom password 
+history count (7 ms)
+    addPasswordToHistory
+      ΓêÜ should add password to history and 
+not delete when under limit (6 ms)
+      ΓêÜ should delete old entries when over 
+limit (5 ms)
+    validatePasswordRotation
+      ΓêÜ should return invalid when rotation 
+status cannot rotate (5 ms)
+      ΓêÜ should return invalid when password 
+is in history (8 ms)
+      ΓêÜ should return valid when all checks 
+pass (7 ms)
+    getPasswordHistory
+      ΓêÜ should return password history with 
+default limit (6 ms)
+      ΓêÜ should return password history with 
+custom limit (6 ms)
+      ΓêÜ should select only required fields 
+(15 ms)
+    clearPasswordHistory
+      ΓêÜ should delete all password history 
+for user (6 ms)
+    getUsersWithExpiredPasswords
+      ΓêÜ should return empty array when no 
+users have expired passwords (6 ms)
+      ├ù should return users with expired 
+passwords (8 ms)
+      ├ù should use password history date for 
+expiry calculation (5 ms)
+      ΓêÜ should only include users with 
+passwords (5 ms)
+    requiresPasswordRotation
+      ΓêÜ should return false when user not 
+found (5 ms)
+      ΓêÜ should return false when user has no 
+password (5 ms)
+      ΓêÜ should return true when password is 
+expired (4 ms)
+      ΓêÜ should return true when within 
+warning period (7 ms)
+      ΓêÜ should return false when not in 
+warning period and not expired (6 ms)
+      ΓêÜ should use custom warning days from 
+config (7 ms)
+
+  ΓùÅ PasswordRotationService ΓÇ║ 
+checkRotationStatus ΓÇ║ should return valid 
+status with days until expiry
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: 60
+    Received: 61
+
+    [0m [90m 126 |[39m
+     [90m 127 |[39m       expect(result[33m.
+[39mcanRotate)[33m.[39mtoBe([36mtrue[39m)[3
+3m;[39m
+    [31m[1m>[22m[39m[90m 128 |[39m       e
+xpect(result[33m.[39mdaysUntilExpiry)[33m.[3
+9mtoBe([35m60[39m)[33m;[39m [90m// 90 - 
+30[39m
+     [90m     |[39m                           
+           [31m[1m^[22m[39m
+     [90m 129 |[39m       expect(result[33m.
+[39mreason)[33m.[39mtoBeUndefined()[33m;[39m
+     [90m 130 |[39m     })[33m;[39m
+     [90m 131 |[39m[0m
+
+      at Object.<anonymous> (test/common/passwor
+d-rotation.service.spec.ts:128:38)
+
+  ΓùÅ PasswordRotationService ΓÇ║ 
+checkRotationStatus ΓÇ║ should use password 
+history date when available
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: 60
+    Received: 61
+
+    [0m [90m 148 |[39m
+     [90m 149 |[39m       expect(result[33m.
+[39mcanRotate)[33m.[39mtoBe([36mtrue[39m)[3
+3m;[39m
+    [31m[1m>[22m[39m[90m 150 |[39m       e
+xpect(result[33m.[39mdaysUntilExpiry)[33m.[3
+9mtoBe([35m60[39m)[33m;[39m [90m// 90 - 30 
+(from password change date)[39m
+     [90m     |[39m                           
+           [31m[1m^[22m[39m
+     [90m 151 |[39m       expect(result[33m.
+[39mlastRotation)[33m.[39mtoEqual(passwordChan
+geDate)[33m;[39m
+     [90m 152 |[39m     })[33m;[39m
+     [90m 153 |[39m   })[33m;[39m[0m
+
+      at Object.<anonymous> (test/common/passwor
+d-rotation.service.spec.ts:150:38)
+
+  ΓùÅ PasswordRotationService ΓÇ║ 
+getUsersWithExpiredPasswords ΓÇ║ should return 
+users with expired passwords
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: 10
+    Received: 9
+
+    [0m [90m 399 |[39m       expect(result[[
+35m0[39m][33m.[39muserId)[33m.[39mtoBe([32
+m'user-1'[39m)[33m;[39m
+     [90m 400 |[39m       expect(result[[35m0
+[39m][33m.[39memail)[33m.[39mtoBe([32m'exp
+ired@example.com'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 401 |[39m       e
+xpect(result[[35m0[39m][33m.[39mdaysExpired)
+[33m.[39mtoBe([35m10[39m)[33m;[39m 
+[90m// 100 - 90[39m
+     [90m     |[39m                           
+          [31m[1m^[22m[39m
+     [90m 402 |[39m     })[33m;[39m
+     [90m 403 |[39m
+     [90m 404 |[39m     it([32m'should use 
+password history date for expiry 
+calculation'[39m[33m,[39m [36masync[39m () 
+[33m=>[39m {[0m
+
+      at Object.<anonymous> (test/common/passwor
+d-rotation.service.spec.ts:401:37)
+
+  ΓùÅ PasswordRotationService ΓÇ║ 
+getUsersWithExpiredPasswords ΓÇ║ should use 
+password history date for expiry calculation
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: 10
+    Received: 9
+
+    [0m [90m 422 |[39m
+     [90m 423 |[39m       expect(result)[33m.
+[39mtoHaveLength([35m1[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 424 |[39m       e
+xpect(result[[35m0[39m][33m.[39mdaysExpired)
+[33m.[39mtoBe([35m10[39m)[33m;[39m 
+[90m// 100 - 90[39m
+     [90m     |[39m                           
+          [31m[1m^[22m[39m
+     [90m 425 |[39m     })[33m;[39m
+     [90m 426 |[39m
+     [90m 427 |[39m     it([32m'should only 
+include users with passwords'[39m[33m,[39m 
+[36masync[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> (test/common/passwor
+d-rotation.service.spec.ts:424:37)
+
+Test Suites: 1 failed, 1 total
+Tests:       4 failed, 25 passed, 29 total
+Snapshots:   0 total
+Time:        11.132 s, estimated 19 s
+Ran all test suites matching /test\\common\\pass
+word-rotation.service.spec.ts/i.

@@ -51,10 +51,17 @@ import { AuditController } from './common/controllers/audit.controller';
 // API Versioning
 import { ApiVersionModule } from './common/api-version';
 
+// Feature Flags
+import { FeatureFlagModule } from './feature-flags/feature-flag.module';
+
+// Static Cache
+import { StaticCacheModule } from './static-cache/static-cache.module';
+
 // Middleware
 import { AuthRateLimitMiddleware } from './auth/middleware/auth.middleware';
 import { HeaderValidationMiddleware } from './security/middleware/header-validation.middleware';
 import { RequestValidationInterceptor } from './security/api/request.validation';
+import { StaticCacheMiddleware } from './static-cache/middleware/static-cache.middleware';
 import { ObservabilityModule } from './observability/observability.module';
 
 @Module({
@@ -63,10 +70,11 @@ import { ObservabilityModule } from './observability/observability.module';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration, valuationConfig],
-      envFilePath: ['.env.local', '.env.development', '.env'],
+      envFilePath: [`.env.${process.env.NODE_ENV || 'development'}.local`, `.env.${process.env.NODE_ENV || 'development'}`, '.env.local', '.env'],
       cache: true, // Enable configuration caching
       expandVariables: true, // Allow environment variable expansion
     }),
+
     ConfigurationModule,
 
     // I18n
@@ -134,6 +142,12 @@ import { ObservabilityModule } from './observability/observability.module';
     // API Versioning
     ApiVersionModule,
     BackupRecoveryModule,
+
+    // Feature Flags
+    FeatureFlagModule,
+
+    // Static Cache
+    StaticCacheModule,
   ],
   controllers: [
     AuditController, // Add the audit controller
@@ -160,6 +174,9 @@ import { ObservabilityModule } from './observability/observability.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
+      // Static content caching
+      .apply(StaticCacheMiddleware)
+      .forRoutes('*')
       // Header validation for security
       .apply(HeaderValidationMiddleware)
       .forRoutes('*')

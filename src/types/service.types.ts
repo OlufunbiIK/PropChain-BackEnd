@@ -54,7 +54,7 @@ export interface SearchServiceOptions {
 }
 
 // Validation service types
-export interface ValidationResult {
+export interface ServiceValidationResult {
   isValid: boolean;
   errors: ValidationError[];
   warnings: ValidationWarning[];

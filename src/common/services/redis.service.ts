@@ -22,8 +22,8 @@ export class RedisService {
     await this.redis.setex(key, seconds, value);
   }
 
-  async del(key: string): Promise<number> {
-    return await this.redis.del(key);
+  async del(...keys: string[]): Promise<number> {
+    return await this.redis.del(...keys);
   }
 
   async exists(key: string): Promise<boolean> {
@@ -86,5 +86,33 @@ export class RedisService {
 
   async srem(key: string, ...members: string[]): Promise<number> {
     return await this.redis.srem(key, ...members);
+  }
+
+  async lpush(key: string, ...elements: string[]): Promise<number> {
+    return await this.redis.lpush(key, ...elements);
+  }
+
+  async rpush(key: string, ...elements: string[]): Promise<number> {
+    return await this.redis.rpush(key, ...elements);
+  }
+
+  async lpop(key: string): Promise<string | null> {
+    return await this.redis.lpop(key);
+  }
+
+  async rpop(key: string): Promise<string | null> {
+    return await this.redis.rpop(key);
+  }
+
+  async lrange(key: string, start: number, stop: number): Promise<string[]> {
+    return await this.redis.lrange(key, start, stop);
+  }
+
+  async ltrim(key: string, start: number, stop: number): Promise<string> {
+    return await this.redis.ltrim(key, start, stop);
+  }
+
+  async llen(key: string): Promise<number> {
+    return await this.redis.llen(key);
   }
 }

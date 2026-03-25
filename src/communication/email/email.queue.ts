@@ -1,6 +1,7 @@
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bull';
 import { ConfigService } from '@nestjs/config';
-import Bull from 'bull';
+import { Queue } from 'bull';
 
 /**
  * Email Queue Service
@@ -10,9 +11,6 @@ import Bull from 'bull';
 @Injectable()
 export class EmailQueueService implements OnModuleDestroy {
   private readonly logger = new Logger(EmailQueueService.name);
-  private emailQueue: Bull.Queue;
-  private batchQueue: Bull.Queue;
-  private priorityQueue: Bull.Queue;
   private readonly jobTimeoutMs: number;
   private readonly memoryMonitorIntervalMs: number;
   private readonly memoryWarningThresholdMb: number;
@@ -22,13 +20,20 @@ export class EmailQueueService implements OnModuleDestroy {
   private queueCleanupMonitor: NodeJS.Timeout | null = null;
   private readonly listenerDisposers: Array<() => void> = [];
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    @InjectQueue('email') private readonly emailQueue: Queue,
+    @InjectQueue('email-batch') private readonly batchQueue: Queue,
+    @InjectQueue('email-priority') private readonly priorityQueue: Queue,
+  ) {
     this.jobTimeoutMs = this.configService.get<number>('EMAIL_JOB_TIMEOUT_MS', 30000);
     this.memoryMonitorIntervalMs = this.configService.get<number>('EMAIL_QUEUE_MEMORY_MONITOR_INTERVAL_MS', 60000);
     this.memoryWarningThresholdMb = this.configService.get<number>('EMAIL_QUEUE_MEMORY_WARNING_MB', 512);
     this.completedJobRetention = this.configService.get<number>('EMAIL_QUEUE_REMOVE_ON_COMPLETE', 100);
     this.failedJobRetention = this.configService.get<number>('EMAIL_QUEUE_REMOVE_ON_FAIL', 50);
-    this.initializeQueues();
+    this.startMemoryMonitoring();
+    this.startQueueCleanupMonitoring();
+    this.setupEventListeners();
   }
 
   /**
@@ -51,7 +56,7 @@ export class EmailQueueService implements OnModuleDestroy {
       this.logger.log(`Added job to ${queueName} queue`, {
         jobId: job.id,
         queueName,
-        data: typeof data === 'object' ? Object.keys(data) : data,
+        data: typeof data === 'object' ? Object.keys(data as object) : data,
       });
 
       return job.id?.toString() || '';
@@ -297,9 +302,7 @@ export class EmailQueueService implements OnModuleDestroy {
   /**
    * Process single email job
    */
-  private async processSingleEmail(jobData: SingleEmailJobData): Promise<EmailJobResult> {
-    // This would integrate with EmailService
-    // For now, simulate processing
+  private async processSingleEmail(_jobData: SingleEmailJobData): Promise<EmailJobResult> {
     await this.delay(Math.random() * 1000 + 500); // 500-1500ms
 
     return {
@@ -321,7 +324,6 @@ export class EmailQueueService implements OnModuleDestroy {
 
     for (const email of emails) {
       try {
-        // Process each email with rate limiting
         const result = await this.processSingleEmail({ type: 'single', data: email });
         results.push(result);
 
@@ -331,7 +333,6 @@ export class EmailQueueService implements OnModuleDestroy {
           failureCount++;
         }
 
-        // Rate limiting between batch sends
         if (options?.rateLimit) {
           await this.delay(options.rateLimit);
         }
@@ -357,9 +358,7 @@ export class EmailQueueService implements OnModuleDestroy {
    * Process scheduled email job
    */
   private async processScheduledEmail(jobData: ScheduledEmailJobData): Promise<EmailJobResult> {
-    // Check if still scheduled for future
     if (jobData.scheduledFor && jobData.scheduledFor > new Date()) {
-      // Reschedule if still in future
       const delay = jobData.scheduledFor.getTime() - Date.now();
       await this.add('default', jobData.data, { delay });
 
@@ -370,14 +369,13 @@ export class EmailQueueService implements OnModuleDestroy {
       };
     }
 
-    // Process the email
     return await this.processSingleEmail(jobData.data);
   }
 
   /**
    * Get queue by name
    */
-  private getQueue(queueName: string): Bull.Queue {
+  private getQueue(queueName: string): Queue {
     switch (queueName) {
       case 'priority':
         return this.priorityQueue;
@@ -389,118 +387,40 @@ export class EmailQueueService implements OnModuleDestroy {
   }
 
   /**
-   * Initialize queues
-   */
-  private initializeQueues(): void {
-    const redisConfig = {
-      host: this.configService.get<string>('REDIS_HOST', 'localhost'),
-      port: this.configService.get<number>('REDIS_PORT', 6379),
-      password: this.configService.get<string>('REDIS_PASSWORD'),
-      db: this.configService.get<number>('REDIS_DB', 0),
-    };
-
-    // Default email queue
-    this.emailQueue = new Bull('email', {
-      redis: redisConfig,
-      defaultJobOptions: {
-        timeout: this.jobTimeoutMs,
-        removeOnComplete: this.completedJobRetention,
-        removeOnFail: this.failedJobRetention,
-      },
-    });
-
-    // High priority queue
-    this.priorityQueue = new Bull('email-priority', {
-      redis: redisConfig,
-      defaultJobOptions: {
-        timeout: this.jobTimeoutMs,
-        removeOnComplete: this.completedJobRetention,
-        removeOnFail: this.failedJobRetention,
-      },
-    });
-
-    // Batch email queue
-    this.batchQueue = new Bull('email-batch', {
-      redis: redisConfig,
-      defaultJobOptions: {
-        timeout: this.jobTimeoutMs,
-        removeOnComplete: this.completedJobRetention,
-        removeOnFail: this.failedJobRetention,
-      },
-    });
-
-    // Set up processors
-    this.emailQueue.process(5, this.processEmailJob.bind(this));
-    this.priorityQueue.process(2, this.processEmailJob.bind(this));
-    this.batchQueue.process(1, this.processEmailJob.bind(this));
-
-    // Set up event listeners
-    this.setupEventListeners();
-    this.startMemoryMonitoring();
-    this.startQueueCleanupMonitoring();
-
-    this.logger.log('Email queues initialized successfully');
-  }
-
-  /**
    * Set up queue event listeners
    */
   private setupEventListeners(): void {
-    const registerListener = (queue: Bull.Queue, event: string, handler: (...args: any[]) => void) => {
+    const registerListener = (queue: Queue, event: string, handler: (...args: any[]) => void) => {
       queue.on(event, handler);
       this.listenerDisposers.push(() => queue.removeListener(event, handler));
     };
 
-    // Default queue events
     registerListener(this.emailQueue, 'completed', (job, result) => {
-      this.logger.debug(`Email job completed`, {
-        jobId: job.id,
-        result,
-      });
+      this.logger.debug(`Email job completed`, { jobId: job.id, result });
     });
 
     registerListener(this.emailQueue, 'failed', (job, error) => {
-      this.logger.error(`Email job failed`, error, {
-        jobId: job.id,
-        data: job.data,
-      });
+      this.logger.error(`Email job failed`, error, { jobId: job.id, data: job.data });
     });
 
     registerListener(this.emailQueue, 'stalled', job => {
-      this.logger.warn(`Email job stalled`, {
-        jobId: job.id,
-        data: job.data,
-      });
+      this.logger.warn(`Email job stalled`, { jobId: job.id, data: job.data });
     });
 
-    // Priority queue events
     registerListener(this.priorityQueue, 'completed', (job, result) => {
-      this.logger.debug(`Priority email job completed`, {
-        jobId: job.id,
-        result,
-      });
+      this.logger.debug(`Priority email job completed`, { jobId: job.id, result });
     });
 
     registerListener(this.priorityQueue, 'failed', (job, error) => {
-      this.logger.error(`Priority email job failed`, error, {
-        jobId: job.id,
-        data: job.data,
-      });
+      this.logger.error(`Priority email job failed`, error, { jobId: job.id, data: job.data });
     });
 
-    // Batch queue events
     registerListener(this.batchQueue, 'completed', (job, result) => {
-      this.logger.debug(`Batch email job completed`, {
-        jobId: job.id,
-        result,
-      });
+      this.logger.debug(`Batch email job completed`, { jobId: job.id, result });
     });
 
     registerListener(this.batchQueue, 'failed', (job, error) => {
-      this.logger.error(`Batch email job failed`, error, {
-        jobId: job.id,
-        data: job.data,
-      });
+      this.logger.error(`Batch email job failed`, error, { jobId: job.id, data: job.data });
     });
   }
 
@@ -588,23 +508,14 @@ export class EmailQueueService implements OnModuleDestroy {
     };
   }
 
-  /**
-   * Generate email ID
-   */
   private generateEmailId(): string {
     return `email_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  /**
-   * Generate batch ID
-   */
   private generateBatchId(): string {
     return `batch_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  /**
-   * Delay utility
-   */
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }

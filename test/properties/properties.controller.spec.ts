@@ -2,13 +2,28 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PropertiesController } from '../../src/properties/properties.controller';
 import { PropertiesService } from '../../src/properties/properties.service';
 import { PropertySearchService } from '../../src/properties/search/property-search.service';
-import { CreatePropertyDto, PropertyStatus, PropertyType } from '../../src/properties/dto/create-property.dto';
+import { CreatePropertyDto, PropertyType } from '../../src/properties/dto/create-property.dto';
 import { UpdatePropertyDto } from '../../src/properties/dto/update-property.dto';
 import { PropertyQueryDto } from '../../src/properties/dto/property-query.dto';
-import { Property, PropertyStatus as PrismaPropertyStatus } from '@prisma/client';
 import { JwtAuthGuard } from '../../src/auth/guards/jwt-auth.guard';
 import { ExecutionContext } from '@nestjs/common';
 import { Decimal } from '@prisma/client/runtime/library';
+
+// Type aliases for test compatibility
+type Property = any; // Using any for now since Prisma client isn't generated
+enum PropertyStatus {
+  DRAFT = 'DRAFT',
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  LISTED = 'LISTED',
+  SOLD = 'SOLD',
+  OFF_MARKET = 'OFF_MARKET',
+  UNDER_CONTRACT = 'UNDER_CONTRACT',
+  EXPIRED = 'EXPIRED',
+  AVAILABLE = 'AVAILABLE',
+  WITHDRAWN = 'WITHDRAWN',
+  REJECTED = 'REJECTED',
+}
 
 describe('PropertiesController', () => {
   let controller: PropertiesController;
@@ -26,7 +41,7 @@ describe('PropertiesController', () => {
     description: 'Test Description',
     location: '123 Test St, Test City, Test State, 12345, Test Country',
     price: new Decimal(500000),
-    status: PrismaPropertyStatus.LISTED,
+    status: PropertyStatus.LISTED,
     ownerId: 'user_123',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -108,7 +123,7 @@ describe('PropertiesController', () => {
         country: 'Test Country',
       },
       type: PropertyType.RESIDENTIAL,
-      status: PropertyStatus.AVAILABLE,
+      status: PropertyStatus.AVAILABLE as any,
       bedrooms: 3,
       bathrooms: 2,
       areaSqFt: 1500,
@@ -153,7 +168,7 @@ describe('PropertiesController', () => {
       const query: PropertyQueryDto = {
         search: 'test',
         type: PropertyType.RESIDENTIAL,
-        status: PropertyStatus.AVAILABLE,
+        status: PropertyStatus.AVAILABLE as any,
         minPrice: 100000,
         maxPrice: 500000,
       };
@@ -178,7 +193,7 @@ describe('PropertiesController', () => {
     it('should return property statistics', async () => {
       const mockStats = {
         total: 100,
-        byStatus: { [PrismaPropertyStatus.LISTED]: 50, [PrismaPropertyStatus.SOLD]: 30 },
+        byStatus: { [PropertyStatus.LISTED]: 50, [PropertyStatus.SOLD]: 30 },
         byType: { [PropertyType.RESIDENTIAL]: 70, [PropertyType.COMMERCIAL]: 30 },
         averagePrice: 450000,
       };
@@ -209,7 +224,7 @@ describe('PropertiesController', () => {
 
     it('should pass query parameters to service', async () => {
       const query: PropertyQueryDto = {
-        status: PropertyStatus.AVAILABLE,
+        status: PropertyStatus.AVAILABLE as any,
         page: 2,
         limit: 5,
       };
@@ -255,15 +270,19 @@ describe('PropertiesController', () => {
 
   describe('updateStatus', () => {
     it('should update property status', async () => {
-      const updatedProperty = { ...mockProperty, status: PrismaPropertyStatus.SOLD };
+      const updatedProperty = { ...mockProperty, status: PropertyStatus.SOLD };
       mockPropertiesService.updateStatus.mockResolvedValue(updatedProperty);
 
-      const result = await controller.updateStatus('prop_123', PropertyStatus.SOLD, {
+      const result = await controller.updateStatus('prop_123', PropertyStatus.SOLD as any, {
         user: mockUser,
       });
 
       expect(result).toEqual(updatedProperty);
-      expect(service.updateStatus).toHaveBeenCalledWith('prop_123', PropertyStatus.SOLD, mockUser.id);
+      expect(service.updateStatus).toHaveBeenCalledWith(
+        'prop_123',
+        PropertyStatus.SOLD,
+        mockUser.id,
+      );
     });
   });
 

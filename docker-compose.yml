@@ -44,18 +44,13 @@ services:
       target: runner
     container_name: propchain-api
     restart: unless-stopped
+    env_file:
+      - .env.development
     environment:
-      NODE_ENV: development
-      PORT: 3000
       DATABASE_URL: postgresql://postgres:password@postgres:5432/propchain
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      JWT_SECRET: your-super-secret-jwt-key
-      ENCRYPTION_KEY: your-32-char-encryption-key-here
-      BLOCKCHAIN_NETWORK: sepolia
-      RPC_URL: https://sepolia.infura.io/v3/YOUR_PROJECT_ID
-      SWAGGER_ENABLED: true
-      LOG_LEVEL: info
+
     ports:
       - '3000:3000'
     volumes:
